@@ -12,7 +12,7 @@ $mensagem = "Hello World";
     <title>Hello World</title>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <h1>aquasync</h1>
     <p><?php echo $mensagem; ?></p>
 </body>
 </html>

@@ -1,0 +1,88 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #e7e5e5;
+}
+
+/* Tela de intro */
+#intro {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: #e5e6e7;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+#intro.hidden { opacity: 0; pointer-events: none; }
+
+.loader { position: relative; }
+
+
+:root {
+  --fs: clamp(36px, 12vw, 160px);  
+  --speed: 30s;                     
+  --accent: 49, 72, 122;         
+  --bg-width: 8em;                  
+  --bg-distance: 32em;              
+}
+
+
+.loader h1 {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: var(--fs);
+  line-height: 1;
+
+  color: transparent;
+  background-image: url("../img/onda.png");
+  background-repeat: repeat-x;
+  background-position: 0% 50%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+
+  -webkit-text-stroke: 0.01em rgba(var(--accent), 0.20);
+
+  animation: slide var(--speed) linear infinite;
+}
+
+@keyframes slide {
+  to { background-position: var(--bg-distance) 50%; }
+}
+
+/* Responsividade */
+@media (max-width: 400px) {
+  :root {
+    --fs: clamp(28px, 18vw, 120px);
+    --bg-width: 10em;
+    --bg-distance: 40em;
+  }
+}
+
+@media (min-width: 1400px) {
+  :root {
+    --fs: clamp(48px, 8vw, 200px);
+    --bg-width: 7em;
+    --bg-distance: 28em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader h1 { animation: none; }
+}
+
+
+main {
+  min-height: 100vh;             
+  display: flex;                 
+  justify-content: center;       
+  align-items: center;           
+  padding: 24px;
+  text-align: center;
+  flex-direction: column;        
+}

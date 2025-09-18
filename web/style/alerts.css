@@ -1,0 +1,162 @@
+/* Reset básico para remover margens e preenchimentos padrão */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos gerais do corpo do documento */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Estilos do cabeçalho da página de notificações */
+.notificacoes-header {
+  background: #263440;
+  color: white;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Container do conteúdo do cabeçalho */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilos do botão de voltar */
+.back-button {
+  color: white;
+  font-size: 1.2rem;
+  text-decoration: none;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+/* Efeito hover no botão de voltar */
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos do título no cabeçalho */
+.notificacoes-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Espaçador para alinhamento do título ao centro */
+.header-spacer {
+  width: 40px; 
+}
+
+/* Container principal das notificações */
+.notificacoes-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Estilos dos cartões de notificação */
+.notificacao-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+}
+
+/* Efeito hover nos cartões de notificação */
+.notificacao-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Estilos para notificações não lidas */
+.notificacao-card.unread {
+  background: #f0f9ff;
+  border-left-color: #3182ce;
+}
+
+/* Estilos do título da notificação */
+.notificacao-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+}
+
+/* Estilos do texto da notificação */
+.notificacao-content p {
+  color: #4a5568;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Estilos do timestamp da notificação */
+.notificacao-time {
+  color: #718096;
+  font-size: 0.9rem;
+  display: block;
+  text-align: right;
+}
+
+/* Media queries para responsividade */
+
+/* Tablets e telas menores */
+@media (max-width: 768px) {
+  .notificacoes-container {
+    padding: 0.5rem;
+  }
+  
+  .notificacao-card {
+    padding: 1rem;
+  }
+  
+  .notificacoes-header h1 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Dispositivos móveis */
+@media (max-width: 480px) {
+  .notificacao-content h3 {
+    font-size: 1rem;
+  }
+  
+  .notificacao-content p {
+    font-size: 0.95rem;
+  }
+  
+  .notificacao-time {
+    font-size: 0.85rem;
+  }
+  
+  .back-button {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+}

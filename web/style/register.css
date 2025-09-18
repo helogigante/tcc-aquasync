@@ -1,0 +1,305 @@
+/* ===== ESTILOS GERAIS ===== */
+/* Reset de estilos padrão do navegador */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos base para o corpo da página */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+/* ===== ESTILOS DO CONTAINER DO FORMULÁRIO ===== */
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.97);
+  padding: 30px;
+  color: #212E4E;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== ESTILOS DO TÍTULO ===== */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 700;
+  margin-bottom: 1.8rem;
+  color: #212E4E;
+}
+
+/* ===== ESTILOS DO FORMULÁRIO ===== */
+.form {
+  margin-top: 1.5rem;
+}
+
+/* ===== ESTILOS DOS GRUPOS DE ENTRADA ===== */
+.input-group {
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.input-group label {
+  display: block;
+  color: #364775;
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #DAE1F1;
+  outline: 0;
+  background-color: #f7f9fc;
+  padding: 0.9rem 1.1rem;
+  color: #1B2336;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.input-group input:focus {
+  border-color: #96B3DF;
+  box-shadow: 0 0 0 4px rgba(150, 179, 223, 0.3);
+}
+
+/* ===== ESTILOS DO BOTÃO ===== */
+.sign {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, #364775 0%, #212E4E 100%);
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.sign:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(33, 46, 78, 0.25);
+}
+
+
+/* ===== ESTILOS DO FUNDO DO OCEANO ===== */
+.ocean {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ===== ESTILOS DAS BOLHAS ===== */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  animation: float 15s infinite ease-in-out;
+}
+
+/* Tamanhos e posições individuais para cada bolha */
+.bubble--1 {
+  width: 80px;
+  height: 80px;
+  left: 5%;
+  animation-duration: 16s;
+  animation-delay: 0s;
+}
+
+.bubble--2 {
+  width: 40px;
+  height: 40px;
+  left: 15%;
+  animation-duration: 18s;
+  animation-delay: 1s;
+}
+
+.bubble--3 {
+  width: 60px;
+  height: 60px;
+  left: 25%;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.bubble--4 {
+  width: 30px;
+  height: 30px;
+  left: 35%;
+  animation-duration: 15s;
+  animation-delay: 0.5s;
+}
+
+.bubble--5 {
+  width: 50px;
+  height: 50px;
+  left: 45%;
+  animation-duration: 17s;
+  animation-delay: 1.5s;
+}
+
+.bubble--6 {
+  width: 70px;
+  height: 70px;
+  left: 55%;
+  animation-duration: 19s;
+  animation-delay: 2.5s;
+}
+
+.bubble--7 {
+  width: 45px;
+  height: 45px;
+  left: 65%;
+  animation-duration: 14s;
+  animation-delay: 0.8s;
+}
+
+.bubble--8 {
+  width: 35px;
+  height: 35px;
+  left: 75%;
+  animation-duration: 21s;
+  animation-delay: 3s;
+}
+
+.bubble--9 {
+  width: 55px;
+  height: 55px;
+  left: 85%;
+  animation-duration: 16s;
+  animation-delay: 1.2s;
+}
+
+.bubble--10 {
+  width: 65px;
+  height: 65px;
+  left: 10%;
+  animation-duration: 22s;
+  animation-delay: 4s;
+}
+
+.bubble--11 {
+  width: 25px;
+  height: 25px;
+  left: 20%;
+  animation-duration: 13s;
+  animation-delay: 0.3s;
+}
+
+.bubble--12 {
+  width: 45px;
+  height: 45px;
+  left: 30%;
+  animation-duration: 18s;
+  animation-delay: 1.7s;
+}
+
+/* ===== ANIMAÇÃO DAS BOLHAS ===== */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-80vh) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-160vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ===== ESTILOS RESPONSIVOS ===== */
+/* Tablets e telas menores */
+@media (max-width: 768px) {
+  .form-container {
+    width: 95%;
+    padding: 25px;
+    max-width: 500px;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .input-group input {
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* Dispositivos móveis */
+@media (max-width: 576px) {
+  .form-container {
+    width: 92%;
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+  }
+  
+  .input-group input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+  }
+  
+  .sign {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+  
+  .input-group label {
+    font-size: 0.95rem;
+  }
+  
+  .signup {
+    font-size: 0.9rem;
+  }
+  
+  .signup a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Dispositivos móveis muito pequenos */
+@media (max-width: 400px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .form-container {
+    padding: 15px;
+  }
+}

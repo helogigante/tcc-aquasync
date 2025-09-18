@@ -1,0 +1,438 @@
+/* Estilos gerais */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f3f3;
+  padding: 2rem;
+  padding-top: 70px;
+  padding-bottom: 4rem; 
+  color: #333;
+}
+
+/* Navbar */
+.navbar-container {
+  background-color: #192338;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  height: 50px;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.back-button {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-title {
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar-placeholder {
+  width: 24px;
+}
+
+/* Layout principal */
+.main-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.calendar-container {
+  width: 320px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: fit-content;
+}
+
+.data-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Estilos do calendário  */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #2c74b8;
+  color: white;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.month-year {
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.month-year:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #f9f9f9;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.weekdays div {
+  color: #666;
+}
+
+.days, .months, .years {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 10px;
+}
+
+.months {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.years {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.day, .month, .year {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.month, .year {
+  border-radius: 6px;
+}
+
+.day:hover, .month:hover, .year:hover {
+  background-color: #e6e6e6;
+}
+
+.current-month {
+  color: #333;
+}
+
+.other-month {
+  color: #aaa;
+}
+
+.today {
+  background-color: #2c74b8;
+  color: white;
+  font-weight: 600;
+}
+
+.selected {
+  background-color: #e6f3ff;
+  color: #2c74b8;
+  font-weight: 600;
+}
+
+.has-data {
+  position: relative;
+}
+
+.has-data::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #28a745;
+  border-radius: 50%;
+}
+
+.has-anomaly::after {
+  background-color: #dc3545;
+}
+
+.view-month, .view-year, .view-decade {
+  display: none;
+}
+
+.active-view {
+  display: block;
+}
+
+/* Estilos do gráfico e informações (novos) */
+.chart-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #192338;
+}
+
+/* Estilos específicos para o gráfico */
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.chart-bar {
+  fill: #2c74b8; 
+  transition: fill 0.2s ease;
+}
+
+.chart-bar:hover {
+  fill: #1e5a97; 
+}
+
+.chart-line {
+  stroke: #2c74b8; 
+  stroke-width: 3;
+  fill: none;
+}
+
+.chart-area {
+  fill: rgba(44, 116, 184, 0.1); 
+}
+
+.chart-grid line {
+  stroke: #e2e8f0;
+  stroke-width: 1;
+}
+
+.chart-axis path,
+.chart-axis line {
+  stroke: #cbd5e0;
+  stroke-width: 1;
+}
+
+.chart-axis text {
+  fill: #4a5568;
+  font-size: 12px;
+}
+
+.chart-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: rgba(44, 116, 184, 0.9);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Card consolidado com todas as informações */
+.consolidated-stats-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.stats-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #192338;
+}
+
+.stats-grid-consolidated {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-item-consolidated {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.stat-item-full-width {
+  grid-column: 1 / -1;
+  background-color: #e6f3ff;
+  padding: 16px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #192338;
+}
+
+.stat-time {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Seção de Notificações */
+.notifications-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.notifications-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #192338;
+}
+
+.notification-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: flex-start;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-icon {
+  margin-right: 10px;
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+.no-notifications {
+  text-align: center;
+  color: #888;
+  padding: 16px 0;
+}
+
+.chart-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 1000px) {
+  .main-container {
+    flex-direction: column;
+  }
+  
+  .calendar-container {
+    width: 100%;
+  }
+  
+  .stats-grid-consolidated {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 1rem;
+    padding-top: 60px;
+  }
+  
+  .stats-grid-consolidated {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid-consolidated {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    height: 220px;
+  }
+}

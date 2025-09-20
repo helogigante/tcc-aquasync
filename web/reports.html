@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Geral - AquaSync</title>
+    
+    <!-- Links para os arquivos de estilo -->
+    <link rel="stylesheet" href="style/reports.css">
+    
+    <!-- Biblioteca Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Barra de navegação fixa no topo -->
+    <nav class="navbar-container">
+        <div class="navbar-content">
+            <!-- Botão de voltar para a página inicial -->
+            <a href="home.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            
+            <!-- Título da página -->
+            <span class="navbar-title">Relatório Geral</span>
+            
+            <!-- Espaço reservado para alinhamento -->
+            <div class="navbar-placeholder"></div> 
+        </div>
+    </nav>
+
+    <!-- Container principal com calendário e dados -->
+    <div class="main-container">
+        <!-- Seção do calendário interativo -->
+        <div class="calendar-container">
+            <!-- Cabeçalho do calendário com navegação -->
+            <div class="calendar-header">
+                <button class="nav-button" id="prev-view">&lt;</button>
+                <div class="month-year" id="current-view">Agosto 2023</div>
+                <button class="nav-button" id="next-view">&gt;</button>
+            </div>
+            
+            <!-- Cabeçalho com dias da semana (visível apenas na visualização mensal) -->
+            <div class="weekdays" id="weekdays-header">
+                <div>Dom</div>
+                <div>Seg</div>
+                <div>Ter</div>
+                <div>Qua</div>
+                <div>Qui</div>
+                <div>Sex</div>
+                <div>Sáb</div>
+            </div>
+            
+            <!-- Visualização mensal (ativa por padrão) -->
+            <div class="view-month active-view" id="month-view">
+                <div class="days" id="calendar-days">
+                    <!-- Dias serão inseridos via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Visualização anual -->
+            <div class="view-year" id="year-view">
+                <div class="months" id="calendar-months">
+                    <!-- Meses serão inseridos via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Visualização por década -->
+            <div class="view-decade" id="decade-view">
+                <div class="years" id="calendar-years">
+                    <!-- Anos serão inseridos via JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Container com dados e gráficos -->
+        <div class="data-container">
+            <!-- Card do gráfico de vazão -->
+            <div class="chart-card">
+                <div class="chart-title" id="selectedDate">15 de Setembro de 2024</div>
+                <div class="chart-subtitle" id="selectedPeriod"></div>
+                <canvas id="flowChart"></canvas>
+            </div>
+
+            <!-- Card consolidado com todas as informações de consumo -->
+            <div class="consolidated-stats-card">
+                <h3 class="stats-card-title">Resumo do Consumo</h3>
+                
+                <!-- Item de consumo total -->
+                <div class="stat-item-consolidated">
+                    <div class="stat-label">Consumo Total</div>
+                    <div class="stat-value" id="totalConsumption">2450 L</div>
+                </div>
+                
+                <!-- Grid com estatísticas detalhadas -->
+                <div class="stats-grid-consolidated">
+                    <!-- Maior fluxo -->
+                    <div class="stat-item-consolidated">
+                        <div class="stat-label">Maior Fluxo</div>
+                        <div class="stat-value" id="maxFlow">22.4 L/min</div>
+                        <div class="stat-time" id="maxFlowTime">às 14:30</div>
+                    </div>
+                    
+                    <!-- Menor fluxo -->
+                    <div class="stat-item-consolidated">
+                        <div class="stat-label">Menor Fluxo</div>
+                        <div class="stat-value" id="minFlow">8.7 L/min</div>
+                        <div class="stat-time" id="minFlowTime">às 03:15</div>
+                    </div>
+                    
+                    <!-- Média por hora -->
+                    <div class="stat-item-consolidated">
+                        <div class="stat-label">Média por Hora</div>
+                        <div class="stat-value" id="avgPerHour">102,1 L/h</div>
+                    </div>
+                    
+                    <!-- Média por dia -->
+                    <div class="stat-item-consolidated">
+                        <div class="stat-label">Média por Dia</div>
+                        <div class="stat-value" id="avgPerDay">2450 L</div>
+                    </div>
+                    
+                    <!-- Custo estimado (largura completa) -->
+                    <div class="stat-item-full-width">
+                        <div class="stat-label">Custo Estimado</div>
+                        <div class="stat-value" id="estimatedCost">R$ 8,45</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de notificações -->
+            <div class="notifications-section" id="notificationsSection">
+                <h3 class="notifications-title">Notificações do Período</h3>
+                <div class="notifications-list" id="notificationsList">
+                    <!-- Notificações serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript para funcionalidade da página -->
+    <script src="script/reports.js"></script>
+</body>
+</html>

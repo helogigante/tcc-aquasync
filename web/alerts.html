@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Configurações básicas do documento -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificações - AquaSync</title>
+  
+  <!-- Importação de folhas de estilo -->
+  <link rel="stylesheet" href="style/alerts.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Cabeçalho da página de notificações -->
+  <header class="notificacoes-header">
+    <div class="header-content">
+      <!-- Botão de voltar para a página inicial -->
+      <a href="home.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <!-- Título da página -->
+      <h1>Alertas</h1>
+      <!-- Espaçador para alinhamento do título ao centro -->
+      <div class="header-spacer"></div> 
+    </div>
+  </header>
+
+  <!-- Container principal para as notificações -->
+  <main class="notificacoes-container">
+    <!-- Notificação não lida (com classe 'unread') -->
+    <div class="notificacao-card unread">
+      <div class="notificacao-content">
+        <h3>Alerta de vazão prolongada</h3>
+        <p>Detectamos uma frequência de vazão acima do esperado, verefique o registro.</p>
+        <span class="notificacao-time">25/10/2023 - 10:30</span>
+      </div>
+    </div>
+
+    <!-- Notificação não lida (com classe 'unread') -->
+    <div class="notificacao-card unread">
+      <div class="notificacao-content">
+        <h3>Alerta de fluxo</h3>
+        <p>Detectamos fluxo de água mesmo com registro "desligado".</p>
+        <span class="notificacao-time">25/10/2023 - 09:15</span>
+      </div>
+    </div>
+
+    <!-- Notificação lida (sem classe 'unread') -->
+    <div class="notificacao-card">
+      <div class="notificacao-content">
+        <h3>Mensagem</h3>
+        <p>Blablabla</p>
+        <span class="notificacao-time">24/10/2023 - 16:45</span>
+      </div>
+    </div>
+
+    <!-- Notificação lida (sem classe 'unread') -->
+    <div class="notificacao-card">
+      <div class="notificacao-content">
+        <h3>Mensagem</h3>
+        <p>Blablabla</p>
+        <span class="notificacao-time">24/10/2023 - 14:20</span>
+      </div>
+    </div>
+
+    <!-- Notificação lida (sem classe 'unread') -->
+    <div class="notificacao-card">
+      <div class="notificacao-content">
+        <h3>Manutenção programada</h3>
+        <p>Blablabla</p>
+        <span class="notificacao-time">23/10/2023 - 11:30</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Importação do script JavaScript -->
+  <script src="script/alerts.js"></script>
+</body>
+</html>

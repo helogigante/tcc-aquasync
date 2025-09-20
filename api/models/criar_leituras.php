@@ -1,12 +1,10 @@
 <?php
-    $servername = "127.0.0.1";
-    $username = "root";
-    $password = "";
-    $dbname = "aquasync-tcc";
+    private $table_name = "leituras";
 
-    // Cria conexão
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
+    // Classe construtora da conexão
+    public function __construct($db) {
+        $this->conn = $db;
+    }
     // Verifica conexão
     if ($conn->connect_error) {
         die("Erro na conexão: " . $conn->connect_error);
@@ -16,7 +14,7 @@
         $valor = $_GET['valor'];
         $id_sensor = $_GET['id_sensor'];
 
-        $sql = "INSERT INTO leituras (dt_hr_leitura, valor_leitura, id_sensor) 
+        $sql = "INSERT INTO $this->table_name (dt_hr_leitura, valor_leitura, id_sensor) 
                 VALUES (NOW(), '$valor', '$id_sensor')";
 
         if ($conn->query($sql) === TRUE) {

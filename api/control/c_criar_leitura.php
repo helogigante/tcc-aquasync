@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $timestamp = $data['timestamp'];
 
         // Aqui você pode salvar os dados no banco de dados ou processá-los
+        
         // Exemplo de resposta de sucesso
         http_response_code(200);
         echo json_encode([

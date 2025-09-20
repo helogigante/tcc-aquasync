@@ -257,7 +257,7 @@ function setupDisconnectModal() {
   if (confirmDisconnect) {
     confirmDisconnect.addEventListener('click', () => {
       // Redirecionar para a página de login
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
     });
   }
   

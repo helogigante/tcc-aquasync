@@ -261,156 +261,10 @@ input:checked + .slider:before {
   grid-column: 1 / -1; /* Ocupa todas as colunas */
 }
 
-/* Navegação inferior (footer) */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 50;
-  width: 100%;
-  background-color: #192338;
-  border-top: 1px solid #374151;
-  padding: 1rem 0; /* Aumentado ainda mais o padding */
-}
 
-.bottom-nav-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 28rem; /* Aumentado a largura máxima */
-  margin: 0 auto;
-  font-weight: 500;
-}
 
-.bottom-nav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.8rem; /* Aumentado o padding */
-  font-size: 0.95rem; /* Aumentado de 0.85rem para 0.95rem */
-  color: #9ca3af;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-}
 
-.bottom-nav-btn.active {
-  color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.1);
-  border-radius: 10px; /* Aumentado o border-radius */
-}
 
-.bottom-nav-btn:hover {
-  color: #3b82f6;
-  text-decoration: none;
-}
-
-/* Estilos dos ícones da navbar inferior */
-.bottom-nav-btn svg {
-  width: 26px; /* Aumentado de 22px para 26px */
-  height: 26px; /* Aumentado de 22px para 26px */
-  margin-bottom: 0.4rem; /* Ajustado o espaçamento */
-}
-
-/* Estilos do texto da navbar inferior */
-.bottom-nav-btn span {
-  font-size: 1rem !important; /* Aumentado de 0.9rem para 1rem */
-  margin-top: -2px;
-  font-weight: 500; /* Adicionado peso de fonte */
-}
-
-/* Media Queries para responsividade */
-
-/* Tablets e telas menores */
-@media (max-width: 768px) {
-  .navbar-container {
-    padding: 0.8rem; /* Ajustado o padding */
-  }
-  
-  .navbar-title {
-    font-size: 1.9rem; /* Ajustado para dispositivos móveis */
-  }
-  
-  .sensor-dropdown select {
-    padding: 0.7rem 2.5rem 0.7rem 1.2rem;
-    font-size: 1.1rem;
-    background-size: 1.3rem;
-  }
-  
-  .monitoring-card-body {
-    padding: 1rem;
-  }
-  
-  .chart-container {
-    height: 250px;
-  }
-  
-  .info-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  /* Ajustes para navbar inferior em dispositivos móveis */
-  .bottom-nav {
-    padding: 0.8rem 0;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.7rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.9rem !important;
-  }
-}
-
-/* Dispositivos móveis pequenos */
-@media (max-width: 480px) {
-  .container {
-    padding: 0.5rem;
-    gap: 1rem;
-  }
-  
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .navbar-title {
-    font-size: 1.7rem; /* Ajustado para telas muito pequenas */
-  }
-  
-  .sensor-dropdown select {
-    max-width: 140px; /* Aumentado a largura máxima */
-    font-size: 1rem;
-    padding: 0.6rem 2.2rem 0.6rem 1rem;
-    background-size: 1.2rem;
-  }
-  
-  /* Ajustes adicionais para navbar inferior em telas muito pequenas */
-  .bottom-nav-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.6rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.85rem !important;
-  }
-}
 
 /* ANIMAÇÕES PARA O DROPDOWN - MANTENDO LAYOUT ORIGINAL */
 .sensor-dropdown {
@@ -451,6 +305,109 @@ input:checked + .slider:before {
   border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Navegação inferior (footer) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  background-color: #192338;
+  border-top: 1px solid #374151;
+  padding: 1rem 0;
+}
+
+.bottom-nav-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 28rem;
+  margin: 0 auto;
+  font-weight: 500;
+}
+
+.bottom-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  font-size: 0.95rem;
+  color: #9ca3af;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.bottom-nav-btn.active {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 10px;
+}
+
+.bottom-nav-btn:hover {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+/* Estilos dos ícones da navbar inferior */
+.bottom-nav-btn svg {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 0.4rem;
+}
+
+/* Estilos do texto da navbar inferior */
+.bottom-nav-btn span {
+  font-size: 1rem !important;
+  margin-top: -2px;
+  font-weight: 500;
+}
+
+/* Media Queries para responsividade */
+
+/* Tablets e telas menores */
+@media (max-width: 768px) {
+  .bottom-nav {
+    padding: 0.8rem 0;
+  }
+  
+  .bottom-nav-btn {
+    padding: 0.7rem;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Dispositivos móveis pequenos */
+@media (max-width: 480px) {
+  .bottom-nav-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .bottom-nav-btn {
+    padding: 0.6rem;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.85rem !important;
+  }
 }
 
 

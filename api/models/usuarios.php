@@ -27,7 +27,7 @@
             return $stmt->execute();
         }
         function update(){
-            $query ="update $this->table_name set email = :eemail, nome = :nome, telefone = :telefone, senha = :senha, where id_usuario = :user_id";
+            $query ="update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha', where id_usuario = ':user_id'";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);

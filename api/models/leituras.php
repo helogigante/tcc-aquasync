@@ -9,19 +9,34 @@
             $this->conn = $db;
         }
         function readOne(){
-    
+                
         }
         function readActualDay(){
-    
+            //consumo total de cada hora 
         }
         function readDay(){
-    
+            //consumo total de cada hora
+            //consumo total
+            //custo total estimado
+            //média por hora
+            //média por dia
+            //maior e menor vazão
         }
         function readMonth(){
-    
+            //consumo total de cada dia
+            //consumo total
+            //custo total estimado
+            //média por hora
+            //média por dia
+            //maior e menor vazão
         }
         function readYear(){
-    
+            //consumo total de cada mês
+            //consumo total
+            //custo total estimado
+            //média por hora
+            //média por dia
+            //maior e menor vazão
         }
     }
 ?>

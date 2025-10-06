@@ -364,7 +364,7 @@ function calendario() {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Vazão (L/min)',
+                    label: 'Volume (L)',
                     data: flowData,
                     borderColor: '#253140',
                     backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140',
@@ -387,7 +387,7 @@ function calendario() {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Vazão (L/min)'
+                            text: 'Volume (L)'
                         }
                     },
                     x: {

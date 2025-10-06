@@ -19,12 +19,13 @@
         public function inserirLeitura($valor, $id_sensor) {
             try {
                 $sql = "INSERT INTO " . $this->table_name . " (dt_hr_leitura, valor_leitura, id_sensor) 
-                    VALUES (NOW(), :valor, :id_sensor)";
+                        VALUES (NOW(), :valor, :id_sensor)";
                 $stmt = $this->conn->prepare($sql);
 
                 // Bind dos parâmetros
                 // Bind é usado para prevenir SQL Injection
                 //SQL Injection é uma técnica onde se insere código SQL em campos de entrada para manipular o banco de dados
+                
                 $stmt->bindParam(":valor", $valor);
                 $stmt->bindParam(":id_sensor", $id_sensor);
 

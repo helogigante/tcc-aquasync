@@ -12,7 +12,7 @@
     $db = $database->getConnection();
 
     $usuario = new Usuario($db);
-//        $user_id, $name, $email, $phone, $password;
+//  $user_id, $name, $email, $phone, $password;
     $method = $_SERVER['REQUEST_METHOD'];//supervariável global "$_XXX"
 
     switch($method) {

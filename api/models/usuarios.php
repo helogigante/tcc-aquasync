@@ -8,15 +8,15 @@
         public function __construct($db) {
             $this->conn = $db;
         }
-        function readOne(){
-            $query = "SELECT id_usuario, email, nome, telefone, senha from $this->table_name where id_usuario = :'user_id'";
+        function read(){
+            $query = "SELECT id_usuario, email, nome, telefone, senha from $this->table_name where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->execute();
-            return $stmt;
+            $stmt->bindParam(":user_id",$this->user_id);
+            return $stmt->execute();
         }
         function create(){
-            $query = "insert into $this->table_nome (id_usuario, email, nome, telefone, senha) values 
-            (':user_id', ':email', ':nome', ':telefone', ':senha')";
+            $query = "insert into $this->table_nome (id_usuario, email, nome, telefone, senha) values
+            (:user_id, ':email', ':nome', ':telefone', ':senha')";
             $stmt = $this->conn->prepare($query);
             //$this->senha = password_hash($this->senha, PASSWORD_BCRYPT);
             $stmt->bindParam(":user_id",$this->user_id);
@@ -27,11 +27,7 @@
             return $stmt->execute();
         }
         function update(){
-<<<<<<< HEAD
-            $query = "update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha' where id_usuario = ':user_id'";
-=======
-            $query ="update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha', where id_usuario = ':user_id'";
->>>>>>> 8f9ce0edf03e2df74f04b18df85e3b3189ee39a7
+            $query = "update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha' where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
@@ -41,7 +37,7 @@
             return $stmt->execute();
         }
         function delete(){
-            $query = "delete from $this->table_name where id_usuario = ':user_id'";
+            $query = "delete from $this->table_name where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             return $stmt->execute();

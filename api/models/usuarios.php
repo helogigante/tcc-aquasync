@@ -9,7 +9,7 @@
             $this->conn = $db;
         }
         function readOne(){
-            $query = "SELECT id_usuario, email, nome, telefone, senha from $this->table_name where id = :user_id";
+            $query = "SELECT id_usuario, email, nome, telefone, senha from $this->table_name where id_usuario = :'user_id'";
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             return $stmt;
@@ -27,7 +27,7 @@
             return $stmt->execute();
         }
         function update(){
-            $query ="update $this->table_name set email = :eemail, nome = :nome, telefone = :telefone, senha = :senha, where id_usuario = :user_id";
+            $query = "update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha' where id_usuario = ':user_id'";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
@@ -37,7 +37,7 @@
             return $stmt->execute();
         }
         function delete(){
-            $query = "delete from $this->table_name where id_usuario = :user_id";
+            $query = "delete from $this->table_name where id_usuario = ':user_id'";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             return $stmt->execute();

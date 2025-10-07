@@ -19,63 +19,63 @@
         case 'GET':
             if(isset($_GET['id'])) {
                 $usuario->id = $_GET['id'];
-                $usuario->readOne();
-                if($usuario->nome != null) {
-                    $usuario_arr=array(
-                        "id"->$usuario->$id,
-                        "nome"->$usuario->$nome,
+                $usuario->read();
+                if($usuario->name != null) {
+                    $usuario_arr = array (
+                        "id"->$usuario->$user_id,
+                        "nome"->$usuario->$name,
                         "email"->$usuario->$email,
-                        "ra"->$usuario->$ra,
-                        "celular"->$usuario->$celular
+                        "telefone"->$usuario->$phone,
+                        "senha"->$usuario->$password,
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);
                 } else {
                     http_response_code(404);
-                    echo json_encode(array("message"=>"usuario não cadastado."));      
+                    echo json_encode(array("message"=>"Usuário não encontrado."));      
                 }
             } else {
-                $stmt = $usuario->read();
-                $usuarios = $stmt->fetchAll(PDO:: FETCH_ASSOC);
-                if(!empty($usuarios)) {
-                    http_response_code(200);
-                    echo json_encode(array("records"=>$usuarios)); 
-                } else {
-                    http_response_code(404);
-                    echo json_encode(array("message"=>"usuario não cadastado.")); 
-                }
+                http_response_code(404);
+                echo json_encode(array("message"=>"ID não recebido.")); 
             }
+
         break;
+
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
-            $usuario->id = $data->id;
-            $usuario->nome = $data->usuario;
+            //falar que ta devolvendo json
+            $usuario->user_id = $data->user_id;
+            $usuario->name = $data->name;
             $usuario->email = $data->email;
-            $usuario->ra = $data->ra;
-            $usuario->celular = $data->celular;      
+            $usuario->phone = $data->phone;
+            $usuario->password = $data->password;      
             if($usuario->create()) {
                 http_response_code(200);
                 echo json_encode(array("message"=>"Usuário cadastrado com sucesso."));
             } else {
                 http_response_code(503);
-                echo json_encode(array("message"=>"Falha na inclusão de dados."));
+                echo json_encode(array("message"=>"Falha no cadastro do usuário."));
             }
+
         break;
+
         case 'PUT':
             $data = json_decode(file_get_contents("php://input"));
-            $usuario->id = $data->id;
-            $usuario->nome = $data->usuario;
+            $usuario->user_id = $data->user_id;
+            $usuario->name = $data->name;
             $usuario->email = $data->email;
-            $usuario->ra = $data->ra;
-            $usuario->celular = $data->celular;
+            $usuario->phone = $data->phone;
+            $usuario->password = $data->password;    
             if($usuario->update()) {
                 http_response_code(200);
                 echo json_encode(array("message"=>"Usuário atualizado com sucesso."));
             } else {
                 http_response_code(503);
-                echo json_encode(array("message"=>"Falha na atualização de dados."));
+                echo json_encode(array("message"=>"Falha na atualização do usuário."));
             }
+        
         break;
+
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
             $usuario->id = $data->id;
@@ -86,6 +86,7 @@
                 http_response_code(503);
                 echo json_encode(array("message"=>"Falha na atualização de dados."));
             }
+
         break;
     }
 ?>

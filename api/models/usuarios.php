@@ -37,6 +37,7 @@
             return $stmt->execute();
         }
         function delete(){
+            //fazer inner join com a tabela de usuario_sensores
             $query = "delete from $this->table_name where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);

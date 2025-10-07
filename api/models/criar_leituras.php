@@ -1,6 +1,6 @@
 <?php
     // Importa a configuração do banco
-    include_once '../config/db.php';
+    include_once '../config/database.php';
 
     // Cria conexão
     $database = new Database();

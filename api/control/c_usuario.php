@@ -22,7 +22,7 @@
                 $usuario->read();
                 if($usuario->name != null) {
                     $usuario_arr = array (
-                        "id"->$usuario->$user_id,
+                        "id"->$usuario->$id,
                         "nome"->$usuario->$name,
                         "email"->$usuario->$email,
                         "telefone"->$usuario->$phone,

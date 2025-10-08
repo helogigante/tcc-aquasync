@@ -3,30 +3,28 @@
     header("Content-Type: application/json");//tipo de dados da resposta
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     header("Access-Control-Max-Age: 6000"); 
-    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, XRequested-Width;");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-Width;");
 
     require_once '../config/database.php';
     require_once '../models/usuarios.php';
 
     $database = new Database();
     $db = $database->getConnection();
-
     $usuario = new Usuario($db);
-//  $user_id, $name, $email, $phone, $password;
+
     $method = $_SERVER['REQUEST_METHOD'];//supervariável global "$_XXX"
 
     switch($method) {
         case 'GET':
-            if(isset($_GET['id'])) {
-                $usuario->user_id = $_GET['id'];
+            if(isset($_GET['user_id'])) {
+                $usuario->user_id = $_GET['user_id'];
                 $usuario->read();
-                if($usuario->name != null) {
+                if($usuario->user_id != null) {
                     $usuario_arr = array (
-                        "id"->$usuario->$user_id,
-                        "nome"->$usuario->$name,
-                        "email"->$usuario->$email,
-                        "telefone"->$usuario->$phone,
-                        "senha"->$usuario->$password,
+                        "id"=>$usuario->$user_id,
+                        "nome"=>$usuario->$name,
+                        "email"=>$usuario->$email,
+                        "telefone"=>$usuario->$phone,
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

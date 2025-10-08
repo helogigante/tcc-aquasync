@@ -18,11 +18,11 @@
     switch($method) {
         case 'GET':
             if(isset($_GET['id'])) {
-                $usuario->id = $_GET['id'];
+                $usuario->user_id = $_GET['id'];
                 $usuario->read();
                 if($usuario->name != null) {
                     $usuario_arr = array (
-                        "id"->$usuario->$id,
+                        "id"->$usuario->$user_id,
                         "nome"->$usuario->$name,
                         "email"->$usuario->$email,
                         "telefone"->$usuario->$phone,

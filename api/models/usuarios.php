@@ -25,9 +25,7 @@
             $stmt->bindParam(":phone",$this->phone);
             $stmt->bindParam(":password",$this->password);
             $stmt->execute();
-
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if($row) {
                 $this->user_id = $row['id_usuario'];
                 $this->email = $row['email'];

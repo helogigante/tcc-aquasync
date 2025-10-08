@@ -17,8 +17,8 @@
 
     switch($method) {
         case 'GET':
-            if(isset($_GET['id'])) {
-                $usuario->id = $_GET['id'];
+            if(isset($_GET['user_id'])) {
+                $usuario->id = $_GET['user_id'];
                 $usuario->read();
                 if($usuario->name != null) {
                     $usuario_arr = array (
@@ -26,7 +26,7 @@
                         "nome"->$usuario->$name,
                         "email"->$usuario->$email,
                         "telefone"->$usuario->$phone,
-                        "senha"->$usuario->$password,
+                        "senha"->$usuario->$password
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

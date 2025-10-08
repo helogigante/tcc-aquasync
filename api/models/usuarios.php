@@ -24,7 +24,20 @@
             $stmt->bindParam(":name",$this->name);
             $stmt->bindParam(":phone",$this->phone);
             $stmt->bindParam(":password",$this->password);
-            return $stmt->execute();
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row) {
+                $this->user_id = $row['id_usuario'];
+                $this->email = $row['email'];
+                $this->name = $row['nome'];
+                $this->phone = $row['telefone'];
+                $this->password = $row['senha'];
+                return true;
+            } else {
+                return false;
+            }
         }
         function update(){
             $query ="update $this->table_name set email = ':email', nome = ':name', telefone = ':phone', senha = ':password' where id_usuario = :user_id";

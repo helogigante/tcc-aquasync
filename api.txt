@@ -60,11 +60,11 @@ RELATÓRIO DIA || Leitura.readDay()
         ]
     "hourly_consumption": [
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00,
         }
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00
     }
   ]
@@ -90,11 +90,11 @@ RELALTÓRIO MÊS || Leitura.readMonth()
     ]
     "daily_consumption": [
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00,
         }
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00
         }
     ]
@@ -118,17 +118,24 @@ RELATÓRIO ANO || Leitura.readYear()
             "value": 0.00,
         }
     ]
-    "daily_consumption": [
+    "monthly_consumption": [
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00,
         }
         {
-            "label": 0.00,
+            "label": "00:00",
             "value": 0.00
         }
     ]
 }
+
+Formatações:
+"estimated_cost": R$00,00
+"highest_consumption", "lowest_consumption", "lowest_consumption": 0,00 L
+"hourly_consumption": 0,00: L/h
+"daily_consumption": 0,00 L/dia
+"monthly_consumption": 0,00 L/mês
 
 USUARIO
 

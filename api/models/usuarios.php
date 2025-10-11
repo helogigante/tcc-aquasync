@@ -19,11 +19,11 @@
             (:user_id, ':email', ':name', ':phone', ':password')";
             $stmt = $this->conn->prepare($query);
             //$this->senha = password_hash($this->senha, PASSWORD_BCRYPT);
-            $stmt->bindParam(":user_id",$this->user_id);
-            $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":name",$this->name);
-            $stmt->bindParam(":phone",$this->phone);
-            $stmt->bindParam(":password",$this->password);
+            $stmt->bindParam(":user_id", $this->user_id);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":name", $this->name);
+            $stmt->bindParam(":phone", $this->phone);
+            $stmt->bindParam(":password", $this->password);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if($row) {

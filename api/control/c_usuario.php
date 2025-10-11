@@ -20,13 +20,12 @@
             if(isset($_GET['user_id'])) {
                 $usuario->id = $_GET['user_id'];
                 $usuario->read();
-                if($usuario->name != null) {
+                if($user_id != null) {
                     $usuario_arr = array (
                         "id"->$usuario->$id,
-                        "nome"->$usuario->$name,
+                        "name"->$usuario->$name,
                         "email"->$usuario->$email,
-                        "telefone"->$usuario->$phone,
-                        "senha"->$usuario->$password
+                        "phone"->$usuario->$phone
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

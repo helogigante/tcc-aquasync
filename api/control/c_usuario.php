@@ -19,8 +19,7 @@
         case 'GET':
             if(isset($_GET['user_id'])) {
                 $usuario->id = $_GET['user_id'];
-                $usuario->read();
-                if($user_id != null) {
+                if($usuario->read()) {
                     $usuario_arr = array (
                         "id"->$usuario->$id,
                         "name"->$usuario->$name,

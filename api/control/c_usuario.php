@@ -16,10 +16,16 @@
 
     switch($method) {
         case 'GET':
+<<<<<<< HEAD
             if(isset($_GET['id'])) {
                 $usuario->id = $_GET['id'];
                 $usuario->read();
                 if($usuario->name != null) {
+=======
+            if(isset($_GET['user_id'])) {
+                $usuario->id = $_GET['user_id'];
+                if($usuario->read()) {
+>>>>>>> 43e0724be1c9d2330e19ff876cfc42e7b9badf7a
                     $usuario_arr = array (
                         "id"->$usuario->$id,
                         "nome"->$usuario->$name,

@@ -12,28 +12,48 @@
             $query = "SELECT id_usuario, email, nome, telefone from $this->table_name where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
-            return $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($row) {
+                $this->user_id = $row['id_usuario'];
+                $this->email = $row['email'];
+                $this->name = $row['nome'];
+                $this->phone = $row['telefone'];
+                return true;
+            } else {
+                return false;
+            }
         }
         function create(){
             $query = "insert into $this->table_nome (id_usuario, email, nome, telefone, senha) values
             (:user_id, ':email', ':name', ':phone', ':password')";
             $stmt = $this->conn->prepare($query);
             //$this->senha = password_hash($this->senha, PASSWORD_BCRYPT);
-            $stmt->bindParam(":user_id",$this->user_id);
-            $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":nome",$this->nome);
-            $stmt->bindParam(":telefone",$this->telefone);
-            $stmt->bindParam(":senha",$this->senha);
-            return $stmt->execute();
+            $stmt->bindParam(":user_id", $this->user_id);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":name", $this->name);
+            $stmt->bindParam(":phone", $this->phone);
+            $stmt->bindParam(":password", $this->password);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($row) {
+                $this->user_id = $row['id_usuario'];
+                $this->email = $row['email'];
+                $this->name = $row['nome'];
+                $this->phone = $row['telefone'];
+                $this->password = $row['senha'];
+                return true;
+            } else {
+                return false;
+            }
         }
         function update(){
             $query ="update $this->table_name set email = ':email', nome = ':name', telefone = ':phone', senha = ':password' where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":nome",$this->nome);
-            $stmt->bindParam(":telefone",$this->telefone);
-            $stmt->bindParam(":senha",$this->senha);
+            $stmt->bindParam(":name",$this->name);
+            $stmt->bindParam(":phone",$this->phone);
+            $stmt->bindParam(":password",$this->password);
             return $stmt->execute();
         }
         function delete(){

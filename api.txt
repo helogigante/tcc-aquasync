@@ -9,12 +9,12 @@ RELATÓRIOS
 
 URLS DE REQUISIÇÃO
 
-exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura?period={currentView}&day={selectedDay}&month={selectedMonth}year={selectedYear}
+exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura?sensor={id_sensor}&period={currentView}&day={selectedDay}&month={selectedMonth}year={selectedYear}
 //o currentView fala se é pra retornar os dados de um dia, mês, ou ano.
 //ele retorna 'year', 'month', ou 'day'.
 //para o dia atual vou fazer uma função que confere a data
 
-JSONs
+(resposta)
 
 RELATÓRIO DIA ATUAL || readActualDay()
 {
@@ -143,12 +143,30 @@ URLS DE REQUISIÇÃO
 
 exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_usuario.php?user_id={user_id}
 
-JSON
-
-{
+GET (resposta)
+[{
     "id": 0,
     "name": "Jhon Doe",
-    "email": "JhonDoe@example.com",
+    "email": "jhon.doe@example.com",
     "phone": "11111111111"
+}]
+
+POST (envio)
+{
+    "id": 0,
+    "name":"Jhon Doe",
+    "email": "jhon.doe@example.com",
+    "phone": "11111111111",
+    "password": 1@a!lo290"
 }
 
+UPDATE (envio)
+{
+    "id": 0,
+    "name":"Jhon Doe",
+    "email": "jhon.doe@example.com",
+    "phone": "11111111111",
+}
+DELETE (envio)
+
+SENSOR 

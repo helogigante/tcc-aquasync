@@ -1,0 +1,154 @@
+fazer um loop para carregar os dados dos gráficos
+a parte do valor vai ser um select do banco
+salva o id do usuário com cookie https://www.w3schools.com/js/js_cookies.asp
+
+Endereço fixo
+url = http://localhost/tcc-aquasync/api/control/
+
+RELATÓRIOS
+
+URLS DE REQUISIÇÃO
+
+exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura?period={currentView}&day={selectedDay}&month={selectedMonth}year={selectedYear}
+//o currentView fala se é pra retornar os dados de um dia, mês, ou ano.
+//ele retorna 'year', 'month', ou 'day'.
+//para o dia atual vou fazer uma função que confere a data
+
+JSONs
+
+RELATÓRIO DIA ATUAL || readActualDay()
+{
+    "average_consumption": 0.00,
+    "total_consumption": 0.00,
+    "last_record:" [
+        {
+            "time": "HH:MM:SS",
+            "value": 0.00,
+        }
+    ]
+    "highest_consumption": [
+        {
+            "time": "HH:MM:SS",
+            "value": 0.00,
+        }
+    ]
+    "lowest_consumption": [
+        {
+            "time": "HH:MM:SS",
+            "value": 0.00,
+        }
+    ]
+}
+
+RELATÓRIO DIA || Leitura.readDay()
+
+{
+    "total_consumption": 0.00,
+    "estimated_cost": 0.00,
+    "average_consumption": 0.00,
+    "highest_consumption": [
+            {
+                "time": "HH:MM:SS",
+                "value": 0.00,
+            }
+        ]
+        "lowest_consumption": [
+            {
+                "time": "HH:MM:SS",
+                "value": 0.00,
+            }
+        ]
+    "hourly_consumption": [
+        {
+            "label": "00:00",
+            "value": 0.00,
+        }
+        {
+            "label": "00:00",
+            "value": 0.00
+    }
+  ]
+}
+
+RELALTÓRIO MÊS || Leitura.readMonth()
+
+{
+    "total_consumption": 0.00,
+    "estimated_cost": 00.00,
+    "average_consumption": 0.00,
+    "highest_consumption": [
+        {
+            "time": "dd/mm/yy",
+            "value": 0.00,
+        }
+    ]
+    "lowest_consumption": [
+        {
+            "time": "dd/mm/yy",
+            "value": 0.00,
+        }
+    ]
+    "daily_consumption": [
+        {
+            "label": "00:00",
+            "value": 0.00,
+        }
+        {
+            "label": "00:00",
+            "value": 0.00
+        }
+    ]
+} 
+
+RELATÓRIO ANO || Leitura.readYear()
+
+{
+    "total_consumption": 0.00,
+    "estimated_cost": 00.00,
+    "average_consumption": 0.00,
+    "highest_consumption": [
+        {
+            "time": "dd/mm/yy",
+            "value": 0.00,
+        }
+    ]
+    "lowest_consumption": [
+        {
+            "time": "dd/mm/yy",
+            "value": 0.00,
+        }
+    ]
+    "monthly_consumption": [
+        {
+            "label": "00:00",
+            "value": 0.00,
+        }
+        {
+            "label": "00:00",
+            "value": 0.00
+        }
+    ]
+}
+
+Formatações:
+"estimated_cost": R$00,00
+"highest_consumption", "lowest_consumption", "lowest_consumption": 0,00 L
+"hourly_consumption": 0,00: L/h
+"daily_consumption": 0,00 L/dia
+"monthly_consumption": 0,00 L/mês
+
+USUARIO
+
+URLS DE REQUISIÇÃO
+
+exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_usuario.php?user_id={user_id}
+
+JSON
+
+{
+    "id": 0,
+    "name": "Jhon Doe",
+    "email": "JhonDoe@example.com",
+    "phone": "11111111111"
+}
+

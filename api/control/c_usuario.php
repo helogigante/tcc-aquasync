@@ -16,15 +16,16 @@
 
     switch($method) {
         case 'GET':
-            if(isset($_GET['user_id'])) {
-                $usuario->user_id = $_GET['user_id'];
+            if(isset($_GET['id'])) {
+                $usuario->id = $_GET['id'];
                 $usuario->read();
-                if($usuario->user_id != null) {
+                if($usuario->name != null) {
                     $usuario_arr = array (
-                        "id"=>$usuario->$user_id,
-                        "nome"=>$usuario->$name,
-                        "email"=>$usuario->$email,
-                        "telefone"=>$usuario->$phone,
+                        "id"->$usuario->$id,
+                        "nome"->$usuario->$name,
+                        "email"->$usuario->$email,
+                        "telefone"->$usuario->$phone,
+                        "senha"->$usuario->$password,
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

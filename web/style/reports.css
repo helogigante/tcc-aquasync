@@ -11,7 +11,7 @@ body {
   background: #f5f3f3;
   padding: 2rem;
   padding-top: 70px;
-  padding-bottom: 4rem; 
+  padding-bottom: 5rem; /* Espaço para a navegação inferior */
   color: #333;
 }
 
@@ -73,7 +73,7 @@ body {
 
 .data-container {
   flex: 1;
-  display: flex;
+  display:极 flex;
   flex-direction: column;
   gap: 1.5rem;
 }
@@ -147,7 +147,7 @@ body {
 }
 
 .years {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1极fr);
 }
 
 .day, .month, .year {
@@ -437,7 +437,7 @@ body {
   }
 }
 
-/* Navegação inferior (footer) */
+/* Navegação inferior (footer) - ESTILO UNIFICADO */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -446,7 +446,9 @@ body {
   width: 100%;
   background-color: #192338;
   border-top: 1px solid #374151;
-  padding: 1rem 0;
+  padding: 0.8rem 0;
+  height: 70px; /* Altura fixa para consistência */
+  box-sizing: border-box;
 }
 
 .bottom-nav-container {
@@ -454,7 +456,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   max-width: 28rem;
   margin: 0 auto;
-  font-weight: 500;
+  height: 100%;
 }
 
 .bottom-nav-btn {
@@ -462,72 +464,47 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.8rem;
-  font-size: 0.95rem;
+  padding: 0.5rem;
   color: #9ca3af;
   background-color: transparent;
   border: none;
   cursor: pointer;
   transition: all 0.3s;
   text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
 }
 
 .bottom-nav-btn.active {
   color: #3b82f6;
   background-color: rgba(59, 130, 246, 0.1);
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .bottom-nav-btn:hover {
   color: #3b82f6;
-  text-decoration: none;
 }
 
-/* Estilos dos ícones da navbar inferior */
 .bottom-nav-btn svg {
-  width: 26px;
-  height: 26px;
-  margin-bottom: 0.4rem;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.3rem;
 }
 
-/* Estilos do texto da navbar inferior */
 .bottom-nav-btn span {
-  font-size: 1rem !important;
-  margin-top: -2px;
+  font-size: 0.85rem;
   font-weight: 500;
 }
 
-/* Media Queries para responsividade */
-
-/* Tablets e telas menores */
+/* Media Queries para responsividade da navbar inferior */
 @media (max-width: 768px) {
   .bottom-nav {
-    padding: 0.8rem 0;
+    padding: 0.7rem 0;
+    height: 65px;
   }
   
   .bottom-nav-btn {
-    padding: 0.7rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.9rem !important;
-  }
-}
-
-/* Dispositivos móveis pequenos */
-@media (max-width: 480px) {
-  .bottom-nav-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.6rem;
+    padding: 0.4rem;
   }
   
   .bottom-nav-btn svg {
@@ -536,6 +513,40 @@ body {
   }
   
   .bottom-nav-btn span {
-    font-size: 0.85rem !important;
+    font-size: 0.8rem;
+  }
+  
+  body {
+    padding-bottom: 65px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-nav {
+    padding: 0.6rem 0;
+    height: 60px;
+  }
+  
+  .bottom-nav-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .bottom-nav-btn {
+    padding: 0.3rem;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0.2rem;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.75rem;
+  }
+  
+  body {
+    padding-bottom: 60px !important;
   }
 }

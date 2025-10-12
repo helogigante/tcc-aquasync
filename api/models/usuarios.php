@@ -21,19 +21,19 @@
             //$this->senha = password_hash($this->senha, PASSWORD_BCRYPT);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":name",$this->name);
-            $stmt->bindParam(":phone",$this->phone);
-            $stmt->bindParam(":passowrd",$this->password);
+            $stmt->bindParam(":nome",$this->nome);
+            $stmt->bindParam(":telefone",$this->telefone);
+            $stmt->bindParam(":senha",$this->senha);
             return $stmt->execute();
         }
         function update(){
-            $query ="update $this->table_name set email = ':email', nome = ':nome', telefone = ':telefone', senha = ':senha' where id_usuario = :user_id";
+            $query ="update $this->table_name set email = ':email', nome = ':name', telefone = ':phone', senha = ':password' where id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":nome",$this->name);
-            $stmt->bindParam(":telefone",$this->phone);
-            $stmt->bindParam(":senha",$this->password);
+            $stmt->bindParam(":nome",$this->nome);
+            $stmt->bindParam(":telefone",$this->telefone);
+            $stmt->bindParam(":senha",$this->senha);
             return $stmt->execute();
         }
         function delete(){

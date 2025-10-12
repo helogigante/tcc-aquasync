@@ -1,0 +1,236 @@
+
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.form');
+  const btnEntrar = document.querySelector('.sign');
+  
+
+  const username = document.getElementById('username');
+  const email = document.getElementById('email');
+  const phone = document.getElementById('phone');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
+
+
+  function showError(input, message) {
+    const existingError = input.parentNode.querySelector('.error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    // Adiciona borda vermelha ao input
+    input.style.borderColor = '#e74c3c';
+    
+    // Cria e exibe a mensagem de erro
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.style.color = '#e74c3c';
+    errorElement.style.fontSize = '0.85rem';
+    errorElement.style.marginTop = '0.3rem';
+    errorElement.textContent = message;
+    
+    input.parentNode.appendChild(errorElement);
+  }
+
+  // Função para remover mensagem de erro
+  function removeError(input) {
+    const existingError = input.parentNode.querySelector('.error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+    input.style.borderColor = '#DAE1F1';
+  }
+
+  // Funções de validação individuais
+  function validateUsername() {
+    const value = username.value.trim();
+    
+    if (value === '') {
+      showError(username, 'Insira seu nome de usuário');
+      return false;
+    }
+    
+    if (value.length < 3) {
+      showError(username, 'Usuário deve ter pelo menos 3 caracteres');
+      return false;
+    }
+    
+    if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+      showError(username, 'Usuário só pode conter letras, números e underscore');
+      return false;
+    }
+    
+    removeError(username);
+    return true;
+  }
+
+  function validateEmail() {
+    const value = email.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (value === '') {
+      showError(email, 'Insira seu e-mail');
+      return false;
+    }
+    
+    if (!emailRegex.test(value)) {
+      showError(email, 'Formato de e-mail inválido');
+      return false;
+    }
+    
+    removeError(email);
+    return true;
+  }
+
+  function validatePhone() {
+    const value = phone.value.trim();
+    const phoneRegex = /^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/;
+    
+    if (value === '') {
+      showError(phone, 'Insira seu telefone');
+      return false;
+    }
+    
+    // Remove caracteres não numéricos para validação
+    const cleanPhone = value.replace(/\D/g, '');
+    
+    if (cleanPhone.length < 10 || cleanPhone.length > 11) {
+      showError(phone, 'Telefone deve ter 10 ou 11 dígitos');
+      return false;
+    }
+    
+    if (!phoneRegex.test(value)) {
+      showError(phone, 'Formato de telefone inválido. Use: (XX) XXXXX-XXXX');
+      return false;
+    }
+    
+    removeError(phone);
+    return true;
+  }
+
+  function validatePassword() {
+    const value = password.value;
+    
+    if (value === '') {
+      showError(password, 'Insira sua senha');
+      return false;
+    }
+    
+    if (value.length < 8) {
+      showError(password, 'Senha deve ter pelo menos 8 caracteres');
+      return false;
+    }
+    
+    if (!/(?=.*[a-z])/.test(value)) {
+      showError(password, 'Senha deve conter pelo menos uma letra minúscula');
+      return false;
+    }
+    
+    if (!/(?=.*[A-Z])/.test(value)) {
+      showError(password, 'Senha deve conter pelo menos uma letra maiúscula');
+      return false;
+    }
+    
+    if (!/(?=.*\d)/.test(value)) {
+      showError(password, 'Senha deve conter pelo menos um número');
+      return false;
+    }
+    
+    if (!/(?=.*[@$!%*?&])/.test(value)) {
+      showError(password, 'Senha deve conter pelo menos um caractere especial (@$!%*?&)');
+      return false;
+    }
+    
+    removeError(password);
+    return true;
+  }
+
+  function validateConfirmPassword() {
+    const value = confirmPassword.value;
+    const passwordValue = password.value;
+    
+    if (value === '') {
+      showError(confirmPassword, 'Confirme sua senha');
+      return false;
+    }
+    
+    if (value !== passwordValue) {
+      showError(confirmPassword, 'As senhas não coincidem');
+      return false;
+    }
+    
+    removeError(confirmPassword);
+    return true;
+  }
+
+  // Event listeners para validação em tempo real
+  username.addEventListener('blur', validateUsername);
+  email.addEventListener('blur', validateEmail);
+  phone.addEventListener('blur', validatePhone);
+  password.addEventListener('blur', validatePassword);
+  confirmPassword.addEventListener('blur', validateConfirmPassword);
+
+  // Validação do formulário completo
+  function validateForm() {
+    const isUsernameValid = validateUsername();
+    const isEmailValid = validateEmail();
+    const isPhoneValid = validatePhone();
+    const isPasswordValid = validatePassword();
+    const isConfirmPasswordValid = validateConfirmPassword();
+    
+    return isUsernameValid && isEmailValid && isPhoneValid && 
+           isPasswordValid && isConfirmPasswordValid;
+  }
+
+  // Substituir o evento de clique original
+  btnEntrar.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      // Se todos os campos são válidos, mostrar mensagem de sucesso
+      alert('Cadastro realizado com sucesso! Redirecionando para login...');
+      
+      // Aqui você pode adicionar o código para enviar os dados para o servidor
+      // Antes de redirecionar
+      
+      // Redirecionar para a página de login após 1 segundo
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    } else {
+      // Rolar até o primeiro erro
+      const firstError = document.querySelector('.error-message');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  });
+
+  // Validação em tempo real para alguns campos
+  phone.addEventListener('input', function(e) {
+    // Formatação automática do telefone
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length <= 11) {
+      if (value.length === 11) {
+        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      } else if (value.length === 10) {
+        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+      }
+      e.target.value = value;
+    }
+  });
+
+  // Feedback visual para campos válidos
+  function addValidStyle(input) {
+    input.addEventListener('input', function() {
+      if (this.value.trim() !== '') {
+        this.style.borderColor = '#2ecc71';
+      } else {
+        this.style.borderColor = '#DAE1F1';
+      }
+    });
+  }
+
+  // Aplicar feedback visual a todos os campos
+  [username, email, phone, password, confirmPassword].forEach(addValidStyle);
+});

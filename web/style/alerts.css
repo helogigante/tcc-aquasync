@@ -1,4 +1,4 @@
-/* Reset básico para remover margens e preenchimentos padrão */
+
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@ body {
   color: #333;
   line-height: 1.6;
   min-height: 100vh;
-  padding-bottom: 70px !important; /* Altura fixa para a navbar inferior */
+  padding-bottom: 90px !important; 
 }
 
 /* Estilos do cabeçalho da página de notificações */
@@ -64,7 +64,6 @@ body {
   margin: 0 10px;
 }
 
-/* Espaçador para alinhamento do título ao centro */
 .header-spacer {
   width: 40px; 
 }
@@ -74,7 +73,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
-  margin-bottom: 70px; /* Altura fixa para a navbar inferior */
+  margin-bottom: 90px; 
 }
 
 /* Estilos dos cartões de notificação */
@@ -143,7 +142,7 @@ body {
 /* Dispositivos móveis */
 @media (max-width: 480px) {
   .notificacao-content h3 {
-    font-size: 1极rem;
+    font-size: 1rem;
   }
   
   .notificacao-content p {
@@ -161,7 +160,6 @@ body {
   }
 }
 
-/* Navegação inferior (footer) - ESTILO UNIFICADO */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -170,8 +168,8 @@ body {
   width: 100%;
   background-color: #192338;
   border-top: 1px solid #374151;
-  padding: 0.8rem 0;
-  height: 70px; /* Altura fixa para consistência */
+  padding: 1.2rem 0;
+  height: 90px;
   box-sizing: border-box;
 }
 
@@ -188,7 +186,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.7rem;
   color: #9ca3af;
   background-color: transparent;
   border: none;
@@ -210,21 +208,56 @@ body {
 }
 
 .bottom-nav-btn svg {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 0.3rem;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 0.5rem;
 }
 
 .bottom-nav-btn span {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 500;
 }
 
-/* Media Queries para responsividade da navbar inferior */
-@media (max-width: 768px) {
+
+/* Tablets */
+@media (max-width: 1024px) {
   .bottom-nav {
-    padding: 0.7rem 0;
-    height: 65px;
+    padding: 1rem 0;
+    height: 85px;
+  }
+  
+  .bottom-nav-btn {
+    padding: 0.6rem;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.9rem;
+  }
+  
+  body {
+    padding-bottom: 85px !important;
+  }
+  
+  .notificacoes-container {
+    margin-bottom: 85px;
+  }
+}
+
+/* Mobile - Telas pequenas */
+@media (max-width: 480px) {
+  .bottom-nav {
+    padding: 0.8rem 0;
+    height: 75px;
+  }
+  
+  .bottom-nav-container {
+    max-width: 100%;
+    padding: 0 0.3rem;
   }
   
   .bottom-nav-btn {
@@ -234,36 +267,7 @@ body {
   .bottom-nav-btn svg {
     width: 22px;
     height: 22px;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.8rem;
-  }
-  
-  body {
-    padding-bottom: 65px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .bottom-nav {
-    padding: 0.6rem 0;
-    height: 60px;
-  }
-  
-  .bottom-nav-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.3rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.3rem;
   }
   
   .bottom-nav-btn span {
@@ -271,6 +275,65 @@ body {
   }
   
   body {
-    padding-bottom: 60px !important;
+    padding-bottom: 75px !important;
+  }
+  
+  .notificacoes-container {
+    margin-bottom: 75px;
+  }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 360px) {
+  .bottom-nav {
+    padding: 0.7rem 0;
+    height: 70px;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.7rem;
+  }
+  
+  body {
+    padding-bottom: 70px !important;
+  }
+  
+  .notificacoes-container {
+    margin-bottom: 70px;
+  }
+}
+
+/* Ajustes para telas muito altas em mobile */
+@media (max-height: 600px) and (max-width: 768px) {
+  .bottom-nav {
+    height: 65px;
+    padding: 0.6rem 0;
+  }
+  
+  .bottom-nav-btn {
+    padding: 0.3rem;
+  }
+  
+  .bottom-nav-btn svg {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 0.2rem;
+  }
+  
+  .bottom-nav-btn span {
+    font-size: 0.7rem;
+  }
+  
+  body {
+    padding-bottom: 65px !important;
+  }
+  
+  .notificacoes-container {
+    margin-bottom: 65px;
   }
 }

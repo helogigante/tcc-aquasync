@@ -1,19 +1,18 @@
-/* Reset e configurações básicas */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verd极ana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Estilos gerais do corpo da página */
 body {
     background-color: #f8f9fa;
     color: #192338;
     line-height: 1.6;
     overflow: hidden;
     min-height: 100vh;
-    padding-bottom: 70px !important; /* Altura fixa para a navbar inferior */
+    padding-bottom: 90px !important; 
 }
 
 /* Container principal */
@@ -27,13 +26,13 @@ body {
 
 /* Cabeçalho do perfil com gradiente e bolhas animadas */
 .profile-header {
-    padding: 30px 20px 40px;
+    padding: 30px 20px 50px; 
     text-align: center;
     background: linear-gradient(135deg, #1E2E4F 0%, #31487A 100%);
     color: white;
     position: relative;
     overflow: hidden;
-    min-height: 35vh;
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -169,28 +168,34 @@ body {
 
 /* Container da logo */
 .logo-container {
-    margin: 10px auto 15px;
+    margin: 15px auto 20px; 
     position: relative;
     z-index: 2;
+    width: 160px; 
+    height: 160px; 
 }
 
-/* Estilo da logo */
+/* Estilo da logo  */
 .logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 18px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px; 
+    object-fit: contain; 
+   
+    padding: 8px;
+   
 }
 
 /* Container das informações do usuário */
 .user-info {
     position: relative;
     z-index: 2;
+    margin-top: 10px;
 }
 
 .user-info h1 {
-    font-size: 28px;
-    margin-bottom: 5px;
+    font-size: 32px;
+    margin-bottom: 8px;
     font-weight: 600;
 }
 
@@ -204,7 +209,7 @@ body {
     flex: 1;
     background-color: white;
     padding: 20px;
-    display:极 flex;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
@@ -396,13 +401,13 @@ body {
     color: #6c757d;
     font-size: 18px;
     cursor: pointer;
-    width: 32极px;
+    width: 32px;
     height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 极0.3s;
+    transition: all 0.3s;
 }
 
 .close-btn:hover {
@@ -437,7 +442,7 @@ body {
     transition: all 0.3s;
 }
 
-.input-group极 input:focus {
+.input-group input:focus {
     outline: none;
     border-color: #8FB3E2;
     box-shadow: 0 0 0 3px rgba(143, 179, 226, 0.2);
@@ -490,7 +495,7 @@ body {
     border: none;
 }
 
-.btn极-save:hover {
+.btn-save:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(49, 72, 122, 0.3);
 }
@@ -559,11 +564,70 @@ body {
     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }
 
+/* ========== NAVBAR INFERIOR UNIFICADA ========== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    width: 100%;
+    background-color: #192338;
+    border-top: 1px solid #374151;
+    padding: 1.2rem 0;
+    height: 90px;
+    box-sizing: border-box;
+}
+
+.bottom-nav-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 28rem;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.bottom-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem;
+    color: #9ca3af;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+}
+
+.bottom-nav-btn.active {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+}
+
+.bottom-nav-btn:hover {
+    color: #3b82f6;
+}
+
+.bottom-nav-btn svg {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 0.5rem;
+}
+
+.bottom-nav-btn span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
 /* Media queries para responsividade */
 @media (max-width: 768px) {
     .profile-header {
-        padding: 25px 20px 35px;
-        min-height: 32vh;
+        padding: 25px 20px 40px; /* Aumentado padding bottom */
+        min-height: 35vh; /* Aumentado min-height */
     }
     
     .back-arrow {
@@ -574,13 +638,20 @@ body {
         height: 35px;
     }
     
+    /* Logo container para tablet - AUMENTADO SIGNIFICATIVAMENTE */
+    .logo-container {
+        width: 140px; /* Aumentado significativamente de 100px para 140px */
+        height: 140px; /* Aumentado significativamente de 100px para 140px */
+        margin: 12px auto 16px;
+    }
+    
     .logo {
-        width: 80px;
-        height: 80px;
+        padding: 6px; /* Aumentado padding */
+        border-radius: 18px; /* Bordas consistentes */
     }
     
     .user-info h1 {
-        font-size: 24px;
+        font-size: 28px; /* Aumentado de 24px para 28px */
     }
     
     .user-info p {
@@ -613,118 +684,464 @@ body {
     .detail-item {
         margin-bottom: 12px;
     }
-}
 
-/* Navegação inferior (footer) - ESTILO UNIFICADO */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 50;
-  width: 100%;
-  background-color: #192338;
-  border-top: 1px solid #374151;
-  padding: 0.8rem 0;
-  height: 70px; /* Altura fixa para consistência */
-  box-sizing: border-box;
-}
-
-.bottom-nav-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 28rem;
-  margin: 0 auto;
-  height: 100%;
-}
-
-.bottom-nav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  color: #9ca3af;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  height: 100%;
-}
-
-.bottom-nav-btn.active {
-  color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.1);
-  border-radius: 8px;
-}
-
-.bottom-nav-btn:hover {
-  color: #3b82f6;
-}
-
-.bottom-nav-btn svg {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 0.3rem;
-}
-
-.bottom-nav-btn span {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-/* Media Queries para responsividade da navbar inferior */
-@media (max-width: 768px) {
-  .bottom-nav {
-    padding: 0.7rem 0;
-    height: 65px;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.4rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.8rem;
-  }
-  
-  body {
-    padding-bottom: 65px !important;
-  }
+    /* Navbar inferior para tablet */
+    .bottom-nav {
+        padding: 1rem 0;
+        height: 85px;
+    }
+    
+    .bottom-nav-btn {
+        padding: 0.6rem;
+    }
+    
+    .bottom-nav-btn svg {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .bottom-nav-btn span {
+        font-size: 0.9rem;
+    }
+    
+    body {
+        padding-bottom: 85px !important;
+    }
 }
 
 @media (max-width: 480px) {
-  .bottom-nav {
-    padding: 0.6rem 0;
-    height: 60px;
-  }
-  
-  .bottom-nav-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .bottom-nav-btn {
-    padding: 0.3rem;
-  }
-  
-  .bottom-nav-btn svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 0.2rem;
-  }
-  
-  .bottom-nav-btn span {
-    font-size: 0.75rem;
-  }
-  
-  body {
-    padding-bottom: 60px !important;
-  }
+    /* Logo container para mobile - AUMENTADO SIGNIFICATIVAMENTE */
+    .logo-container {
+        width: 120px; /* Aumentado significativamente */
+        height: 120px; /* Aumentado significativamente */
+        margin: 10px auto 14px;
+    }
+    
+    .logo {
+        padding: 5px; /* Aumentado padding */
+        border-radius: 16px; /* Bordas consistentes */
+    }
+    
+    .user-info h1 {
+        font-size: 26px; /* Aumentado */
+    }
+
+    /* Navbar inferior para mobile */
+    .bottom-nav {
+        padding: 0.8rem 0;
+        height: 75px;
+    }
+    
+    .bottom-nav-container {
+        max-width: 100%;
+        padding: 0 0.3rem;
+    }
+    
+    .bottom-nav-btn {
+        padding: 0.4rem;
+    }
+    
+    .bottom-nav-btn svg {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 0.3rem;
+    }
+    
+    .bottom-nav-btn span {
+        font-size: 0.75rem;
+    }
+    
+    body {
+        padding-bottom: 75px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    /* Logo container para mobile muito pequeno - AUMENTADO SIGNIFICATIVAMENTE */
+    .logo-container {
+        width: 110px; /* Aumentado significativamente */
+        height: 110px; /* Aumentado significativamente */
+        margin: 8px auto 12px;
+    }
+
+    /* Navbar inferior para mobile muito pequeno */
+    .bottom-nav {
+        padding: 0.7rem 0;
+        height: 70px;
+    }
+    
+    .bottom-nav-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .bottom-nav-btn span {
+        font-size: 0.7rem;
+    }
+    
+    body {
+        padding-bottom: 70px !important;
+    }
+}
+
+/* Ajustes para telas muito altas em mobile */
+@media (max-height: 600px) and (max-width: 768px) {
+    .bottom-nav {
+        height: 65px;
+        padding: 0.6rem 0;
+    }
+    
+    .bottom-nav-btn {
+        padding: 0.3rem;
+    }
+    
+    .bottom-nav-btn svg {
+        width: 18px;
+        height: 18px;
+        margin-bottom: 0.2rem;
+    }
+    
+    .bottom-nav-btn span {
+        font-size: 0.7rem;
+    }
+    
+    body {
+        padding-bottom: 65px !important;
+    }
+}
+
+
+/* Estilos para campos com erro */
+.input-group input.field-error {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+/* Mensagens de erro para campos individuais */
+.field-error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Destaque para campos obrigatórios nos labels */
+.input-group label::after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Estilo para o botão salvar quando o formulário é inválido */
+.btn-save:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-save:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    min-width: 300px;
+    max-width: 400px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(25, 35, 56, 0.3);
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.custom-alert.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.custom-alert.error {
+    border-left: 4px solid #dc3545;
+}
+
+.custom-alert.success {
+    border-left: 4px solid #28a745;
+}
+
+.alert-content {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    position: relative;
+}
+
+.alert-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.custom-alert.error .alert-icon {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.custom-alert.success .alert-icon {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.alert-message {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: #31487A;
+    line-height: 1.4;
+}
+
+.alert-close {
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    margin-left: 10px;
+}
+
+.alert-close:hover {
+    background-color: #f8f9fa;
+    color: #31487A;
+}
+
+/* Responsividade para o popup */
+@media (max-width: 480px) {
+    .custom-alert {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+
+    .custom-alert.show {
+        transform: translateY(0);
+    }
+
+    .alert-content {
+        padding: 14px 16px;
+    }
+
+    .alert-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin-right: 12px;
+    }
+
+    .alert-message {
+        font-size: 13px;
+    }
+}
+
+
+.custom-confirm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.custom-confirm.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirm-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(25, 35, 56, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.confirm-modal {
+    background-color: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(25, 35, 56, 0.2);
+    overflow: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s;
+}
+
+.custom-confirm.show .confirm-modal {
+    transform: translateY(0) scale(1);
+}
+
+.confirm-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #567cce 0%, #567cce 100%);
+}
+
+.confirm-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #9cbeeb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: #043185;
+    font-size: 18px;
+}
+
+.confirm-title {
+    flex: 1;
+    font-size: 18px;
+    color: #043185;
+    font-weight: 600;
+    margin: 0;
+}
+
+.confirm-close {
+    background: transparent;
+    border: none;
+    color: #043185;
+    font-size: 16px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.confirm-close:hover {
+    background-color: rgba(6, 4, 133, 0.1);
+}
+
+.confirm-content {
+    padding: 20px;
+}
+
+.confirm-message {
+    color: #31487A;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+}
+
+.confirm-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.confirm-footer .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.confirm-no {
+    background-color: transparent;
+    color: #6c757d;
+    border: 1px solid #D9E1F1 !important;
+}
+
+.confirm-no:hover {
+    background-color: #f8f9fa;
+}
+
+.confirm-yes {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.confirm-yes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Responsividade para o popup de confirmação */
+@media (max-width: 480px) {
+    .confirm-overlay {
+        padding: 15px;
+    }
+    
+    .confirm-modal {
+        max-width: 100%;
+    }
+    
+    .confirm-header {
+        padding: 16px;
+    }
+    
+    .confirm-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+    
+    .confirm-title {
+        font-size: 16px;
+    }
+    
+    .confirm-content {
+        padding: 16px;
+    }
+    
+    .confirm-message {
+        font-size: 14px;
+    }
+    
+    .confirm-footer {
+        padding: 16px;
+        flex-direction: column;
+    }
+    
+    .confirm-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

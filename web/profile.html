@@ -11,7 +11,6 @@
 <body>
     <!-- Container principal da página -->
     <div class="container">
-        <!-- Cabeçalho do perfil com elementos decorativos -->
         <div class="profile-header">
             <!-- Bolhas animadas para efeito visual -->
             <div class="bubble bubble--1"></div>
@@ -41,7 +40,6 @@
         
         <!-- Conteúdo principal do perfil -->
         <div class="profile-content">
-            <!-- Card com informações do usuário -->
             <div class="info-card">
                 <div class="card-header">
                     <h2>Informações</h2>
@@ -51,17 +49,14 @@
                     </button>
                 </div>
                 <div class="card-content">
-                    <!-- Item de detalhe: Telefone -->
                     <div class="detail-item">
                         <i class="fas fa-phone"></i>
                         <span class="detail-text" id="userPhone">+55 (11)  4002-8922</span>
                     </div>
-                    <!-- Item de detalhe: Email -->
                     <div class="detail-item">
                         <i class="fas fa-envelope"></i>
                         <span class="detail-text" id="userEmail">semvergonha@hotmail.com</span>
                     </div>
-                    <!-- Item de detalhe: ID do usuário -->
                     <div class="detail-item">
                         <i class="fas fa-id-card"></i>
                         <span class="detail-text">ID: #123456789</span>
@@ -71,11 +66,9 @@
             
             <!-- Botões de ação do perfil -->
             <div class="action-buttons">
-                <!-- Botão para adicionar sensor -->
                 <button class="btn btn-primary" id="addSensorBtn">
                     <i class="fas fa-plus btn-icon"></i> Adicionar Sensor
                 </button>
-                <!-- Botão para desconectar conta -->
                 <button class="btn btn-option" id="disconnectBtn">
                     <i class="fas fa-sign-out-alt btn-icon"></i> Desconectar Conta
                 </button>
@@ -83,88 +76,77 @@
         </div>
     </div>
 
-    <!-- Modal para editar informações do perfil -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Editar Informações</h3>
-                <!-- Botão para fechar o modal -->
-                <button class="close-btn" id="closeModal">
-                    <i class="fas fa-times"></i>
-                </button>
+   <!-- Modal para editar informações do perfil -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Editar Informações</h3>
+            <!-- Botão para fechar o modal -->
+            <button class="close-btn" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="input-group">
+                <label for="editName">Nome</label>
+                <input type="text" id="editName" placeholder="Digite seu nome" required>
             </div>
-            <div class="modal-content">
-                <!-- Campo para editar nome -->
-                <div class="input-group">
-                    <label for="editName">Nome</label>
-                    <input type="text" id="editName" placeholder="Sybau">
-                </div>
-                <!-- Campo para editar email -->
-                <div class="input-group">
-                    <label for="editEmail">Email</label>
-                    <input type="email" id="editEmail" placeholder="usuario@exemplo.com">
-                </div>
-                <!-- Campo para editar telefone -->
-                <div class="input-group">
-                    <label for="editPhone">Telefone</label>
-                    <input type="tel" id="editPhone" placeholder="+55 (11) 99999-9999">
-                </div>
+            <div class="input-group">
+                <label for="editEmail">Email</label>
+                <input type="email" id="editEmail" placeholder="usuario@exemplo.com" required>
             </div>
-            <div class="modal-footer">
-                <!-- Botão para cancelar edição -->
-                <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
-                <!-- Botão para salvar alterações -->
-                <button class="btn btn-save" id="saveEdit">Salvar</button>
+            <div class="input-group">
+                <label for="editPhone">Telefone</label>
+                <input type="tel" id="editPhone" placeholder="+55 (11) 99999-9999" required>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
+            <button class="btn btn-save" id="saveEdit">Salvar</button>
         </div>
     </div>
+</div>
 
-    <!-- Modal para adicionar novo sensor -->
-    <div class="modal-overlay" id="addSensorModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Adicionar Novo Sensor</h3>
-                <!-- Botão para fechar o modal -->
-                <button class="close-btn" id="closeAddSensorModal">
-                    <i class="fas fa-times"></i>
-                </button>
+   <!-- Modal para adicionar novo sensor -->
+<div class="modal-overlay" id="addSensorModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Adicionar Novo Sensor</h3>
+            <!-- Botão para fechar o modal -->
+            <button class="close-btn" id="closeAddSensorModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="input-group">
+                <label for="sensorCode">Código do Sensor</label>
+                <input type="text" id="sensorCode" placeholder="Digite o código do sensor">
+                <!-- Área para mensagens de validação -->
+                <div id="codeValidation" class="validation-message" style="display: none; margin-top: 5px; font-size: 14px;"></div>
             </div>
-            <div class="modal-content">
-                <!-- Campo para código do sensor -->
-                <div class="input-group">
-                    <label for="sensorCode">Código do Sensor</label>
-                    <input type="text" id="sensorCode" placeholder="Digite o código do sensor">
-                    <!-- Área para mensagens de validação -->
-                    <div id="codeValidation" class="validation-message" style="display: none; margin-top: 5px; font-size: 14px;"></div>
-                </div>
-                <!-- Campo para rede Wi-Fi (inicialmente desabilitado) -->
-                <div class="input-group">
-                    <label for="wifiNetwork" class="disabled-label">Rede Wi-Fi</label>
-                    <input type="text" id="wifiNetwork" placeholder="Nome da rede Wi-Fi" disabled>
-                </div>
-                <!-- Campo para senha do Wi-Fi (inicialmente desabilitado) -->
-                <div class="input-group">
-                    <label for="wifiPassword" class="disabled-label">Senha do Wi-Fi</label>
-                    <input type="password" id="wifiPassword" placeholder="Senha da rede Wi-Fi" disabled>
-                </div>
-                <!-- Campo para valor da tarifa (inicialmente desabilitado) -->
-                <div class="input-group">
-                    <label for="billValue" class="disabled-label">Tarifa da residência (R$/m³)</label>
-                    <input type="number" id="billValue" placeholder="R$0,00" step="0.01" min="0" disabled>
-                </div>
-                <!-- Campo para nome do sensor (inicialmente desabilitado) -->
-                <div class="input-group">
-                    <label for="sensorName" class="disabled-label">Nome do Sensor</label>
-                    <input type="text" id="sensorName" placeholder="Ex: Minha Casa, Chácara, Cozinha, etc." disabled>
-                </div>
+            <div class="input-group">
+                <label for="wifiNetwork">Rede Wi-Fi</label>
+                <input type="text" id="wifiNetwork" placeholder="Nome da rede Wi-Fi">
             </div>
-            <div class="modal-footer">
-                <!-- Botão para cancelar adição de sensor -->
-                <button class="btn btn-cancel" id="cancelAddSensor">Cancelar</button>
-                <!-- Botão para conectar sensor (inicialmente desabilitado) -->
-                <button class="btn btn-save" id="saveSensor" disabled>Conectar Sensor</button>
+            <div class="input-group">
+                <label for="wifiPassword">Senha do Wi-Fi</label>
+                <input type="password" id="wifiPassword" placeholder="Senha da rede Wi-Fi">
+            </div>
+            <div class="input-group">
+                <label for="billValue">Tarifa da residência (R$/m³)</label>
+                <input type="number" id="billValue" placeholder="R$0,00" step="0.01" min="0">
+            </div>
+            <div class="input-group">
+                <label for="sensorName">Nome do Sensor</label>
+                <input type="text" id="sensorName" placeholder="Ex: Minha Casa, Chácara, Cozinha, etc.">
             </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel" id="cancelAddSensor">Cancelar</button>
+            <button class="btn btn-save" id="saveSensor">Conectar Sensor</button>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Modal de confirmação para desconectar conta -->
@@ -186,9 +168,7 @@
                 <p class="disconnect-message">Tem certeza que deseja desconectar sua conta? Você será redirecionado para a página de login.</p>
             </div>
             <div class="modal-footer">
-                <!-- Botão para cancelar desconexão -->
                 <button class="btn btn-cancel" id="cancelDisconnect">Cancelar</button>
-                <!-- Botão para confirmar desconexão -->
                 <button class="btn btn-danger" id="confirmDisconnect">Desconectar</button>
             </div>
         </div>

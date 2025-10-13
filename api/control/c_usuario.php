@@ -3,7 +3,7 @@
     header("Content-Type: application/json");//tipo de dados da resposta
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     header("Access-Control-Max-Age: 6000"); 
-    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-Width;");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
     require_once '../config/database.php';
     require_once '../models/usuarios.php';
@@ -16,22 +16,15 @@
 
     switch($method) {
         case 'GET':
-<<<<<<< HEAD
-            if(isset($_GET['id'])) {
-                $usuario->id = $_GET['id'];
-                $usuario->read();
-                if($usuario->name != null) {
-=======
             if(isset($_GET['user_id'])) {
-                $usuario->id = $_GET['user_id'];
+                $usuario->user_id = $_GET['user_id'];
                 if($usuario->read()) {
->>>>>>> 43e0724be1c9d2330e19ff876cfc42e7b9badf7a
                     $usuario_arr = array (
-                        "id"->$usuario->$id,
-                        "nome"->$usuario->$name,
-                        "email"->$usuario->$email,
-                        "telefone"->$usuario->$phone,
-                        "senha"->$usuario->$password,
+                        "id"=>$usuario->user_id,
+                        "email"=>$usuario->email,
+                        "nome"=>$usuario->name,
+                        "telefone"=>$usuario->phone,
+                        "senha"=>$usuario->password,
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);
@@ -48,12 +41,37 @@
 
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
-            //falar que ta devolvendo json
-            $usuario->user_id = $data->user_id;
-            $usuario->name = $data->name;
-            $usuario->email = $data->email;
-            $usuario->phone = $data->phone;
-            $usuario->password = $data->password;      
+            if (!$data) {
+                http_response_code(400);
+                echo json_encode(array("message" => "Erro: dados não recebidos."));
+                exit;
+            }
+
+            // login
+            $loginInput = isset($data->login) ? trim($data->login) : '';
+            $passwordInput = isset($data->password) ? $data->password : '';
+            
+            if(isset($data->action) && $data->action === "login") {
+                if($usuario->login($data->login, $data->password)) {
+                    http_response_code(200);
+                    echo json_encode(array(
+                        "message" => "Login realizado com sucesso.",
+                        "user_id" => $usuario->user_id
+                    ));
+                } else {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Usuário (email) ou senha incorretos."));
+                }
+                exit;
+            }
+
+            // cadastro
+            // se $data->name existe e não é null, usa $data->name... senão, usa uma string vazia
+            $usuario->name = isset($data->name) ? $data->name : '';
+            $usuario->email = isset($data->email) ? $data->email : '';
+            $usuario->phone = isset($data->phone) ? $data->phone : '';
+            $usuario->password = isset($data->password) ? $data->password : '';
+
             if($usuario->create()) {
                 http_response_code(200);
                 echo json_encode(array("message"=>"Usuário cadastrado com sucesso."));
@@ -70,7 +88,6 @@
             $usuario->name = $data->name;
             $usuario->email = $data->email;
             $usuario->phone = $data->phone;
-            $usuario->password = $data->password;    
             if($usuario->update()) {
                 http_response_code(200);
                 echo json_encode(array("message"=>"Usuário atualizado com sucesso."));
@@ -83,7 +100,7 @@
 
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
-            $usuario->id = $data->id;
+            $usuario->id = $data->user_id;
             if($usuario->delete()) {
                 http_response_code(200);
                 echo json_encode(array("message"=>"Usuário excluído com sucesso.")); 

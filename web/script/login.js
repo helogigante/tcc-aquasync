@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const username = document.getElementById('username');
   const password = document.getElementById('password');
 
+  const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
   
   function showError(input, message) {
    
@@ -13,9 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
       existingError.remove();
     }
     
-  
     input.style.borderColor = '#e74c3c';
-    
    
     const errorElement = document.createElement('div');
     errorElement.className = 'error-message';
@@ -119,45 +118,36 @@ document.addEventListener('DOMContentLoaded', function() {
     return isUsernameValid && isPasswordValid;
   }
 
-  // Substituir o evento de clique original
   btnEntrar.addEventListener('click', function(e) {
     e.preventDefault();
     
-    if (validateForm()) {
-      // Se todos os campos são válidos, mostrar mensagem de sucesso
-      console.log('Login válido! Redirecionando...');
-      
-      // Simular autenticação (aqui vcs mudam dps)
-      const loginData = {
-        username: username.value.trim(),
+    if (!validateForm()) return;
+
+    const data = {
+        action: "login",
+        login: username.value.trim(),
         password: password.value
-      };
-      
-      
-      
-      // Feedback visual de carregamento
-      btnEntrar.textContent = 'Entrando...';
-      btnEntrar.disabled = true;
-      btnEntrar.style.opacity = '0.7';
-      
-      // Simular delay de autenticação
-      setTimeout(() => {
-        window.location.href = 'Home.html';
-      }, 1000);
-      
-    } else {
-      // Rolar até o primeiro erro
-      const firstError = document.querySelector('.error-message');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      
-      //  erro no botão
-      btnEntrar.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
-      setTimeout(() => {
-        btnEntrar.style.background = 'linear-gradient(135deg, #364775 0%, #212E4E 100%)';
-      }, 1000);
-    }
+    };
+
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json().then(result => ({ result, status: res.status })))
+    .then(({ result, status }) => {
+        if (status === 200 && result.user_id) {
+            alert(result.message || "Login realizado com sucesso.");
+            setCookie("user_id", result.user_id, 7); // 7 dias
+            window.location.href = "Home.html";
+        } else {
+            alert(result.message || "Usuário/Email ou senha incorretos.");
+        }
+    })
+    .catch(err => {
+        console.error("Erro de login:", err);
+        alert("Erro ao tentar fazer login.");
+    });
   });
 
   // submit com Enter
@@ -177,5 +167,37 @@ document.addEventListener('DOMContentLoaded', function() {
   password.addEventListener('focus', function() {
     removeError(this);
     this.style.borderColor = '#DAE1F1';
+  });
+
+  // parte de cookies
+  function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    const expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+    const name = cname + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  // aqui vê se o usuário já tá logado
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedUser = getCookie("user_id");
+    if (savedUser) {
+      window.location.href = "Home.html";
+    }
   });
 });

@@ -2,14 +2,13 @@
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.form');
   const btnEntrar = document.querySelector('.sign');
-  
-
   const username = document.getElementById('username');
   const email = document.getElementById('email');
   const phone = document.getElementById('phone');
   const password = document.getElementById('password');
   const confirmPassword = document.getElementById('confirmPassword');
 
+  const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
 
   function showError(input, message) {
     const existingError = input.parentNode.querySelector('.error-message');
@@ -181,28 +180,42 @@ document.addEventListener('DOMContentLoaded', function() {
            isPasswordValid && isConfirmPasswordValid;
   }
 
-  // Substituir o evento de clique original
   btnEntrar.addEventListener('click', function(e) {
     e.preventDefault();
-    
-    if (validateForm()) {
-      // Se todos os campos são válidos, mostrar mensagem de sucesso
-      alert('Cadastro realizado com sucesso! Redirecionando para login...');
-      
-      // Aqui você pode adicionar o código para enviar os dados para o servidor
-      // Antes de redirecionar
-      
-      // Redirecionar para a página de login após 1 segundo
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 1000);
-    } else {
-      // Rolar até o primeiro erro
+
+    if (!validateForm()) {
       const firstError = document.querySelector('.error-message');
       if (firstError) {
         firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
+      return;
     }
+
+    const data = {
+      name: username.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+      password: password.value.trim()
+    };
+
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json().then(result => ({ result, status: res.status })))
+    .then(({ result, status }) => {
+        if (status === 200) {
+            alert(result.message || "Cadastro realizado com sucesso.");
+            window.location.href = "login.html";
+        } else {
+            alert(result.message || "Falha no cadastro do usuário.");
+        }
+    })
+    .catch(error => {
+      console.error("Erro no cadastro:", error);
+      alert("Falha na comunicação com o servidor.");
+    });
   });
 
   // Validação em tempo real para alguns campos

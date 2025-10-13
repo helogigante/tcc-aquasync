@@ -47,17 +47,17 @@ RELATÓRIO DIA || Leitura.readDay()
     "estimated_cost": 0.00,
     "average_consumption": 0.00,
     "highest_consumption": [
-            {
-                "time": "HH:MM:SS",
-                "value": 0.00,
-            }
-        ]
-        "lowest_consumption": [
-            {
-                "time": "HH:MM:SS",
-                "value": 0.00,
-            }
-        ]
+        {
+           "time": "HH:MM:SS",
+            "value": 0.00,
+        }
+    ]
+    "lowest_consumption": [
+        {
+            "time": "HH:MM:SS",
+            "value": 0.00,
+        }
+    ]
     "hourly_consumption": [
         {
             "label": "00:00",

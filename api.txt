@@ -60,11 +60,11 @@ RELATÓRIO DIA || Leitura.readDay()
     ]
     "hourly_consumption": [
         {
-            "label": "00:00",
+            "label": "00h",
             "value": 0.00,
         }
         {
-            "label": "00:00",
+            "label": "00h",
             "value": 0.00
     }
   ]
@@ -90,11 +90,11 @@ RELALTÓRIO MÊS || Leitura.readMonth()
     ]
     "daily_consumption": [
         {
-            "label": "00:00",
+            "label": "00",
             "value": 0.00,
         }
         {
-            "label": "00:00",
+            "label": "00",
             "value": 0.00
         }
     ]
@@ -120,11 +120,11 @@ RELATÓRIO ANO || Leitura.readYear()
     ]
     "monthly_consumption": [
         {
-            "label": "00:00",
+            "label": "00",
             "value": 0.00,
         }
         {
-            "label": "00:00",
+            "label": "00",
             "value": 0.00
         }
     ]

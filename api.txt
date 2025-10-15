@@ -9,10 +9,14 @@ RELATÓRIOS
 
 URLS DE REQUISIÇÃO
 
-exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura?sensor={id_sensor}&period={currentView}&day={selectedDay}&month={selectedMonth}year={selectedYear}
+exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura.php?sensor={sensor_id}&period={currentView}&day={selectedDay}&month={selectedMonth}&year={selectedYear}
 //o currentView fala se é pra retornar os dados de um dia, mês, ou ano.
 //ele retorna 'year', 'month', ou 'day'.
 //para o dia atual vou fazer uma função que confere a data
+
+
+http://127.0.0.1/tcc-aquasync/api/control/c_leitura.php?sensor=1&period=day&day=15&month=10&year=2025
+{"average_consumption":"","total_consumption":"","estimated_cost":"","last_record":{"time":"","value":""},"highest_consumption":{"time":"","value":""},"lowest_consumption":{"time":"","value":""},"timely_consumption":{"time":"","value":""}}
 
 (resposta)
 
@@ -58,7 +62,7 @@ RELATÓRIO DIA || Leitura.readDay()
             "value": 0.00,
         }
     ]
-    "hourly_consumption": [
+    "timely_consumption": [
         {
             "label": "00h",
             "value": 0.00,
@@ -88,7 +92,7 @@ RELALTÓRIO MÊS || Leitura.readMonth()
             "value": 0.00,
         }
     ]
-    "daily_consumption": [
+    "timely_consumption": [
         {
             "label": "00",
             "value": 0.00,
@@ -118,7 +122,7 @@ RELATÓRIO ANO || Leitura.readYear()
             "value": 0.00,
         }
     ]
-    "monthly_consumption": [
+    "timely_consumption": [
         {
             "label": "00",
             "value": 0.00,

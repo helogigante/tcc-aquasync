@@ -17,7 +17,7 @@
             return $row['max_id'] + 1;
         }
 
-        function read(){
+        function read(){          
             $query = "SELECT id_usuario, email, nome, telefone from $this->table_name where id_usuario = :user_id";
             
             $stmt = $this->conn->prepare($query);

@@ -24,7 +24,6 @@
                         "email"=>$usuario->email,
                         "nome"=>$usuario->name,
                         "telefone"=>$usuario->phone,
-                        "senha"=>$usuario->password,
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

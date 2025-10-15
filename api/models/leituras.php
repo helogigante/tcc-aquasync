@@ -2,7 +2,7 @@
     class Leitura {
         private $conn;
         private $table_name = "leituras";
-        
+    
         public $sensor, $period, $day, $month, $year, $date,
                $average_consumption, $total_consumption, $estimated_cost,
                $report = array(
@@ -20,7 +20,6 @@
         }
 
         function readActualDay(){
-
             $status = array(true);
 
             //consumo total
@@ -40,7 +39,6 @@
             } else {
                 $status[] = false;
             }
-
             //custo total
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost
                         FROM $this->table_name 
@@ -91,7 +89,6 @@
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor", $this->sensor);
             $stmt->execute();
-
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if($row) {
@@ -148,8 +145,9 @@
                 break;
             }
             return $allSuccess;
-            
+        
         }
+        
 
         function readDay(){
 
@@ -169,6 +167,13 @@
             
             if($row && $row['total_consumption'] !== null) {
                 $this->report["total_consumption"] = strval(number_format($row['total_consumption'], 2, ',', '.'));
+                $status[] = true;
+            } else {
+                $status[] = false;
+            }
+
+            if($row) {
+                $this->total_consumption = $row['total_consumption'];
                 $status[] = true;
             } else {
                 $status[] = false;
@@ -229,13 +234,14 @@
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($row) {
+                       if($row) {
                 $this->report["highest_consumption"]["time"] = $row['time'];
                 $this->report["highest_consumption"]["value"] = strval(number_format($row['value'], 2, ',', '.'));
                 $status[] = true;
             } else {
                 $status[] = false;
             }
+
             
             //menor vazão
             $query = "SELECT time(dt_hr_leitura) AS 'time', valor_leitura AS 'value'
@@ -257,7 +263,7 @@
             } else {
                 $status[] = false;
             }
-            
+
             //consumo total de cada hora
             $query = "SELECT HOUR(dt_hr_leitura) AS 'time', SUM(valor_leitura) AS 'value'
                         FROM $this->table_name 
@@ -290,8 +296,9 @@
                 if(!$response) $allSuccess = false;
                 break;
             }
+            
             return $allSuccess;
-
+            
         }
 
         function readMonth(){
@@ -375,7 +382,6 @@
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
 
             if($row) {
                 $this->report["highest_consumption"]["time"] = $row['time'];
@@ -419,22 +425,6 @@
             $stmt->bindParam(":l_year",$this->year);
             $stmt->execute();
 
-            $this->report["timely_consumption"] = array();
-            $hourlyStatus = true;
-
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                if($row['time'] !== null) {
-                    $this->report["timely_consumption"][] = [
-                        "time" => $row['time'],
-                        "value" => number_format($row['value'], 2, ',', '.')
-                    ];
-                } else {
-                    $hourlyStatus = false;
-                    break;
-                }       
-            }  
-            $status[] = $hourlyStatus;
-
             $allSuccess = true;
             foreach ($status as $response) {
                 if(!$response) $allSuccess = false;
@@ -443,7 +433,6 @@
             return $allSuccess;
             
         }
-
         function readYear(){
 
             $status = array(true);
@@ -584,6 +573,7 @@
                 if(!$response) $allSuccess = false;
                 break;
             }
+            
             return $allSuccess;
         }
     }

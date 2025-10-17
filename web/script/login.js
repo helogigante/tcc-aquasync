@@ -124,9 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!validateForm()) return;
 
     const data = {
-        action: "login",
-        login: username.value.trim(),
-        password: password.value
+      action: "login",
+      login: username.value.trim(),
+      password: password.value
     };
 
     fetch(API_URL, {
@@ -137,16 +137,18 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(res => res.json().then(result => ({ result, status: res.status })))
     .then(({ result, status }) => {
         if (status === 200 && result.user_id) {
-            alert(result.message || "Login realizado com sucesso.");
-            setCookie("user_id", result.user_id, 7); // 7 dias
-            window.location.href = "Home.html";
+          alert(result.message || "Login realizado com sucesso.");
+        
+          // salva o ID do usuário no localStorage
+          localStorage.setItem("user_id", result.user_id);          
+          window.location.href = "Home.html";
         } else {
-            alert(result.message || "Usuário/Email ou senha incorretos.");
+          alert(result.message || "Usuário (Email) ou senha incorretos.");
         }
     })
     .catch(err => {
-        console.error("Erro de login:", err);
-        alert("Erro ao tentar fazer login.");
+      console.error("Erro de login:", err);
+      alert("Erro ao tentar fazer login.");
     });
   });
 
@@ -167,37 +169,5 @@ document.addEventListener('DOMContentLoaded', function() {
   password.addEventListener('focus', function() {
     removeError(this);
     this.style.borderColor = '#DAE1F1';
-  });
-
-  // parte de cookies
-  function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    const expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
-
-  function getCookie(cname) {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
-  // aqui vê se o usuário já tá logado
-  document.addEventListener("DOMContentLoaded", () => {
-    const savedUser = getCookie("user_id");
-    if (savedUser) {
-      window.location.href = "Home.html";
-    }
   });
 });

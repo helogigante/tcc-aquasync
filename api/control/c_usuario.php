@@ -1,9 +1,17 @@
 <?php
+    // esse trechinho é para evitar warnings e erros no output JSON
+    ob_start();
+    error_reporting(0);
+    header_remove();
+    
     header("Access-Control-Allow-Origin: *");//aceita chamadas de todos outros domínios
     header("Content-Type: application/json");//tipo de dados da resposta
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     header("Access-Control-Max-Age: 6000"); 
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+    // limpa qualquer saída anterior (warnings, erros, etc)
+    ob_clean();
 
     require_once '../config/database.php';
     require_once '../models/usuarios.php';
@@ -41,6 +49,7 @@
 
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
+            
             if (!$data) {
                 http_response_code(400);
                 echo json_encode(array("message" => "Erro: dados não recebidos."));
@@ -100,13 +109,23 @@
 
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
-            $usuario->id = $data->user_id;
-            if($usuario->delete()) {
+
+            if (!$data || !isset($data->user_id)) {
+                http_response_code(400);
+                echo json_encode(array("message" => "Erro: ID do usuário não recebido."));
+                exit;
+            }
+
+            $usuario->user_id = $data->user_id;
+            
+            if ($usuario->delete()) {
                 http_response_code(200);
-                echo json_encode(array("message"=>"Usuário excluído com sucesso.")); 
+                echo json_encode(array("success" => true, "message" => "Usuário excluído com sucesso."));
+                exit;
             } else {
                 http_response_code(503);
-                echo json_encode(array("message"=>"Falha na atualização de dados."));
+                echo json_encode(array("success" => false, "message" => "Falha na exclusão do usuário."));
+                exit;
             }
 
         break;

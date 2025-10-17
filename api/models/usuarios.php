@@ -59,14 +59,13 @@
         }
         
         function update(){
-            $query ="UPDATE $this->table_name SET email = :email, nome = :name, telefone = :phone, senha = :password WHERE id_usuario = :user_id";
+            $query ="UPDATE $this->table_name SET email = :email, nome = :name, telefone = :phone WHERE id_usuario = :user_id";
             
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id",$this->user_id);
             $stmt->bindParam(":email",$this->email);
             $stmt->bindParam(":name",$this->name);
             $stmt->bindParam(":phone",$this->phone);
-            $stmt->bindParam(":password",$this->password);
             
             return $stmt->execute();
         }

@@ -51,11 +51,11 @@
                 <div class="card-content">
                     <div class="detail-item">
                         <i class="fas fa-phone"></i>
-                        <span class="detail-text" id="userPhone">+55 (11)  4002-8922</span>
+                        <span class="detail-text" id="userPhone">(11) 98765-4321</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-envelope"></i>
-                        <span class="detail-text" id="userEmail">semvergonha@hotmail.com</span>
+                        <span class="detail-text" id="userEmail">aquasync-tcc@hotmail.com</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-id-card"></i>
@@ -75,8 +75,7 @@
             </div>
         </div>
     </div>
-
-   <!-- Modal para editar informações do perfil -->
+<!-- Modal para editar informações do perfil -->
 <div class="modal-overlay" id="editModal">
     <div class="modal">
         <div class="modal-header">
@@ -101,8 +100,14 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
-            <button class="btn btn-save" id="saveEdit">Salvar</button>
+            <!-- Botão Deletar à esquerda -->
+            <button class="btn btn-delete" id="confirmDelete">Deletar</button>
+            
+            <!-- Container para Cancelar e Salvar à direita -->
+            <div class="edit-modal-footer">
+                <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
+                <button class="btn btn-save" id="saveEdit">Salvar</button>
+            </div>
         </div>
     </div>
 </div>

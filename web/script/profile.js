@@ -192,6 +192,51 @@ function validateField(inputId) {
     }
 }
 
+// Função para configurar o botão de deletar conta
+function setupDeleteAccount() {
+    const deleteAccountBtn = document.getElementById('confirmDelete');
+    
+    if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', () => {
+            // Mostrar popup de confirmação personalizado
+            showConfirm(
+                'Tem certeza que deseja deletar sua conta? Esta ação é irreversível e todos os seus dados serão perdidos permanentemente.',
+                () => {
+                    // Callback para confirmar a deleção
+                    handleAccountDeletion();
+                },
+                () => {
+                    // Callback para cancelar - não faz nada
+                    console.log('Deleção de conta cancelada pelo usuário');
+                }
+            );
+        });
+    }
+}
+
+// Função de deleção da conta
+function handleAccountDeletion() {
+    fetch(API_URL, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId })
+    })
+    .then(res => res.json().then(result => ({ result, status: res.status })))
+    .then(({ result, status }) => {
+        if (status === 200) {
+            showAlert("Conta deletada com sucesso.", "success");
+            localStorage.removeItem("user_id");
+            setTimeout(() => window.location.href = "login.html", 2000);
+        } else {
+            showAlert(result.message || "Erro ao deletar conta.", "error");
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showAlert("Erro de comunicação com o servidor.", "error");
+    });
+}
+
 // Função principal para configurar todos os modais
 function setupModals() {
     // Modal de edição de informações
@@ -266,31 +311,41 @@ function setupModals() {
     // Configurar salvamento das edições
     if (saveEdit) {
         saveEdit.addEventListener('click', () => {
-            // Validar todos os campos
-            const isNameValid = validateField('editName');
-            const isEmailValid = validateField('editEmail');
-            const isPhoneValid = validateField('editPhone');
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
 
-            if (!isNameValid || !isEmailValid || !isPhoneValid) {
-                // Usar popup personalizado em vez de alert padrão
-                showAlert('Por favor, preencha todos os campos obrigatórios.', 'error');
+            if (!name || !email || !phone) {
+                showAlert('Por favor, preencha todos os campos.', 'error');
                 return;
             }
 
-            const name = document.getElementById('editName').value;
-            const email = document.getElementById('editEmail').value;
-            const phone = document.getElementById('editPhone').value;
-
-            // Atualizar informações na página
-            if (name) document.getElementById('userNameHeader').textContent = name;
-            if (email) document.getElementById('userEmail').textContent = email;
-            if (phone) document.getElementById('userPhone').textContent = phone;
-
-            // Fechar o modal após salvar
-            closeEditModal();
-
-            // Mostrar mensagem de sucesso
-            showAlert('Informações atualizadas com sucesso!', 'success');
+            fetch(API_URL, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: userId,
+                    name: name,
+                    email: email,
+                    phone: phone
+                })
+            })
+            .then(res => res.json().then(result => ({ result, status: res.status })))
+            .then(({ result, status }) => {
+                if (status === 200) {
+                    showAlert("Informações atualizadas com sucesso!", "success");
+                    document.getElementById('userNameHeader').textContent = name;
+                    document.getElementById('userEmail').textContent = email;
+                    document.getElementById('userPhone').textContent = phone;
+                    closeEditModal();
+                } else {
+                    showAlert(result.message || "Erro ao atualizar dados.", "error");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showAlert("Erro de comunicação com o servidor.", "error");
+            });
         });
     }
 
@@ -469,7 +524,7 @@ function setupDisconnectModal() {
     // Configurar confirmação de desconexão
     if (confirmDisconnect) {
         confirmDisconnect.addEventListener('click', () => {
-            // Redirecionar para a página de login
+            localStorage.removeItem("user_id");
             window.location.href = 'login.html';
         });
     }
@@ -484,17 +539,42 @@ function setupDisconnectModal() {
     }
 }
 
+const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
+const userId = localStorage.getItem("user_id");
+
+if (!userId) {
+    // se o usuário não estiver logado
+    window.location.href = "login.html";
+}
+
+// essa função vai carregar os dados do perfil do usuário
+function loadUserProfile() {
+    if (!userId) return;
+
+    fetch(`${API_URL}?user_id=${userId}`)
+    .then(res => res.json().then(result => ({ result, status: res.status })))
+    .then(({ result, status }) => {
+        if (status === 200) {
+            // atualiza o DOM com os dados do usuário
+            // DOM é a estrutura HTML da página
+            document.getElementById('userNameHeader').textContent = result.nome;
+            document.getElementById('userEmail').textContent = result.email;
+            document.getElementById('userPhone').textContent = result.telefone || "(00) 00000-0000";
+        } else {
+            console.error(result.message || "Erro ao carregar perfil do usuário.");
+        }
+    })
+    .catch(err => {
+        console.error("Erro ao buscar perfil:", err);
+    });
+}
+
 // Inicialização quando o documento estiver carregado
 document.addEventListener('DOMContentLoaded', function () {
-    // Configurar todos os modais
+    loadUserProfile();
     setupModals();
-
-    // Configurar validação do código do sensor
     setupSensorCodeValidation();
-
-    // Melhorar a UI de validação
     enhanceValidationUI();
-
-    // Configurar modal de desconexão
     setupDisconnectModal();
+    setupDeleteAccount();
 });

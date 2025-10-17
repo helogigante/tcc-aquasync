@@ -13,8 +13,7 @@
                     "highest_consumption" => array("time" => "", "value" => ""),
                     "lowest_consumption" => array("time" => "", "value" => ""),
                     "timely_consumption" => array()
-                    "timely_consumption" => array()
-               );
+                );
 
         public function __construct($db) {
             $this->conn = $db;

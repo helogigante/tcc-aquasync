@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.form');
   const btnEntrar = document.querySelector('.sign');
@@ -7,8 +6,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
   
+  // Função para mostrar popup de alerta estilizado
+  function showAlert(message, type = 'error') {
+    // Criar elemento do popup
+    const alertPopup = document.createElement('div');
+    alertPopup.className = `custom-alert ${type}`;
+    alertPopup.innerHTML = `
+        <div class="alert-content">
+            <div class="alert-icon">
+                <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+            </div>
+            <div class="alert-message">${message}</div>
+            <button class="alert-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
+    // Adicionar ao body
+    document.body.appendChild(alertPopup);
+
+    // Mostrar com animação
+    setTimeout(() => {
+        alertPopup.classList.add('show');
+    }, 10);
+
+    // Configurar fechamento
+    const closeBtn = alertPopup.querySelector('.alert-close');
+    closeBtn.addEventListener('click', () => {
+        alertPopup.classList.remove('show');
+        setTimeout(() => {
+            if (alertPopup.parentNode) {
+                alertPopup.parentNode.removeChild(alertPopup);
+            }
+        }, 300);
+    });
+
+    // Fechar automaticamente após 5 segundos
+    setTimeout(() => {
+        if (alertPopup.parentNode) {
+            alertPopup.classList.remove('show');
+            setTimeout(() => {
+                if (alertPopup.parentNode) {
+                    alertPopup.parentNode.removeChild(alertPopup);
+                }
+            }, 300);
+        }
+    }, 5000);
+  }
+
   function showError(input, message) {
-   
     const existingError = input.parentNode.querySelector('.error-message');
     if (existingError) {
       existingError.remove();
@@ -93,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return true;
   }
 
-  //  validação em tempo real
+  // validação em tempo real
   username.addEventListener('blur', validateUsername);
   username.addEventListener('input', function() {
     if (this.value.trim() !== '') {
@@ -137,18 +184,20 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(res => res.json().then(result => ({ result, status: res.status })))
     .then(({ result, status }) => {
         if (status === 200 && result.user_id) {
-          alert(result.message || "Login realizado com sucesso.");
+          showAlert(result.message || "Login realizado com sucesso.", "success");
         
           // salva o ID do usuário no localStorage
           localStorage.setItem("user_id", result.user_id);          
-          window.location.href = "Home.html";
+          setTimeout(() => {
+            window.location.href = "Home.html";
+          }, 1500);
         } else {
-          alert(result.message || "Usuário (Email) ou senha incorretos.");
+          showAlert(result.message || "Usuário (Email) ou senha incorretos.", "error");
         }
     })
     .catch(err => {
       console.error("Erro de login:", err);
-      alert("Erro ao tentar fazer login.");
+      showAlert("Erro ao tentar fazer login.", "error");
     });
   });
 

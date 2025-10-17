@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.form');
   const btnEntrar = document.querySelector('.sign');
@@ -9,6 +8,55 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmPassword = document.getElementById('confirmPassword');
 
   const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
+
+  // Função para mostrar popup de alerta estilizado
+  function showAlert(message, type = 'error') {
+    // Criar elemento do popup
+    const alertPopup = document.createElement('div');
+    alertPopup.className = `custom-alert ${type}`;
+    alertPopup.innerHTML = `
+        <div class="alert-content">
+            <div class="alert-icon">
+                <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+            </div>
+            <div class="alert-message">${message}</div>
+            <button class="alert-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
+    // Adicionar ao body
+    document.body.appendChild(alertPopup);
+
+    // Mostrar com animação
+    setTimeout(() => {
+        alertPopup.classList.add('show');
+    }, 10);
+
+    // Configurar fechamento
+    const closeBtn = alertPopup.querySelector('.alert-close');
+    closeBtn.addEventListener('click', () => {
+        alertPopup.classList.remove('show');
+        setTimeout(() => {
+            if (alertPopup.parentNode) {
+                alertPopup.parentNode.removeChild(alertPopup);
+            }
+        }, 300);
+    });
+
+    // Fechar automaticamente após 5 segundos
+    setTimeout(() => {
+        if (alertPopup.parentNode) {
+            alertPopup.classList.remove('show');
+            setTimeout(() => {
+                if (alertPopup.parentNode) {
+                    alertPopup.parentNode.removeChild(alertPopup);
+                }
+            }, 300);
+        }
+    }, 5000);
+  }
 
   function showError(input, message) {
     const existingError = input.parentNode.querySelector('.error-message');
@@ -53,8 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     
-    if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-      showError(username, 'Usuário só pode conter letras, números e underscore');
+    // Regex atualizada para aceitar acentos e caracteres especiais comuns em nomes
+    if (!/^[a-zA-ZÀ-ÿ0-9_\-\.\s]+$/.test(value)) {
+      showError(username, 'Usuário pode conter letras (com acentos), números, underscore, hífen, ponto e espaços');
       return false;
     }
     
@@ -206,15 +255,17 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(res => res.json().then(result => ({ result, status: res.status })))
     .then(({ result, status }) => {
         if (status === 200) {
-            alert(result.message || "Cadastro realizado com sucesso.");
-            window.location.href = "login.html";
+            showAlert(result.message || "Cadastro realizado com sucesso.", "success");
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 1500);
         } else {
-            alert(result.message || "Falha no cadastro do usuário.");
+            showAlert(result.message || "Falha no cadastro do usuário.", "error");
         }
     })
     .catch(error => {
       console.error("Erro no cadastro:", error);
-      alert("Falha na comunicação com o servidor.");
+      showAlert("Falha na comunicação com o servidor.", "error");
     });
   });
 

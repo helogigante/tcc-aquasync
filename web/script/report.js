@@ -173,8 +173,8 @@ function calendario() {
             month.addEventListener('click', function() {
                 // Atualiza os dados para o mês selecionado
                 selectedDate = new Date(currentDate.getFullYear(), i, 1);
-                currentPeriod = 'month';
-                updateDataDisplay();
+                currentPeriod = 'month'; // Define o período como mensal
+                updateDataDisplay(); // Atualiza a exibição
             });
             
             // Adiciona evento de duplo clique para navegar para o mês
@@ -182,7 +182,7 @@ function calendario() {
                 currentDate = new Date(currentDate.getFullYear(), i, 1);
                 selectedDate = new Date(currentDate.getFullYear(), i, 1);
                 currentView = 'month';
-                currentPeriod = 'day';
+                currentPeriod = 'day'; // Ao navegar para o mês, volta para visualização diária
                 switchView();
                 renderView();
             });
@@ -236,8 +236,8 @@ function calendario() {
             year.addEventListener('click', function() {
                 // Atualiza os dados para o ano selecionado
                 selectedDate = new Date(i, 0, 1);
-                currentPeriod = 'year';
-                updateDataDisplay();
+                currentPeriod = 'year'; // Define o período como anual
+                updateDataDisplay(); // Atualiza a exibição
             });
             
             // Adiciona evento de duplo clique para navegar para o ano
@@ -245,7 +245,7 @@ function calendario() {
                 currentDate = new Date(i, 0, 1);
                 selectedDate = new Date(i, 0, 1);
                 currentView = 'year';
-                currentPeriod = 'month';
+                currentPeriod = 'month'; // Ao navegar para o ano, vai para visualização mensal
                 switchView();
                 renderView();
             });
@@ -291,8 +291,8 @@ function calendario() {
     
     // Atualizar a exibição de dados (gráfico e informações)
     function updateDataDisplay() {
-        // Atualiza a data exibida
-        selectedDateElement.textContent = formatDate(selectedDate);
+        // Atualiza a data exibida baseada no período
+        updateChartTitle();
         
         // Atualiza o subtítulo do período
         updatePeriodSubtitle();
@@ -305,6 +305,30 @@ function calendario() {
         
         // Atualiza as notificações
         updateNotifications();
+    }
+    
+    // Nova função para atualizar o título do gráfico baseado no período
+    function updateChartTitle() {
+        const selectedDateElement = document.getElementById('selectedDate');
+        
+        if (currentPeriod === 'day') {
+            // Para período diário: mostra data completa
+            selectedDateElement.textContent = formatDate(selectedDate);
+        } else if (currentPeriod === 'month') {
+            // Para período mensal: mostra apenas mês e ano
+            const monthNames = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            selectedDateElement.textContent = `${monthNames[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
+        } else if (currentPeriod === 'year') {
+            // Para período anual: mostra apenas o ano
+            selectedDateElement.textContent = selectedDate.getFullYear().toString();
+        } else if (currentPeriod === 'decade') {
+            // Para período de década: mostra o intervalo de anos
+            const startYear = Math.floor(selectedDate.getFullYear() / 10) * 10;
+            selectedDateElement.textContent = `${startYear} - ${startYear + 9}`;
+        }
     }
     
     // Atualizar o subtítulo do período
@@ -611,6 +635,9 @@ function calendario() {
             subtitle.className = 'chart-subtitle';
             selectedDateElement.parentNode.insertBefore(subtitle, selectedDateElement.nextSibling);
         }
+        
+        // Inicializar o título do gráfico
+        updateChartTitle();
     }
     
     // Iniciar quando o DOM estiver carregado

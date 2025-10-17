@@ -157,6 +157,7 @@
                         "email"=>$usuario->email,
                         "nome"=>$usuario->name,
                         "telefone"=>$usuario->phone
+                        "telefone"=>$usuario->phone
                     );
                     http_response_code(200);
                     echo json_encode($usuario_arr);

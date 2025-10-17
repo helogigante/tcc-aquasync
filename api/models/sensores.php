@@ -1,18 +1,30 @@
 <?php
-    class Sensor() {
+    class Sensor{
         private $conn;
         private $table_name = "sensor";
         
-        public $sensor_id, $sensor_name, $register_state, $tariff_value;
+        public $user_id $sensor_id, $name, $state, $tariff_value;
     
         public function __construct($db) {
             $this->conn = $db;
         }
+
+        function readOne(){
+
+        }
         function read(){
-            $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura from $this->table_name where id_sensor = :sensor_id";
+            $query = "SELECT * from $this->table_name where id_sensor = :sensor_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor_id",$this->sensor_id);
             return $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if($row) {
+                
+            } else {
+                return false;
+            }
         }
         function create(){
             $query = "insert into $this->table_nome (id_sensor, nome_sensor, estado_registro, valor_fatura) values 

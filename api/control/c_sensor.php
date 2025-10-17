@@ -10,4 +10,89 @@
 
     $database = new Database();
     $db = $database->getConnection();
+    $sensor = new Sensor($db);
+
+    $method = $_SERVER['REQUEST_METHOD'];
+
+    switch($method){
+        case 'GET':
+            if(isset($_GET['user_id'])){
+                $sensor->user_id = $_GET['user_id'];
+                if(isset($_GET['sensor_id'])){
+                    $sensor->sensor_id = $_GET['sensor_id'];
+                    if(readOne()){
+                        $sensor_arr = array (
+                            "sensor_id"=>$sensor->sensor_id,
+                            "name"=>$sensor->name,
+                            "state"=>$sensor->state,
+                            "tariff_value"=>$sensor->tariff_value
+                        );
+                        http_response_code(200);
+                        echo json_encode($sensor_arr);
+                    } else {
+                        http_response_code(404);
+                        echo json_encode(array("message"=>"Não foi possível fazer a leitura dos dados."));       
+                    }
+                } else {
+                    if(read()){
+                        $sensor_arr = $sensor->report;                  
+                        http_response_code(200);
+                        echo json_encode($sensor_arr);
+                    } else {
+                        http_response_code(404);
+                        echo json_encode(array("message"=>"Não foi possível fazer a leitura dos dados."));       
+                    }
+                }
+            } else {
+                http_response_code(404);
+                echo json_encode(array("message"=>"Parâmetros não foram recebidos.")); 
+            }
+        break;
+
+        case 'POST':
+            $data = json_decode(file_get_contents("php://input"));
+            if (!$data) {
+                http_response_code(400);
+                echo json_encode(array("message" => "Erro: dados não recebidos."));
+                exit;
+            }
+            $sensor->user_id = isset($data->user_id) ? $data->user_id : '';
+            $sensor->sensor_id = isset($data->sensor_id) ? $data->sensor_id : '';
+            $sensor->name = isset($data->name) ? $data->name : '';
+            $sensor->state = isset($data->state) ? $data->state : '';
+            $sensor->tariff_value = isset($data->tariff_value) ? $data->tariff_value : '';
+            if($sensor->create()) {
+                http_response_code(200);
+                echo json_encode(array("message"=>"Usuário cadastrado com sucesso."));
+            } else {
+                http_response_code(503);
+                echo json_encode(array("message"=>"Falha no cadastro do usuário."));
+            }
+        break;
+
+        case 'PUT':
+            if (!$data) {
+                http_response_code(400);
+                echo json_encode(array("message" => "Erro: dados não recebidos."));
+                exit;
+            }
+            $data = json_decode(file_get_contents("php://input"));
+            $sensor->user_id = $data->user_id;
+            $sensor->sensor_id = $data->sensor_id;
+            $sensor->name = $data->name;
+            $sensor->state = $data->state;
+            $sensor->tariff_value = $data->tariff_value;
+            if($sensor->update()) {
+                http_response_code(200);
+                echo json_encode(array("message"=>"Usuário atualizado com sucesso."));
+            } else {
+                http_response_code(503);
+                echo json_encode(array("message"=>"Falha na atualização do usuário."));
+            }
+        break;
+
+        case 'DELETE':
+
+        break;
+    }
 ?>

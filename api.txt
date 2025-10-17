@@ -173,4 +173,12 @@ UPDATE (envio)
 }
 DELETE (envio)
 
+
 SENSOR 
+http://127.0.0.1/tcc-aquasync/api/control/c_sensor.php?sensor_id=1&user_id=1&nome=casa&estado_registro=1&valor_fatura=0;
+
+id_sensor
+id_usuario
+nome
+estado_registro
+valor_fatura

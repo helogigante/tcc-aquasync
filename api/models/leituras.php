@@ -42,7 +42,7 @@
             //custo total
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost
                         FROM $this->table_name 
-                        INNER JOIN sensor ON $this->table_name.id_sensor = sensor.id_sensor 
+                        INNER JOIN sensor USING id_sensor 
                         WHERE $this->table_name.id_sensor = :sensor AND DATE(dt_hr_leitura) = CURRENT_DATE;";
 
             $stmt = $this->conn->prepare($query);
@@ -197,7 +197,7 @@
             //custo total estimado
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
                         FROM $this->table_name 
-                        INNER JOIN sensor ON $this->table_name.id_sensor = sensor.id_sensor 
+                        INNER JOIN sensor USING id_sensor
                         WHERE $this->table_name.id_sensor = :sensor AND DATE(dt_hr_leitura) = :l_date;";
             
             $stmt = $this->conn->prepare($query);
@@ -344,7 +344,7 @@
             //custo total estimado
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
                         FROM $this->table_name 
-                        INNER JOIN sensor ON $this->table_name.id_sensor = sensor.id_sensor 
+                        INNER JOIN sensor USING id_sensor
                         WHERE $this->table_name.id_sensor = :sensor AND MONTH(dt_hr_leitura) = :l_month AND YEAR(dt_hr_leitura) = :l_year;";
             
             $stmt = $this->conn->prepare($query);
@@ -492,7 +492,7 @@
             //custo total estimado
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
                         FROM $this->table_name 
-                        INNER JOIN sensor ON $this->table_name.id_sensor = sensor.id_sensor 
+                        INNER JOIN sensor USING id_sensor
                         WHERE $this->table_name.id_sensor = :sensor AND YEAR(dt_hr_leitura) = :l_year;";
             
             $stmt = $this->conn->prepare($query);

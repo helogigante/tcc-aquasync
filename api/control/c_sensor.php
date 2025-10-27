@@ -1,9 +1,16 @@
 <?php
+
+    ob_start();
+    error_reporting(0);
+    header_remove();
+
     header("Access-Control-Allow-Origin: *");//aceita chamadas de todos outros domínios
     header("Content-Type: application/json");//tipo de dados da resposta
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     header("Access-Control-Max-Age: 3600"); 
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, XRequested-Width;");
+
+    ob_clean();
 
     require_once '../config/database.php';
     require_once '../models/sensores.php';
@@ -63,10 +70,10 @@
             $sensor->tariff_value = isset($data->tariff_value) ? $data->tariff_value : '';
             if($sensor->create()) {
                 http_response_code(200);
-                echo json_encode(array("message"=>"Usuário cadastrado com sucesso."));
+                echo json_encode(array("message"=>"Sensor cadastrado com sucesso."));
             } else {
                 http_response_code(503);
-                echo json_encode(array("message"=>"Falha no cadastro do usuário."));
+                echo json_encode(array("message"=>"Falha no cadastro do sensor."));
             }
         break;
 
@@ -84,15 +91,31 @@
             $sensor->tariff_value = $data->tariff_value;
             if($sensor->update()) {
                 http_response_code(200);
-                echo json_encode(array("message"=>"Usuário atualizado com sucesso."));
+                echo json_encode(array("message"=>"Sensor atualizado com sucesso."));
             } else {
                 http_response_code(503);
-                echo json_encode(array("message"=>"Falha na atualização do usuário."));
+                echo json_encode(array("message"=>"Falha na atualização do sensor."));
             }
         break;
 
         case 'DELETE':
+            $data = json_decode(file_get_contents("php://input"));
+            if (!$data || !isset($data->sensor_id)) {
+                http_response_code(400);
+                echo json_encode(array("message" => "Erro: ID do sensor não recebido."));
+                exit;
+            }
+            $sensor->sensor_id = $data->sensor_id;
 
+            if ($sensor->delete()) {
+                http_response_code(200);
+                echo json_encode(array("success" => true, "message" => "Sensor despareado com sucesso."));
+                exit;
+            } else {
+                http_response_code(503);
+                echo json_encode(array("success" => false, "message" => "Falha no despareamento do sensor."));
+                exit;
+            }
         break;
     }
 ?>

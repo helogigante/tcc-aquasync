@@ -30,8 +30,8 @@
                     if(readOne()){
                         $sensor_arr = array (
                             "sensor_id"=>$sensor->sensor_id,
-                            "name"=>$sensor->name,
-                            "state"=>$sensor->state,
+                            "sensor_name"=>$sensor->sensor_name,
+                            "register_state"=>$sensor->register_state,
                             "tariff_value"=>$sensor->tariff_value
                         );
                         http_response_code(200);
@@ -65,8 +65,8 @@
             }
             $sensor->user_id = isset($data->user_id) ? $data->user_id : '';
             $sensor->sensor_id = isset($data->sensor_id) ? $data->sensor_id : '';
-            $sensor->name = isset($data->name) ? $data->name : '';
-            $sensor->state = isset($data->state) ? $data->state : '';
+            $sensor->sensor_name = isset($data->sensor_name) ? $data->sensor_name : '';
+            $sensor->register_state = isset($data->register_state) ? $data->register_state : '';
             $sensor->tariff_value = isset($data->tariff_value) ? $data->tariff_value : '';
             if($sensor->create()) {
                 http_response_code(200);
@@ -86,8 +86,8 @@
             $data = json_decode(file_get_contents("php://input"));
             $sensor->user_id = $data->user_id;
             $sensor->sensor_id = $data->sensor_id;
-            $sensor->name = $data->name;
-            $sensor->state = $data->state;
+            $sensor->sensor_name = $data->sensor_name;
+            $sensor->register_state = $data->register_state;
             $sensor->tariff_value = $data->tariff_value;
             if($sensor->update()) {
                 http_response_code(200);

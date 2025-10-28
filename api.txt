@@ -197,4 +197,12 @@ UPDATE (envio)
 }
 DELETE (envio)
 
-SENSOR 
+SENSOR
+endereço padrão:  http://localhost/aquasync/api/control/c_sensor.php
+parâmetros:
+    Adicionar sensor: ?user_id={user_id}&sensor_id={sensor_id}&sensor_name={sensor_name}&tariff_value={tariff_value}
+    Listar os sensores: ?user_id={user_id}
+    Selecionar um sensor: ?user_id={user_id}&sensor_id={sensor_id}
+    Atualizar sensor: ?user_id={user_id}&sensor_id={sensor_id}&sensor_name={sensor_name}&register_state={register_state}&tariff_value={tariff_value}
+    Excluir sensor: ?sensor_id={sensor_id}
+http://localhost/tcc-aquasync/api/control/c_sensor.php?sensor={id_sensor}&period={currentView}&day={selectedDay}&month={selectedMonth}&year={selectedYear}

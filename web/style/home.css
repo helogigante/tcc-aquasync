@@ -266,11 +266,11 @@ input:checked + .slider:before {
 }
 
 .status-open {
-  color: #38a169;
+  color: #e53e3e;
 }
 
 .status-closed {
-  color: #e53e3e;
+  color:#38a169 ;
 }
 
 /* Timestamp de atualização */

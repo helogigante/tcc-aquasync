@@ -15,16 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertPopup = document.createElement('div');
     alertPopup.className = `custom-alert ${type}`;
     alertPopup.innerHTML = `
-        <div class="alert-content">
-            <div class="alert-icon">
-                <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
-            </div>
-            <div class="alert-message">${message}</div>
-            <button class="alert-close">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
+  <div class="alert-content">
+    <div class="alert-icon">
+      ${type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : '<i class="fas fa-check-circle"></i>'}
+    </div>
+    <div class="alert-message">${message}</div>
+    <button class="alert-close">&times;</button>
+  </div>
+`;
 
     // Adicionar ao body
     document.body.appendChild(alertPopup);
@@ -101,11 +99,11 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     
-    // Regex atualizada para aceitar acentos e caracteres especiais comuns em nomes
-    if (!/^[a-zA-ZÀ-ÿ0-9_\-\.\s]+$/.test(value)) {
-      showError(username, 'Usuário pode conter letras (com acentos), números, underscore, hífen, ponto e espaços');
-      return false;
-    }
+    // aceita acentos e caracteres especiais 
+ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
+    showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
+    return false;
+}
     
     removeError(username);
     return true;

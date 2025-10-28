@@ -185,20 +185,20 @@ function setupValveSwitch() {
   if (valveSwitch && statusText) {
     // Configurar estado inicial
     if (valveSwitch.checked) {
-      statusText.textContent = "ABERTO";
+      statusText.textContent = "FECHADO";
       statusText.className = "status-text status-open";
     } else {
-      statusText.textContent = "FECHADO";
+      statusText.textContent = "ABERTO";
       statusText.className = "status-text status-closed";
     }
     
     // Adicionar evento de mudança
     valveSwitch.addEventListener('change', function() {
       if (this.checked) {
-        statusText.textContent = "ABERTO";
+        statusText.textContent = "FECHADO";
         statusText.className = "status-text status-open";
       } else {
-        statusText.textContent = "FECHADO";
+        statusText.textContent = "ABERTO";
         statusText.className = "status-text status-closed";
       }
     });

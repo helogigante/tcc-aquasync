@@ -8,20 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Função para mostrar popup de alerta estilizado
   function showAlert(message, type = 'error') {
-    // Criar elemento do popup
     const alertPopup = document.createElement('div');
     alertPopup.className = `custom-alert ${type}`;
+    
+    // Adicionando ícones específicos para cada tipo
+    const icon = type === 'error' 
+        ? '<i class="fas fa-exclamation-circle"></i>' 
+        : '<i class="fas fa-check-circle"></i>';
+    
     alertPopup.innerHTML = `
         <div class="alert-content">
             <div class="alert-icon">
-                <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+                ${icon}
             </div>
             <div class="alert-message">${message}</div>
-            <button class="alert-close">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="alert-close"><i class="fas fa-times"></i></button>
         </div>
     `;
+    
 
     // Adicionar ao body
     document.body.appendChild(alertPopup);
@@ -112,10 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       // Verifica caracteres válidos para usuário
-      if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-        showError(username, 'Usuário só pode conter letras, números e underscore');
-        return false;
-      }
+if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
+    showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
+    return false;
+}
       
       showSuccess(username);
       return true;

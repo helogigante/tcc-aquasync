@@ -1,36 +1,169 @@
 <?php
     class Sensor() {
         private $conn;
-        private $table_name = "sensor";
+        private $table_name = "sensor", $view_table = "v_usuario_sensor";
         
-        public $sensor_id, $sensor_name, $register_state, $tariff_value;
+        public $user_id, $sensor_id, $sensor_name, $register_state, $tariff_value,
+            $report = array(
+                "sensor_id" => "",
+                "sensor_name" => "",
+                "register_state" => "",
+                "tariff_value" => ""
+            );
     
         public function __construct($db) {
             $this->conn = $db;
         }
+
         function read(){
-            $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura from $this->table_name where id_sensor = :sensor_id";
+            $status = array(true);
+
+            $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura FROM $this->view_table WHERE id_usuario = :user_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":user_id",$this->user_id);
+            return $stmt->execute();
+
+            $rowStatus = true;
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                if($row['nome_sensor'] !== null) {
+                    $this->report = [
+                        "sensor_id" => $row['id_sensor'],
+                        "sensor_name" => $row['nome_sensor'],
+                        "register_state" => $row['estado_registro'], 
+                        "tariff_value" => number_format($row['valor_fatura'], 2, ',', '.')
+                    ];
+                } else {
+                    $rowStatus = false;
+                    break;
+                }       
+            }  
+
+            $status[] = $rowStatus;
+            $allSuccess = true;
+            foreach ($status as $response) {
+                if(!$response) $allSuccess = false;
+                break;
+            }
+            return $allSuccess;   
+        }
+
+        function readOne(){
+            $status = array(true);
+
+            $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura from $this->view_table where id_sensor = :sensor_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor_id",$this->sensor_id);
             return $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row && $row['sensor_name'] !== null) {
+                $this->report["sensor_id"] = $row['id_sensor'];
+                $this->report["sensor_name"] = $row['nome_sensor'];
+                $this->report["register_state"] = $row['estado_registro'];
+                $this->report["tariff_value"] = number_format($row['valor_fatura'], 2, ',', '.');
+                $status[] = true;
+            } else {
+                $status[] = false;
+            }
+
+            $allSuccess = true;
+            foreach ($status as $response) {
+                if(!$response) $allSuccess = false;
+                break;
+            }
+            return $allSuccess;        
         }
+
         function create(){
-            $query = "insert into $this->table_nome (id_sensor, nome_sensor, estado_registro, valor_fatura) values 
-            (':user_id', ':email', ':nome', ':telefone', ':senha')";
+
+            if(readOne()){//sensor já foi cadastrado
+                return false;
+                break;
+            }
+
+            $status = array(true);
+            
+            $query = "INSERT INTO $this->table_name (id_sensor, nome_sensor, estado_registro, valor_fautra) VALUES
+            (:sensor_id, ':sensor_name', 1, :tariff_value)";
+            
             $stmt = $this->conn->prepare($query);
-            //$this->senha = password_hash($this->senha, PASSWORD_BCRYPT);
-            $stmt->bindParam(":user_id",$this->user_id);
-            $stmt->bindParam(":email",$this->email);
-            $stmt->bindParam(":nome",$this->nome);
-            $stmt->bindParam(":telefone",$this->telefone);
-            $stmt->bindParam(":senha",$this->senha);
+
+            $stmt->bindParam(":sensor_id", $this->sensor_id);
+            $stmt->bindParam(":sensor_name", $this->sensor_name);
+            $stmt->bindParam(":tariff_value", $this->tariff_value);
+            
+            if ($stmt->execute()) {
+                $status[true];
+            } else {
+                $status[false];
+            }
+
+            $query = "INSERT INTO usuario_sensor (id_usuario, id_sensor) VALUES
+            (:user_id, :sensor_id)";
+            
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(":user_id", $this->user_id);
+            $stmt->bindParam(":sensor_id", $this->sensor_id);
+            
+            if ($stmt->execute()) {
+                $status[true];
+            } else {
+                $status[false];
+            }
+
+            $allSuccess = true;
+            foreach ($status as $response) {
+                if(!$response) $allSuccess = false;
+                break;
+            }
+            return $allSuccess;
+        }
+
+        function update(){
+            $query ="UPDATE $this->table_name SET nome_sensor = ':sensor_name', estado_registro = :register_state, valor_fatura = :tariff_value WHERE id_sensor = :sensor_id";
+            
+            $stmt->bindParam(":sensor_id", $this->sensor_id);
+            $stmt->bindParam(":sensor_name", $this->sensor_name);
+            $stmt->bindParam(":tariff_value", $this->tariff_value);
+            $stmt->bindParam(":register_state", $this->register_state);
+
             return $stmt->execute();
         }
-        function update(){
-    
-        }
+
         function delete(){
-    
+            $query = "DELETE FROM usuario_sensor WHERE id_sensor = :sensor_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":sensor_id",$this->sensor_id);
+            if ($stmt->execute()) {
+                $status[true];
+            } else {
+                $status[false];
+            }
+            $query = "DELETE FROM leituras WHERE id_sensor = :sensor_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":sensor_id",$this->sensor_id);
+            if ($stmt->execute()) {
+                $status[true];
+            } else {
+                $status[false];
+            }
+            $query = "DELETE FROM $this->table_name WHERE id_sensor = :sensor_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":sensor_id",$this->sensor_id);
+            if ($stmt->execute()) {
+                $status[true];
+            } else {
+                $status[false];
+            }
+            $allSuccess = true;
+            foreach ($status as $response) {
+                if(!$response) $allSuccess = false;
+                break;
+            }
+            return $allSuccess;
         }
     }
 ?>

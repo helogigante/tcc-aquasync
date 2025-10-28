@@ -1,5 +1,5 @@
 <?php
-    class Sensor() {
+    class Sensor {
         private $conn;
         private $table_name = "sensor", $view_table = "v_usuario_sensor";
         
@@ -23,8 +23,6 @@
             $stmt->bindParam(":user_id",$this->user_id);
             return $stmt->execute();
 
-            $rowStatus = true;
-
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 if($row['nome_sensor'] !== null) {
                     $this->report = [
@@ -34,18 +32,12 @@
                         "tariff_value" => number_format($row['valor_fatura'], 2, ',', '.')
                     ];
                 } else {
-                    $rowStatus = false;
-                    break;
+                    $status = false;
+                    exit;
                 }       
             }  
 
-            $status[] = $rowStatus;
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;   
+            return !in_array(false, $status);   
         }
 
         function readOne(){
@@ -68,25 +60,19 @@
                 $status[] = false;
             }
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;        
+            return !in_array(false, $status);           
         }
 
         function create(){
 
             if(readOne()){//sensor já foi cadastrado
                 return false;
-                break;
             }
 
             $status = array(true);
             
             $query = "INSERT INTO $this->table_name (id_sensor, nome_sensor, estado_registro, valor_fautra) VALUES
-            (:sensor_id, ':sensor_name', 1, :tariff_value)";
+            (:sensor_id, :sensor_name, 1, :tariff_value)";
             
             $stmt = $this->conn->prepare($query);
 
@@ -114,22 +100,16 @@
                 $status[false];
             }
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;
+            return !in_array(false, $status);   
         }
 
         function update(){
             $query ="UPDATE $this->table_name SET nome_sensor = ':sensor_name', estado_registro = :register_state, valor_fatura = :tariff_value WHERE id_sensor = :sensor_id";
-            
+            $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor_id", $this->sensor_id);
             $stmt->bindParam(":sensor_name", $this->sensor_name);
             $stmt->bindParam(":tariff_value", $this->tariff_value);
             $stmt->bindParam(":register_state", $this->register_state);
-
             return $stmt->execute();
         }
 
@@ -158,12 +138,7 @@
             } else {
                 $status[false];
             }
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;
+            return !in_array(false, $status); 
         }
     }
 ?>

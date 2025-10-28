@@ -139,13 +139,7 @@
                 $status[] = false;
             }
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;
-        
+            return !in_array(false, $status);          
         }
         
 
@@ -284,14 +278,7 @@
             }  
             $status[] = $hourlyStatus;
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            
-            return $allSuccess;
-
+            return !in_array(false, $status);   
         }
 
         function readMonth(){
@@ -434,13 +421,7 @@
             }  
             $status[] = $hourlyStatus;
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;
-            
+            return !in_array(false, $status);              
         }
 
         function readYear(){
@@ -578,13 +559,7 @@
             }  
             $status[] = $hourlyStatus;
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            
-            return $allSuccess;
+            return !in_array(false, $status);   
         }
     }
 ?>

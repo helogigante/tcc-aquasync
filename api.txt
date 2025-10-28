@@ -9,7 +9,7 @@ RELATÓRIOS
 
 URLS DE REQUISIÇÃO
 
-exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura?sensor={id_sensor}&period={currentView}&day={selectedDay}&month={selectedMonth}year={selectedYear}
+exemplo da url completa: http://localhost/tcc-aquasync/api/control/c_leitura.php?sensor={id_sensor}&period={currentView}&day={selectedDay}&month={selectedMonth}&year={selectedYear}
 //o currentView fala se é pra retornar os dados de um dia, mês, ou ano.
 //ele retorna 'year', 'month', ou 'day'.
 //para o dia atual vou fazer uma função que confere a data

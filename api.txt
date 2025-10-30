@@ -3,7 +3,7 @@ a parte do valor vai ser um select do banco
 salva o id do usuário com cookie https://www.w3schools.com/js/js_cookies.asp
 
 Endereço fixo
-url = http://localhost/tcc-aquasync/api/control/
+url = http://localhost/aquasync/api/control/
 
 RELATÓRIOS
 

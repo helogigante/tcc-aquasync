@@ -14,7 +14,7 @@ body {
     padding-bottom: 90px !important; 
 }
 
-/* Container principal */
+
 .container {
     width: 100%;
     height: 100vh;
@@ -23,7 +23,7 @@ body {
     position: relative;
 }
 
-/* Cabeçalho do perfil com gradiente e bolhas animadas */
+
 .profile-header {
     padding: 30px 20px 50px; 
     text-align: center;
@@ -38,7 +38,7 @@ body {
     align-items: center;
 }
 
-/* Estilo da seta de voltar */
+
 .back-arrow {
     position: absolute;
     top: 20px;
@@ -60,7 +60,7 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Estilo base das bolhas animadas */
+
 .bubble {
     width: 30px;
     height: 30px;
@@ -73,7 +73,7 @@ body {
         sideWays 4s ease-in-out infinite alternate;
 }
 
-/* Animação de subida das bolhas */
+
 @keyframes bubble {
     0% {
         transform: translateY(0%);
@@ -84,7 +84,7 @@ body {
     }
 }
 
-/* Animação de movimento lateral das bolhas */
+
 @keyframes sideWays {
     0% {
         margin-left: 0px;
@@ -94,7 +94,7 @@ body {
     }
 }
 
-/* Configurações individuais para cada bolha */
+
 .bubble--1 {
     left: 10%;
     animation-delay: 0.5s;
@@ -201,7 +201,7 @@ body {
     font-size: 18px;
 }
 
-/* Conteúdo principal do perfil */
+
 .profile-content {
     flex: 1;
     background-color: white;
@@ -211,7 +211,7 @@ body {
     justify-content: flex-start;
 }
 
-/* Card de informações do usuário */
+
 .info-card {
     background-color: #f8f9fa;
     border-radius: 16px;
@@ -221,7 +221,7 @@ body {
     border: 1px solid #e9ecef;
 }
 
-/* Cabeçalho do card */
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -237,7 +237,7 @@ body {
     font-weight: 600;
 }
 
-/* Botão de edição */
+
 .edit-btn {
     background: transparent;
     border: 1px solid #D9E1F1;
@@ -258,14 +258,14 @@ body {
     transform: translateY(-2px);
 }
 
-/* Conteúdo do card */
+
 .card-content {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Itens de detalhe (telefone, email, ID) */
+
 .detail-item {
     display: flex;
     align-items: center;
@@ -284,14 +284,14 @@ body {
     font-weight: 500;
 }
 
-/* Container dos botões de ação */
+
 .action-buttons {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Estilo base dos botões */
+
 .btn {
     padding: 16px 20px;
     border: none;
@@ -305,7 +305,7 @@ body {
     box-shadow: 0 4px 10px rgba(25, 35, 56, 0.1);
 }
 
-/* Botão primário ( */
+
 .btn-primary {
     background: linear-gradient(135deg, #31487A 0%, #1E2E4F 100%);
     color: white;
@@ -317,7 +317,7 @@ body {
     box-shadow: 0 6px 15px rgba(49, 72, 122, 0.3);
 }
 
-/* Botão de opção (bordas) */
+
 .btn-option {
     background-color: white;
     color: #31487A;
@@ -331,7 +331,7 @@ body {
     box-shadow: 0 4px 12px rgba(49, 72, 122, 0.15);
 }
 
-/* Ícone dentro dos botões */
+
 .btn-icon {
     margin-right: 12px;
     font-size: 18px;
@@ -339,7 +339,7 @@ body {
     text-align: center;
 }
 
-/* Estilos para os modais */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -376,7 +376,7 @@ body {
     transform: translateY(0);
 }
 
-/* Cabeçalho do modal */
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -391,7 +391,7 @@ body {
     font-weight: 600;
 }
 
-/* Botão de fechar */
+
 .close-btn {
     background: transparent;
     border: none;
@@ -412,12 +412,12 @@ body {
     color: #31487A;
 }
 
-/* Conteúdo do modal */
+
 .modal-content {
     padding: 20px;
 }
 
-/* Grupos de input nos modais */
+
 .input-group {
     margin-bottom: 18px;
 }
@@ -445,7 +445,7 @@ body {
     box-shadow: 0 0 0 3px rgba(143, 179, 226, 0.2);
 }
 
-/* Estilização específica para inputs numéricos */
+
 .input-group input[type="number"] {
     /* Remove as setas padrão em navegadores WebKit */
     &::-webkit-outer-spin-button,
@@ -459,9 +459,7 @@ body {
     appearance: textfield;
 }
 
-/* ========== MODAL DE EDITAR INFORMAÇÕES - BOTÕES LADO A LADO ========== */
 
-/* Rodapé do modal de editar informações - TRÊS BOTÕES LADO A LADO */
 #editModal .modal-footer {
     display: flex !important;
     justify-content: space-between !important;
@@ -472,7 +470,7 @@ body {
     align-items: center !important;
 }
 
-/* Botão Deletar*/
+
 #editModal .btn-delete {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
     color: white !important;
@@ -495,14 +493,14 @@ body {
     box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3) !important;
 }
 
-/* Container para Cancelar e Salvar  */
+
 #editModal .edit-modal-footer {
     display: flex !important;
     gap: 12px !important;
     margin-left: auto !important; 
 }
 
-/* Botão de cancelar */
+
 #editModal .btn-cancel {
     background-color: transparent !important;
     color: #6c757d !important;
@@ -525,7 +523,7 @@ body {
     box-shadow: 0 2px 6px rgba(108, 117, 125, 0.15) !important;
 }
 
-/* Botão de salvar */
+
 #editModal .btn-save {
     background: linear-gradient(135deg, #31487A 0%, #1E2E4F 100%) !important;
     color: white !important;
@@ -547,9 +545,7 @@ body {
     box-shadow: 0 4px 10px rgba(49, 72, 122, 0.3) !important;
 }
 
-/* ========== OUTROS MODAIS ========== */
 
-/* Rodapé dos outros modais */
 #addSensorModal .modal-footer,
 #disconnectModal .modal-footer {
     display: flex;
@@ -559,7 +555,7 @@ body {
     border-top: 1px solid #e9ecef;
 }
 
-/* Botão de cancelar nos outros modais */
+
 #addSensorModal .btn-cancel,
 #disconnectModal .btn-cancel {
     background-color: transparent;
@@ -576,7 +572,7 @@ body {
     background-color: #f8f9fa;
 }
 
-/* Botão de salvar nos outros modais */
+
 #addSensorModal .btn-save {
     background: linear-gradient(135deg, #31487A 0%, #1E2E4F 100%);
     color: white;
@@ -592,7 +588,7 @@ body {
     box-shadow: 0 4px 12px rgba(49, 72, 122, 0.3);
 }
 
-/* Botão de desconectar */
+
 #disconnectModal .btn-danger {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
     color: white;
@@ -608,9 +604,7 @@ body {
     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 
-/* Para telas menores que 480px (mobile) */
 @media (max-width: 480px) {
     #editModal .modal-footer {
         flex-direction: row !important; 
@@ -632,7 +626,7 @@ body {
     }
 }
 
-/* Para telas muito pequenas (menos de 360px) */
+
 @media (max-width: 360px) {
     #editModal .modal-footer {
         gap: 6px !important;
@@ -652,7 +646,7 @@ body {
     }
 }
 
-/* Para telas entre 481px e 768px (tablet) */
+
 @media (min-width: 481px) and (max-width: 768px) {
     #editModal .modal-footer {
         gap: 10px !important;
@@ -672,7 +666,7 @@ body {
     }
 }
 
-/* Para telas grandes (acima de 768px) */
+
 @media (min-width: 769px) {
     #editModal .modal-footer {
         gap: 12px !important;
@@ -691,19 +685,19 @@ body {
     }
 }
 
-/* Estilos para labels desabilitadas */
+
 .disabled-label {
     color: #ccc !important;
 }
 
-/* Estilos para inputs desabilitados */
+
 .input-group input:disabled {
     background-color: #f5f5f5;
     color: #999;
     cursor: not-allowed;
 }
 
-/* Mensagens de validação */
+
 .validation-message.success {
     color: #28a745;
 }
@@ -712,19 +706,19 @@ body {
     color: #dc3545;
 }
 
-/* Estilos para inputs válidos */
+
 .input-group input.valid {
     border-color: #28a745;
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
 }
 
-/* Estilos para inputs inválidos */
+
 .input-group input.invalid {
     border-color: #dc3545;
     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
 }
 
-/* Estilos específicos para o modal de desconexão */
+
 .disconnect-icon {
     text-align: center;
     font-size: 48px;
@@ -740,66 +734,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* ========== NAVBAR INFERIOR UNIFICADA ========== */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 50;
-    width: 100%;
-    background-color: #192338;
-    border-top: 1px solid #374151;
-    padding: 1.2rem 0;
-    height: 90px;
-    box-sizing: border-box;
-}
 
-.bottom-nav-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 28rem;
-    margin: 0 auto;
-    height: 100%;
-}
-
-.bottom-nav-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem;
-    color: #9ca3af;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-decoration: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100%;
-}
-
-.bottom-nav-btn.active {
-    color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
-    border-radius: 8px;
-}
-
-.bottom-nav-btn:hover {
-    color: #3b82f6;
-}
-
-.bottom-nav-btn svg {
-    width: 28px;
-    height: 28px;
-    margin-bottom: 0.5rem;
-}
-
-.bottom-nav-btn span {
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-/* ========== RESPONSIVIDADE GERAL ========== */
 
 @media (max-width: 768px) {
     .profile-header {
@@ -860,29 +795,6 @@ body {
     .detail-item {
         margin-bottom: 12px;
     }
-
-    /* Navbar inferior para tablet */
-    .bottom-nav {
-        padding: 1rem 0;
-        height: 85px;
-    }
-    
-    .bottom-nav-btn {
-        padding: 0.6rem;
-    }
-    
-    .bottom-nav-btn svg {
-        width: 26px;
-        height: 26px;
-    }
-    
-    .bottom-nav-btn span {
-        font-size: 0.9rem;
-    }
-    
-    body {
-        padding-bottom: 85px !important;
-    }
 }
 
 @media (max-width: 480px) {
@@ -900,35 +812,6 @@ body {
     .user-info h1 {
         font-size: 26px;
     }
-
-    /* Navbar inferior para mobile */
-    .bottom-nav {
-        padding: 0.8rem 0;
-        height: 75px;
-    }
-    
-    .bottom-nav-container {
-        max-width: 100%;
-        padding: 0 0.3rem;
-    }
-    
-    .bottom-nav-btn {
-        padding: 0.4rem;
-    }
-    
-    .bottom-nav-btn svg {
-        width: 22px;
-        height: 22px;
-        margin-bottom: 0.3rem;
-    }
-    
-    .bottom-nav-btn span {
-        font-size: 0.75rem;
-    }
-    
-    body {
-        padding-bottom: 75px !important;
-    }
 }
 
 @media (max-width: 360px) {
@@ -937,60 +820,15 @@ body {
         height: 110px;
         margin: 8px auto 12px;
     }
-
-    /* Navbar inferior para mobile muito pequeno */
-    .bottom-nav {
-        padding: 0.7rem 0;
-        height: 70px;
-    }
-    
-    .bottom-nav-btn svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .bottom-nav-btn span {
-        font-size: 0.7rem;
-    }
-    
-    body {
-        padding-bottom: 70px !important;
-    }
 }
 
-/* Ajustes para telas muito altas em mobile */
-@media (max-height: 600px) and (max-width: 768px) {
-    .bottom-nav {
-        height: 65px;
-        padding: 0.6rem 0;
-    }
-    
-    .bottom-nav-btn {
-        padding: 0.3rem;
-    }
-    
-    .bottom-nav-btn svg {
-        width: 18px;
-        height: 18px;
-        margin-bottom: 0.2rem;
-    }
-    
-    .bottom-nav-btn span {
-        font-size: 0.7rem;
-    }
-    
-    body {
-        padding-bottom: 65px !important;
-    }
-}
 
-/* Estilos para campos com erro */
 .input-group input.field-error {
     border-color: #dc3545;
     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
 }
 
-/* Mensagens de erro para campos individuais */
+
 .field-error-message {
     color: #dc3545;
     font-size: 12px;
@@ -998,13 +836,13 @@ body {
     display: block;
 }
 
-/* Destaque para campos obrigatórios nos labels */
+
 .input-group label::after {
     content: " *";
     color: #dc3545;
 }
 
-/* Estilo para o botão salvar quando o formulário é inválido */
+
 .btn-save:disabled {
     background: #6c757d;
     cursor: not-allowed;
@@ -1274,7 +1112,7 @@ body {
     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }
 
-/* Responsividade para o popup de confirmação */
+
 @media (max-width: 480px) {
     .confirm-overlay {
         padding: 15px;
@@ -1317,3 +1155,4 @@ body {
         justify-content: center;
     }
 }
+

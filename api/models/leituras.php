@@ -40,10 +40,10 @@
                 $status[] = false;
             }
             //custo total
-            $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost
-                        FROM $this->table_name 
-                        INNER JOIN sensor USING id_sensor 
-                        WHERE $this->table_name.id_sensor = :sensor AND DATE(dt_hr_leitura) = CURRENT_DATE;";
+            $query = "SELECT (SUM(l.valor_leitura) * s.valor_fatura) AS estimated_cost
+                FROM $this->table_name AS l
+                INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
+                WHERE l.id_sensor = :sensor AND DATE(l.dt_hr_leitura) = CURRENT_DATE;";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor", $this->sensor);
@@ -195,10 +195,10 @@
             }
             
             //custo total estimado
-            $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
-                        FROM $this->table_name 
-                        INNER JOIN sensor USING id_sensor
-                        WHERE $this->table_name.id_sensor = :sensor AND DATE(dt_hr_leitura) = :l_date;";
+            $query = "SELECT (SUM(l.valor_leitura) * s.valor_fatura) AS estimated_cost
+                        FROM $this->table_name AS l
+                        INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
+                        WHERE l.id_sensor = :sensor AND DATE(l.dt_hr_leitura) = :l_date;";
             
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor", $this->sensor);
@@ -289,9 +289,7 @@
                 if(!$response) $allSuccess = false;
                 break;
             }
-            
             return $allSuccess;
-
         }
 
         function readMonth(){
@@ -344,7 +342,7 @@
             //custo total estimado
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
                         FROM $this->table_name 
-                        INNER JOIN sensor USING id_sensor
+                        INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
                         WHERE $this->table_name.id_sensor = :sensor AND MONTH(dt_hr_leitura) = :l_month AND YEAR(dt_hr_leitura) = :l_year;";
             
             $stmt = $this->conn->prepare($query);
@@ -440,7 +438,6 @@
                 break;
             }
             return $allSuccess;
-            
         }
 
         function readYear(){
@@ -492,7 +489,7 @@
             //custo total estimado
             $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
                         FROM $this->table_name 
-                        INNER JOIN sensor USING id_sensor
+                        INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
                         WHERE $this->table_name.id_sensor = :sensor AND YEAR(dt_hr_leitura) = :l_year;";
             
             $stmt = $this->conn->prepare($query);
@@ -583,7 +580,6 @@
                 if(!$response) $allSuccess = false;
                 break;
             }
-            
             return $allSuccess;
         }
     }

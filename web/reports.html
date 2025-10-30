@@ -6,41 +6,34 @@
     <title>Relatório Geral - AquaSync</title>
     
     <link rel="stylesheet" href="style/reports.css">
+    <link rel="stylesheet" href="style/footer.css">
     
     <!-- Biblioteca Chart.js para gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Barra de navegação fixa no topo -->
     <nav class="navbar-container">
         <div class="navbar-content">
-            <!-- Botão de voltar para a página inicial -->
             <a href="home.html" class="back-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
             </a>
             
-            <!-- Título da página -->
             <span class="navbar-title">Relatório Geral</span>
             
-            <!-- Espaço reservado para alinhamento -->
             <div class="navbar-placeholder"></div> 
         </div>
     </nav>
 
-    <!-- Container principal com calendário e dados -->
     <div class="main-container">
-        <!-- Seção do calendário interativo -->
         <div class="calendar-container">
-            <!-- Cabeçalho do calendário com navegação -->
             <div class="calendar-header">
                 <button class="nav-button" id="prev-view">&lt;</button>
                 <div class="month-year" id="current-view">Agosto 2023</div>
                 <button class="nav-button" id="next-view">&gt;</button>
             </div>
             
-            <!-- Cabeçalho com dias da semana (visível apenas na visualização mensal) -->
             <div class="weekdays" id="weekdays-header">
                 <div>Dom</div>
                 <div>Seg</div>
@@ -51,31 +44,28 @@
                 <div>Sáb</div>
             </div>
             
-            <!-- Visualização mensal (ativa por padrão) -->
+
             <div class="view-month active-view" id="month-view">
                 <div class="days" id="calendar-days">
-                    <!-- Dias serão inseridos via JavaScript -->
                 </div>
             </div>
             
-            <!-- Visualização anual -->
+
             <div class="view-year" id="year-view">
                 <div class="months" id="calendar-months">
-                    <!-- Meses serão inseridos via JavaScript -->
+
                 </div>
             </div>
-            
-            <!-- Visualização por década -->
+
             <div class="view-decade" id="decade-view">
                 <div class="years" id="calendar-years">
-                    <!-- Anos serão inseridos via JavaScript -->
                 </div>
             </div>
         </div>
         
-        <!-- Container com dados e gráficos -->
+
         <div class="data-container">
-            <!-- Card do gráfico de vazão -->
+
             <div class="chart-card">
                 <div class="chart-title" id="selectedDate">15 de Setembro de 2024</div>
                 <div class="chart-subtitle" id="selectedPeriod"></div>
@@ -83,69 +73,77 @@
             </div>
                 
 
-           <!-- Card consolidado com todas as informações de consumo -->
 <div class="consolidated-stats-card">
     <h3 class="stats-card-title">Resumo do Consumo</h3>
     
     <!-- Grid com estatísticas detalhadas -->
     <div class="stats-grid-consolidated">
-        <!-- Consumo total  -->
+
                 <div class="stat-item-consolidated">
                     <div class="stat-label">Consumo Total</div>
                     <div class="stat-value" id="totalConsumption">2450 L</div>
                 </div>
-        <!-- Maior fluxo -->
+
         <div class="stat-item-consolidated">
             <div class="stat-label">Maior Fluxo</div>
             <div class="stat-value" id="maxFlow">22.4 L/min</div>
             <div class="stat-time" id="maxFlowTime">às 14:30</div>
         </div>
-        
-        <!-- Menor fluxo -->
+
         <div class="stat-item-consolidated">
             <div class="stat-label">Menor Fluxo</div>
             <div class="stat-value" id="minFlow">8.7 L/min</div>
             <div class="stat-time" id="minFlowTime">às 03:15</div>
         </div>
         
-        <!-- Média por hora -->
         <div class="stat-item-consolidated">
             <div class="stat-label">Média por Hora</div>
             <div class="stat-value" id="avgPerHour">102,1 L/h</div>
         </div>
         
-        <!-- Média por dia -->
         <div class="stat-item-consolidated">
             <div class="stat-label">Média por Dia</div>
             <div class="stat-value" id="avgPerDay">2450 L</div>
         </div>
-        
-        <!-- Custo estimado (largura completa) -->
+
         <div class="stat-item-full-width">
             <div class="stat-label">Custo Estimado</div>
             <div class="stat-value" id="estimatedCost">R$ 8,45</div>
         </div>
     </div>
 </div>
-<!-- Navegação inferior (footer) -->
-<div class="bottom-nav">
-  <div class="bottom-nav-container">
-    <!-- Botão: Início -->
-    <a href="home.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
+
+<!-- Card de Alertas Registrados -->
+<div id="alerts-card" class="chart-card">
+    <h3 class="chart-title">Alertas Registrados</h3>
+    <div id="notificationsList" class="notifications-list">
+        <div class="no-notifications">Nenhuma notificação para este período</div>
+    </div>
+</div>
+
+        </div> 
+
+    </div>
+
+
+    <div class="bottom-nav">
+        <div class="bottom-nav-container">
+
+            <a href="home.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
                  1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 
                  1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 
                  1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 
                  1.414-1.414Z"/>
-      </svg>
-      <span class="text-xs">Início</span>
-    </a>
+                </svg>
+                <span>Início</span>
+            </a>
 
-    <!-- Botão: Relatórios -->
-    <a href="reports.html" class="bottom-nav-btn active">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707
+
+            <a href="reports.html" class="bottom-nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707
                  A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2
                  a1 1 0 0 1-1-1m.5 10v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 
                  .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 
@@ -153,30 +151,30 @@
                  .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 
                  0 0 1 .5-.5h1a.5.5 0 0 1 
                  .5.5v2a.5.5 0 0 1-.5.5z"/>
-      </svg>
-      <span class="text-xs">Relatórios</span>
-    </a>
+                </svg>
+                <span>Relatórios</span>
+            </a>
 
-    <!-- Botão: Alertas -->
-    <a href="alerts.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
+
+            <a href="alerts.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
                  0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 
                  0-2.42-1.72-4.44-4.005-4.901"/>
-      </svg>
-      <span class="text-xs">Alertas</span>
-    </a>
+                </svg>
+                <span>Alertas</span>
+            </a>
 
-    <!-- Botão: Perfil -->
-    <a href="profile.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-      </svg>
-      <span class="text-xs">Perfil</span>
-    </a>
-  </div>
-</div>
+
+            <a href="profile.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
 
     <script src="script/report.js"></script>
 </body>

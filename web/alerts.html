@@ -6,27 +6,26 @@
   <title>Notificações - AquaSync</title>
   
   <link rel="stylesheet" href="style/alerts.css">
+  <link rel="stylesheet" href="style/footer.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Cabeçalho da página de notificações -->
-  <header class="notificacoes-header">
-    <div class="header-content">
-      <!-- Botão de voltar para a página inicial -->
-      <a href="home.html" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-      </a>
-      <!-- Título da página -->
-      <h1>Alertas</h1>
-      <!-- Espaçador para alinhamento do título ao centro -->
-      <div class="header-spacer"></div> 
-    </div>
-  </header>
+<div class="navbar-container">
+  <div class="navbar-content">
+    <a href="home.html" class="back-button">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <span class="navbar-title">Alertas</span>
+
+    <div class="navbar-placeholder"></div>
+  </div>
+</div>
 
   <!-- Container principal para as notificações -->
   <main class="notificacoes-container">
-    <!-- Notificação não lida (com classe 'unread') -->
+
     <div class="notificacao-card unread">
       <div class="notificacao-content">
         <h3>Alerta de vazão prolongada</h3>
@@ -35,7 +34,7 @@
       </div>
     </div>
 
-    <!-- Notificação não lida (com classe 'unread') -->
+>
     <div class="notificacao-card unread">
       <div class="notificacao-content">
         <h3>Alerta de fluxo</h3>
@@ -44,7 +43,6 @@
       </div>
     </div>
 
-    <!-- Notificação lida (sem classe 'unread') -->
     <div class="notificacao-card">
       <div class="notificacao-content">
         <h3>Mensagem</h3>
@@ -53,7 +51,7 @@
       </div>
     </div>
 
-    <!-- Notificação lida (sem classe 'unread') -->
+ 
     <div class="notificacao-card">
       <div class="notificacao-content">
         <h3>Mensagem</h3>
@@ -62,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Notificação lida (sem classe 'unread') -->
     <div class="notificacao-card">
       <div class="notificacao-content">
         <h3>Manutenção programada</h3>
@@ -72,10 +69,10 @@
     </div>
   </main>
 
-  <!-- Navegação inferior (footer) - CORRIGIDA -->
+
   <div class="bottom-nav">
     <div class="bottom-nav-container">
-      <!-- Botão: Início -->
+  
       <a href="home.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
           <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
@@ -87,7 +84,7 @@
         <span>Início</span>
       </a>
 
-      <!-- Botão: Relatórios -->
+
       <a href="reports.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
           <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707
@@ -102,7 +99,7 @@
         <span>Relatórios</span>
       </a>
 
-      <!-- Botão: Alertas -->
+
       <a href="alerts.html" class="bottom-nav-btn active">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
           <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
@@ -112,7 +109,7 @@
         <span>Alertas</span>
       </a>
 
-      <!-- Botão: Perfil -->
+ 
       <a href="profile.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="currentColor"/>

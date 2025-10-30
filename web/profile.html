@@ -7,12 +7,12 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/footer.css">
 </head>
 <body>
     <!-- Container principal da página -->
     <div class="container">
         <div class="profile-header">
-            <!-- Bolhas animadas para efeito visual -->
             <div class="bubble bubble--1"></div>
             <div class="bubble bubble--2"></div>
             <div class="bubble bubble--3"></div>
@@ -22,17 +22,14 @@
             <div class="bubble bubble--7"></div>
             <div class="bubble bubble--8"></div>
             
-            <!-- Link para voltar à página inicial -->
             <a href="home.html" class="back-arrow">
                 <i class="fas fa-arrow-left"></i>
             </a>
             
-            <!-- Container para a logo do aplicativo -->
             <div class="logo-container">
                 <img src="img/logo.png" alt="Logo do App" class="logo">
             </div>
             
-            <!-- Informações do usuário -->
             <div class="user-info">
                 <h1 id="userNameHeader">Sybau</h1>
             </div>
@@ -43,7 +40,6 @@
             <div class="info-card">
                 <div class="card-header">
                     <h2>Informações</h2>
-                    <!-- Botão para editar informações -->
                     <button class="edit-btn" id="editInfoBtn">
                         <i class="fas fa-edit"></i> Editar
                     </button>
@@ -59,12 +55,11 @@
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-id-card"></i>
-                        <span class="detail-text">ID: #123456789</span>
+                        <span class="detail-text">ID: #3C:61:05</span>
                     </div>
                 </div>
             </div>
-            
-            <!-- Botões de ação do perfil -->
+
             <div class="action-buttons">
                 <button class="btn btn-primary" id="addSensorBtn">
                     <i class="fas fa-plus btn-icon"></i> Adicionar Sensor
@@ -75,12 +70,12 @@
             </div>
         </div>
     </div>
+
 <!-- Modal para editar informações do perfil -->
 <div class="modal-overlay" id="editModal">
     <div class="modal">
         <div class="modal-header">
             <h3>Editar Informações</h3>
-            <!-- Botão para fechar o modal -->
             <button class="close-btn" id="closeModal">
                 <i class="fas fa-times"></i>
             </button>
@@ -100,10 +95,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <!-- Botão Deletar à esquerda -->
+
             <button class="btn btn-delete" id="confirmDelete">Deletar</button>
-            
-            <!-- Container para Cancelar e Salvar à direita -->
             <div class="edit-modal-footer">
                 <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
                 <button class="btn btn-save" id="saveEdit">Salvar</button>
@@ -112,12 +105,10 @@
     </div>
 </div>
 
-   <!-- Modal para adicionar novo sensor -->
 <div class="modal-overlay" id="addSensorModal">
     <div class="modal">
         <div class="modal-header">
             <h3>Adicionar Novo Sensor</h3>
-            <!-- Botão para fechar o modal -->
             <button class="close-btn" id="closeAddSensorModal">
                 <i class="fas fa-times"></i>
             </button>
@@ -126,7 +117,6 @@
             <div class="input-group">
                 <label for="sensorCode">Código do Sensor</label>
                 <input type="text" id="sensorCode" placeholder="Digite o código do sensor">
-                <!-- Área para mensagens de validação -->
                 <div id="codeValidation" class="validation-message" style="display: none; margin-top: 5px; font-size: 14px;"></div>
             </div>
             <div class="input-group">
@@ -152,24 +142,23 @@
         </div>
     </div>
 </div>
-    </div>
 
-    <!-- Modal de confirmação para desconectar conta -->
+
     <div class="modal-overlay" id="disconnectModal">
         <div class="modal">
             <div class="modal-header">
                 <h3>Desconectar Conta</h3>
-                <!-- Botão para fechar o modal -->
+
                 <button class="close-btn" id="closeDisconnectModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-content">
-                <!-- Ícone indicativo de desconexão -->
+
                 <div class="disconnect-icon">
                     <i class="fas fa-sign-out-alt"></i>
                 </div>
-                <!-- Mensagem de confirmação -->
+
                 <p class="disconnect-message">Tem certeza que deseja desconectar sua conta? Você será redirecionado para a página de login.</p>
             </div>
             <div class="modal-footer">
@@ -179,25 +168,25 @@
         </div>
     </div>
 
-    <!-- Navegação inferior (footer) -->
-<div class="bottom-nav">
-  <div class="bottom-nav-container">
-    <!-- Botão: Início -->
-    <a href="home.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
+
+    <div class="bottom-nav">
+        <div class="bottom-nav-container">
+
+            <a href="home.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
                  1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 
                  1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 
                  1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 
                  1.414-1.414Z"/>
-      </svg>
-      <span class="text-xs">Início</span>
-    </a>
+                </svg>
+                <span>Início</span>
+            </a>
 
-    <!-- Botão: Relatórios -->
-    <a href="reports.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707
+
+            <a href="reports.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707
                  A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2
                  a1 1 0 0 1-1-1m.5 10v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 
                  .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 
@@ -205,30 +194,31 @@
                  .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 
                  0 0 1 .5-.5h1a.5.5 0 0 1 
                  .5.5v2a.5.5 0 0 1-.5.5z"/>
-      </svg>
-      <span class="text-xs">Relatórios</span>
-    </a>
+                </svg>
+                <span>Relatórios</span>
+            </a>
 
-    <!-- Botão: Alertas -->
-    <a href="alerts.html" class="bottom-nav-btn">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
+
+            <a href="alerts.html" class="bottom-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
                  0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 
                  0-2.42-1.72-4.44-4.005-4.901"/>
-      </svg>
-      <span class="text-xs">Alertas</span>
-    </a>
+                </svg>
+                <span>Alertas</span>
+            </a>
 
-    <!-- Botão: Perfil -->
-    <a href="profile.html" class="bottom-nav-btn active">
-      <svg class="w-5 h-5 mb-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-      </svg>
-      <span class="text-xs">Perfil</span>
-    </a>
-  </div>
-</div>
+
+            <a href="profile.html" class="bottom-nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
+
     <script src="script/profile.js"></script>
 </body>
 </html>

@@ -1,0 +1,112 @@
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  background-color: #192338;
+  border-top: 1px solid #374151;
+  height: 90px;
+  box-sizing: border-box;
+  padding: 1.2rem 0;
+}
+
+.bottom-nav-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 28rem;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.bottom-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  color: #9ca3af;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.bottom-nav-btn.active {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 10px;
+}
+
+.bottom-nav-btn:hover {
+  color: #3b82f6;
+}
+
+.bottom-nav-btn svg {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 0.4rem;
+}
+
+.bottom-nav-btn span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+  .bottom-nav {
+    padding: 1rem 0;
+    height: 85px;
+  }
+  .bottom-nav-btn {
+    padding: 0.7rem;
+  }
+  .bottom-nav-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  .bottom-nav-btn span {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-nav {
+    padding: 0.8rem 0;
+    height: 80px;
+  }
+  .bottom-nav-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  .bottom-nav-btn {
+    padding: 0.6rem;
+  }
+  .bottom-nav-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+  .bottom-nav-btn span {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .bottom-nav {
+    padding: 0.7rem 0;
+    height: 70px;
+  }
+  .bottom-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .bottom-nav-btn span {
+    font-size: 0.7rem;
+  }
+}

@@ -1,28 +1,29 @@
-// ===== FUNÇÃO PRINCIPAL DO CALENDÁRIO =====
+// função principal do calendário
 function calendario() {
-    // Variáveis de estado
+    // variáveis de estado
     let currentDate = new Date();
     let selectedDate = new Date();
     let currentView = 'month';
-    let currentPeriod = 'day'; // day, month, year, decade
+    let currentPeriod = 'day';
+    let currentHouse = 'A'; // Casa A = dados vindos do BD. Casa B = dados para demonstração
+    const houseSensorMap = { A: 1, B: 2 };
     
-    // Dias com pontos vermelhos fixos (exemplo: dias 5, 12, 19, 26 de cada mês)
+    // dias com pontos vermelhos fixos (exemplo: dias 5, 12, 19, 26 de cada mês)
     const redDotDays = [5, 12, 19, 26];
     
-    // Inicializar o canvas do gráfico
+    // inicializar o canvas do gráfico
     const canvas = document.getElementById('flowChart');
     const ctx = canvas.getContext('2d');
     let flowChartInstance = null;
     
-    // Elementos para atualização
+    // elementos para atualização
     const selectedDateElement = document.getElementById('selectedDate');
     const selectedPeriodElement = document.getElementById('selectedPeriod');
     const notificationsList = document.getElementById('notificationsList');
     const weekdaysHeader = document.getElementById('weekdays-header');
     
-    // ===== FUNÇÕES DE UTILIDADE =====
-    
-    // Ajustar tamanho do canvas responsivamente
+    // funções de utilidade
+    // ajustar tamanho do canvas responsivamente
     function resizeCanvas() {
         canvas.width = canvas.parentElement.offsetWidth;
         canvas.height = 250;
@@ -31,9 +32,8 @@ function calendario() {
     // Adicionar listener para redimensionamento da janela
     window.addEventListener('resize', resizeCanvas);
     
-    // ===== FUNÇÕES DE RENDERIZAÇÃO =====
-    
-    // Renderizar a visualização atual
+    // funções de renderização
+    // renderizar a visualização atual
     function renderView() {
         // Mostrar/ocultar cabeçalho dos dias da semana conforme a visualização
         if (currentView === 'month') {
@@ -236,8 +236,8 @@ function calendario() {
             year.addEventListener('click', function() {
                 // Atualiza os dados para o ano selecionado
                 selectedDate = new Date(i, 0, 1);
-                currentPeriod = 'year'; // Define o período como anual
-                updateDataDisplay(); // Atualiza a exibição
+                currentPeriod = 'year';
+                updateDataDisplay();
             });
             
             // Adiciona evento de duplo clique para navegar para o ano
@@ -249,7 +249,6 @@ function calendario() {
                 switchView();
                 renderView();
             });
-            
             calendarYears.appendChild(year);
         }
         
@@ -287,8 +286,7 @@ function calendario() {
         return date.toLocaleTimeString('pt-BR', options);
     }
     
-    // ===== FUNÇÕES DE ATUALIZAÇÃO DE DADOS =====
-    
+    // funções de atualização de dados
     // Atualizar a exibição de dados (gráfico e informações)
     function updateDataDisplay() {
         // Atualiza a data exibida baseada no período
@@ -345,130 +343,154 @@ function calendario() {
             const startYear = Math.floor(selectedDate.getFullYear() / 10) * 10;
             subtitle = `Dados da década ${startYear}-${startYear + 9}`;
         }
-        
         selectedPeriodElement.textContent = subtitle;
     }
     
-    // Desenhar o gráfico de vazão (estilo do relatorio.html)
+    function fetchLeituraDataPromise(period, sensorId, dateObj) {
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth() + 1;
+        const day = dateObj.getDate();
+
+        let url = `http://localhost/aquasync/api/control/c_leitura.php?period=${period}&sensor=${sensorId}`;
+        if (period === 'day') url += `&day=${day}&month=${month}&year=${year}`;
+        else if (period === 'month') url += `&month=${month}&year=${year}`;
+        else if (period === 'year') url += `&year=${year}`;
+
+        // faz o fetch e sempre retorna uma promise que resolve com objeto (ou null em erro)
+        // promise são usadas para facilitar uso assíncrono
+        return fetch(url, { method: 'GET' })
+            .then(function(response) {
+                if (!response.ok) {
+                    console.warn('Resposta do servidor não OK:', response.status);
+                    return null;
+                }
+                return response.json().catch(function(err) {
+                    console.error('Erro ao parsear JSON:', err);
+                    return null;
+                });
+            })
+            .catch(function(err) {
+                console.error('Erro no fetch:', err);
+                return null;
+            });
+    }
+
+    // desenhar o gráfico de vazão (estilo do relatorio.html)
     function drawVazaoChart() {
         resizeCanvas();
-        
-        // Destruir gráfico anterior se existir
+
         if (flowChartInstance) {
-            flowChartInstance.destroy();
+            try { flowChartInstance.destroy(); } catch(e){ /* ignore */ }
         }
-        
-        // Dados baseados no período selecionado
-        let labels = [];
-        let flowData = [];
-        
-        if (currentPeriod === 'day') {
-            // Dados por hora para um dia
-            labels = Array.from({length: 24}, (_, i) => `${i}:00`);
-            flowData = Array.from({length: 24}, () => Math.floor(Math.random() * 25) + 5);
-        } else if (currentPeriod === 'month') {
-            // Dados por dia para um mês
-            const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
-            labels = Array.from({length: daysInMonth}, (_, i) => `${i + 1}`);
-            flowData = Array.from({length: daysInMonth}, () => Math.floor(Math.random() * 20) + 10);
-        } else if (currentPeriod === 'year') {
-            // Dados por mês para um ano
-            labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            flowData = Array.from({length: 12}, () => Math.floor(Math.random() * 30) + 15);
-        } else if (currentPeriod === 'decade') {
-            // Dados por ano para uma década
-            const startYear = Math.floor(selectedDate.getFullYear() / 10) * 10;
-            labels = Array.from({length: 10}, (_, i) => `${startYear + i}`);
-            flowData = Array.from({length: 10}, () => Math.floor(Math.random() * 40) + 20);
-        }
-        
-        // Criar novo gráfico no estilo do relatorio.html
-        flowChartInstance = new Chart(ctx, {
-            type: currentPeriod === 'day' ? 'line' : 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Vazão (L/min)',
-                    data: flowData,
-                    borderColor: '#253140',
-                    backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140',
-                    fill: currentPeriod === 'day',
-                    tension: 0.4,
-                    pointBackgroundColor: '#253140',
-                    pointRadius: 3,
-                    pointHoverRadius: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+
+        // sensor dependendo da casa
+        const sensorId = houseSensorMap[currentHouse] || 1;
+
+        fetchLeituraDataPromise(currentPeriod, sensorId, selectedDate)
+        .then(function(data) {
+            // se não tiver dados, usa dados pré-definidos
+            if (!data || !data.timely_consumption || data.timely_consumption.length === 0) {
+                console.warn('Dados não encontrados — usando mock para gráfico.');
+                // montar dados pré-definidos
+                let labels = [];
+                let flowData = [];
+                // dia
+                if (currentPeriod === 'day') {
+                    labels = Array.from({length: 24}, (_, i) => `${i}:00`);
+                    flowData = Array.from({length: 24}, () => Math.floor(Math.random() * 25) + 5);
+                // mês
+                } else if (currentPeriod === 'month') {
+                    const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
+                    labels = Array.from({length: daysInMonth}, (_, i) => `${i + 1}`);
+                    flowData = Array.from({length: daysInMonth}, () => Math.floor(Math.random() * 20) + 10);
+                // ano
+                } else if (currentPeriod === 'year') {
+                    labels = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+                    flowData = Array.from({length: 12}, () => Math.floor(Math.random() * 30) + 15);
+                // década
+                } else {
+                    const startYear = Math.floor(selectedDate.getFullYear() / 10) * 10;
+                    labels = Array.from({length: 10}, (_, i) => `${startYear + i}`);
+                    flowData = Array.from({length: 10}, () => Math.floor(Math.random() * 40) + 20);
+                }
+
+                flowChartInstance = new Chart(ctx, {
+                    type: currentPeriod === 'day' ? 'line' : 'bar',
+                    data: { labels: labels, datasets: [{ label: 'Vazão (L/min)', data: flowData, borderColor: '#253140', backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140', fill: currentPeriod === 'day', tension: 0.4, pointBackgroundColor: '#253140', pointRadius: 3, pointHoverRadius: 5 }]},
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Vazão (L/min)' } }, x: { title: { display: true, text: 'Tempo' } } } }
+                });
+
+                return;
+            }
+
+            // pega dados reais
+            const labels = data.timely_consumption.map(item => String(item.time));
+            const flowData = data.timely_consumption.map(item => {
+                // aqui é formatado para garantir número
+                if (typeof item.value === 'string') {
+                    return parseFloat(item.value.replace('.', '').replace(',', '.')) || 0;
+                }
+                return Number(item.value) || 0;
+            });
+
+            flowChartInstance = new Chart(ctx, {
+                type: currentPeriod === 'day' ? 'line' : 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Vazão (L/min)',
+                        data: flowData,
+                        borderColor: '#253140',
+                        backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140',
+                        fill: currentPeriod === 'day',
+                        tension: 0.4,
+                        pointBackgroundColor: '#253140',
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Vazão (L/min)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: currentPeriod === 'day' ? 'Hora do dia' : 
-                                  currentPeriod === 'month' ? 'Dia do mês' :
-                                  currentPeriod === 'year' ? 'Mês' : 'Ano'
-                        }
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Vazão (L/min)' } },
+                        x: { title: { display: true, text: currentPeriod === 'day' ? 'Hora do dia' : currentPeriod === 'month' ? 'Dia do mês' : currentPeriod === 'year' ? 'Mês' : 'Ano' } }
                     }
                 }
-            }
+            });
         });
     }
     
-    // Atualizar dados de consumo
+    // atualiza dados de consumo
     function updateConsumoData() {
-        // Gera valores baseados no período selecionado
-        let maxFlow, minFlow, totalConsumption, avgPerHour, cost;
-        
-        if (currentPeriod === 'day') {
-            maxFlow = (15 + (selectedDate.getDate() % 10)).toFixed(1);
-            minFlow = (5 + (selectedDate.getDate() % 5)).toFixed(1);
-            totalConsumption = 2000 + (selectedDate.getDate() * 50);
-            avgPerHour = Math.floor(totalConsumption / 24);
-            cost = (totalConsumption / 1000 * 5.5).toFixed(2);
-        } else if (currentPeriod === 'month') {
-            maxFlow = (20 + (selectedDate.getMonth() % 8)).toFixed(1);
-            minFlow = (8 + (selectedDate.getMonth() % 4)).toFixed(1);
-            totalConsumption = 60000 + (selectedDate.getMonth() * 5000);
-            avgPerHour = Math.floor(totalConsumption / 720); // 30 dias * 24 horas
-            cost = (totalConsumption / 1000 * 5.5).toFixed(2);
-        } else if (currentPeriod === 'year') {
-            maxFlow = (25 + (selectedDate.getFullYear() % 10)).toFixed(1);
-            minFlow = (10 + (selectedDate.getFullYear() % 5)).toFixed(1);
-            totalConsumption = 700000 + ((selectedDate.getFullYear() % 10) * 50000);
-            avgPerHour = Math.floor(totalConsumption / 8760); // 365 dias * 24 horas
-            cost = (totalConsumption / 1000 * 5.5).toFixed(2);
-        } else if (currentPeriod === 'decade') {
-            maxFlow = (30 + (selectedDate.getFullYear() % 10)).toFixed(1);
-            minFlow = (12 + (selectedDate.getFullYear() % 5)).toFixed(1);
-            totalConsumption = 8000000 + ((selectedDate.getFullYear() % 10) * 500000);
-            avgPerHour = Math.floor(totalConsumption / 87600); // 10 anos * 365 dias * 24 horas
-            cost = (totalConsumption / 1000 * 5.5).toFixed(2);
-        }
-        
-        // Atualizar elementos DOM
-        document.getElementById('maxFlow').textContent = `${maxFlow} L/min`;
-        document.getElementById('minFlow').textContent = `${minFlow} L/min`;
-        document.getElementById('maxFlowTime').textContent = `às ${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
-        document.getElementById('minFlowTime').textContent = `às ${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
-        document.getElementById('totalConsumption').textContent = `${totalConsumption} L`;
-        document.getElementById('avgPerHour').textContent = `${avgPerHour} L/h`;
-        document.getElementById('estimatedCost').textContent = `R$ ${cost}`;
+        const sensorId = houseSensorMap[currentHouse] || 1;
+
+        fetchLeituraDataPromise(currentPeriod, sensorId, selectedDate)
+        .then(function(data) {
+            if (!data) {
+                console.warn('Sem dados para resumo de consumo — mantendo valores atuais ou mostrando —.');
+                return;
+            }
+
+            // o backend pode não enviar todos os dados esperados, então se não existir, é mostrado '—'
+            const hc = data.highest_consumption || {};
+            const lc = data.lowest_consumption || {};
+
+            document.getElementById('maxFlow').textContent = hc.value ? `${hc.value} L/min` : '—';
+            document.getElementById('maxFlowTime').textContent = hc.time ? `às ${hc.time}` : '';
+            document.getElementById('minFlow').textContent = lc.value ? `${lc.value} L/min` : '—';
+            document.getElementById('minFlowTime').textContent = lc.time ? `às ${lc.time}` : '';
+
+            document.getElementById('totalConsumption').textContent = data.total_consumption ? `${data.total_consumption} L` : '—';
+            document.getElementById('avgPerHour').textContent = data.average_consumption ? `${data.average_consumption} L/h` : '—';
+            if (document.getElementById('avgPerDay')) {
+                document.getElementById('avgPerDay').textContent = data.average_consumption ? `${data.average_consumption} L` : '—';
+            }
+            document.getElementById('estimatedCost').textContent = data.estimated_cost ? `R$ ${data.estimated_cost}` : 'R$ —';
+        });
     }
     
-    // Gerar notificações de exemplo baseadas no período
+    // gerar notificações de exemplo baseadas no período
     function generateNotificationsForPeriod() {
         const notifications = [];
         let notificationCount = 0;
@@ -512,14 +534,13 @@ function calendario() {
             }
             
             const types = [
-                "Vazamento detectado",
-                "Consumo incomum de água",
-                "Pico de consumo",
-                "Registro fechado automaticamente",
-                "Manutenção preventiva realizada",
-                "Sistema atualizado",
-                "Relatório mensal gerado",
-                "Análise de consumo concluída"
+                "Possível vazamento detectado.",
+                "Consumo incomum de água.",
+                "Pico de consumo.",
+                "Manutenção preventiva realizada.",
+                "Sistema atualizado.",
+                "Relatório mensal gerado.",
+                "Análise de consumo concluída."
             ];
             
             notifications.push({
@@ -577,9 +598,7 @@ function calendario() {
         });
     }
     
-    // ===== INICIALIZAÇÃO E NAVEGAÇÃO =====
-    
-    // Inicializar eventos de navegação
+    // inicialização e navegação
     function initNavigation() {
         // Botões de navegação anterior/próximo
         document.getElementById('prev-view').addEventListener('click', function() {
@@ -644,5 +663,4 @@ function calendario() {
     document.addEventListener('DOMContentLoaded', init);
 }
 
-// ===== INICIALIZAR O CALENDÁRIO =====
 calendario();

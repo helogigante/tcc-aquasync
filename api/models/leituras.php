@@ -139,13 +139,7 @@
                 $status[] = false;
             }
 
-            $allSuccess = true;
-            foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
-            }
-            return $allSuccess;
-        
+            return !in_array(false, $status);          
         }
         
 

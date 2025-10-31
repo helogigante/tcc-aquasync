@@ -144,7 +144,6 @@
         
 
         function readDay(){
-
             $status = array(true);
 
             //consumo total
@@ -246,6 +245,27 @@
             if($row) {
                 $this->report["lowest_consumption"]["time"] = $row['time'];
                 $this->report["lowest_consumption"]["value"] = strval(number_format($row['value'], 2, ',', '.'));
+                $status[] = true;
+            } else {
+                $status[] = false;
+            }
+
+            // último registro
+            $query = "SELECT time(dt_hr_leitura) AS 'time', valor_leitura AS 'value'
+                    FROM $this->table_name 
+                    WHERE id_sensor = :sensor AND DATE(dt_hr_leitura) = :l_date
+                    ORDER BY dt_hr_leitura DESC LIMIT 1;";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":sensor", $this->sensor);
+            $stmt->bindParam(":l_date", $this->date);
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row) {
+                $this->report["last_record"]["time"] = $row['time'];
+                $this->report["last_record"]["value"] = strval(number_format($row['value'], 2, ',', '.'));
                 $status[] = true;
             } else {
                 $status[] = false;

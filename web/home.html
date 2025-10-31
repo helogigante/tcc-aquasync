@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style/footer.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
   <nav class="navbar-container">
@@ -17,8 +18,8 @@
 
     <div class="sensor-dropdown">
       <select id="sensorDropdown" onchange="loadSensorData(this.value)">
-        <option value="sensor1">Casa A</option>
-        <option value="sensor2">Casa B</option>
+        <option value="1">Casa A</option>
+        <option value="2">Casa B</option>
       </select>
     </div>
   </nav>
@@ -40,34 +41,34 @@
 
             <div class="info-item">
               <div class="info-label">Último Registro</div>
-              <div class="info-value" id="lastRecord">18,5 L/min</div>
-              <div class="info-time">14:30:45</div>
+              <div class="info-value" id="lastRecord">— L/min</div>
+              <div class="info-time" id="lastRecordTime">—</div>
             </div>
             
 
             <div class="info-item">
               <div class="info-label">Consumo Diário</div>
-              <div class="info-value" id="dailyConsumption">2450 L</div>
+              <div class="info-value" id="dailyConsumption">— L</div>
             </div>
             
 
             <div class="info-item">
               <div class="info-label">Média</div>
-              <div class="info-value" id="averageValue">15,2 L/min</div>
+              <div class="info-value" id="averageValue">— L/min</div>
             </div>
             
 
             <div class="info-item">
               <div class="info-label">Maior Vazão</div>
-              <div class="info-value" id="maxFlow">38,0 L/min</div>
-              <div class="info-time" id="maxFlowTime">12:45:22</div>
+              <div class="info-value" id="maxFlow">— L/min</div>
+              <div class="info-time" id="maxFlowTime">—</div>
             </div>
             
 
             <div class="info-item">
               <div class="info-label">Menor Vazão</div>
-              <div class="info-value" id="minFlow">8,0 L/min</div>
-              <div class="info-time" id="minFlowTime">00:15:10</div>
+              <div class="info-value" id="minFlow">— L/min</div>
+              <div class="info-time" id="minFlowTime">—</div>
             </div>
             
             <div class="registry-container">
@@ -84,7 +85,7 @@
             
 
             <div class="timestamp">
-              Atualizado em: <span id="updateTime">07/09/2024 14:35</span>
+              Atualizado em: <span id="updateTime">—/—/— —:—</span>
             </div>
           </div>
         </div>
@@ -142,7 +143,7 @@
       </a>
     </div>
   </div>
-
+  
   <script src="script/home.js"></script>
 </body>
 </html>

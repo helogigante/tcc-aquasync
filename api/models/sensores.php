@@ -20,12 +20,12 @@
 
             $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura FROM $this->view_table WHERE id_usuario = :user_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":user_id",$this->user_id);
-            return $stmt->execute();
+            $stmt->bindParam(":user_id", $this->user_id);
+            $stmt->execute();
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 if($row['nome_sensor'] !== null) {
-                    $this->report = [
+                    $this->report[] = [
                         "sensor_id" => $row['id_sensor'],
                         "sensor_name" => $row['nome_sensor'],
                         "register_state" => $row['estado_registro'], 
@@ -45,12 +45,12 @@
 
             $query = "SELECT id_sensor, nome_sensor, estado_registro, valor_fatura from $this->view_table where id_sensor = :sensor_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":sensor_id",$this->sensor_id);
-            return $stmt->execute();
+            $stmt->bindParam(":sensor_id", $this->sensor_id);
+            $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($row && $row['sensor_name'] !== null) {
+            if($row && $row['estado_registro'] !== null) {
                 $this->report["sensor_id"] = $row['id_sensor'];
                 $this->report["sensor_name"] = $row['nome_sensor'];
                 $this->report["register_state"] = $row['estado_registro'];

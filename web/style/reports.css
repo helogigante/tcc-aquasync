@@ -16,7 +16,6 @@ body {
   min-height: 100vh;
 }
 
-
 .navbar-container {
   background-color: #192338;
   padding: 0.5rem 1rem;
@@ -55,7 +54,6 @@ body {
   width: 24px;
 }
 
-
 .main-container {
   display: flex;
   gap: 2rem;
@@ -79,7 +77,6 @@ body {
   flex-direction: column;
   gap: 1.5rem;
 }
-
 
 .calendar-header {
   display: flex;
@@ -185,10 +182,40 @@ body {
   font-weight: 600;
 }
 
-.selected {
-  background-color: #e6f3ff;
+.day.selected {
+  background: transparent;
   color: #2c74b8;
-  font-weight: 600;
+  font-weight: 700;
+  border: 2px solid #2c74b8;
+  box-sizing: border-box;
+}
+
+.day.selected:hover {
+  background: rgba(44,116,184,0.06);
+}
+
+.day.today.selected {
+  background-color: #2c74b8;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(44,116,184,0.14);
+  border: 2px solid rgba(255,255,255,0.06);
+  box-sizing: border-box;
+}
+
+.month.selected, .year.selected {
+  font-weight: 700;
+  border-radius: 8px;
+  border: 2px solid #2c74b8;
+  box-sizing: border-box;
+  color: #2c74b8;
+  background: transparent;
+}
+
+.month.today.selected, .year.today.selected {
+  background-color: #2c74b8;
+  color: #fff;
+  border: none;
+  box-shadow: 0 0 0 4px rgba(44,116,184,0.14);
 }
 
 .has-data {
@@ -218,7 +245,6 @@ body {
 .active-view {
   display: block;
 }
-
 
 .chart-card {
   background-color: white;

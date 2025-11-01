@@ -10,21 +10,21 @@ function loadSensorData(sensorId) {
       console.log('Dados recebidos:', data);
 
       document.getElementById('lastRecord').textContent =
-        data.last_record.value ? `${data.last_record.value} L/min` : '—';
+        data.last_record.value ? `${data.last_record.value} L` : '—';
       document.getElementById('lastRecordTime').textContent =
-        data.last_record.time ? data.last_record.time : '—';
+        data.last_record.time ? `às ${data.last_record.time}` : '—';
       document.getElementById('dailyConsumption').textContent =
         data.total_consumption ? `${data.total_consumption} L` : '—';
       document.getElementById('averageValue').textContent =
         data.average_consumption ? `${data.average_consumption} L/min` : '—';
       document.getElementById('maxFlow').textContent =
-        data.highest_consumption?.value ? `${data.highest_consumption.value} L/min` : '—';
+        data.highest_consumption?.value ? `${data.highest_consumption.value} L` : '—';
       document.getElementById('maxFlowTime').textContent =
-        data.highest_consumption?.time ? data.highest_consumption.time : '—';
+        data.highest_consumption?.time ? `às ${data.highest_consumption.time}` : '—';
       document.getElementById('minFlow').textContent =
-        data.lowest_consumption?.value ? `${data.lowest_consumption.value} L/min` : '—';
+        data.lowest_consumption?.value ? `${data.lowest_consumption.value} L` : '—';
       document.getElementById('minFlowTime').textContent =
-        data.lowest_consumption?.time ? data.lowest_consumption.time : '—';
+        data.lowest_consumption?.time ? `às ${data.lowest_consumption.time}` : '—';
       document.getElementById('updateTime').textContent = new Date().toLocaleString('pt-BR');
 
       updateFlowChart(sensorId, data.timely_consumption);

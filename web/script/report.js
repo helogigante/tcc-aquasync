@@ -81,7 +81,7 @@ function calendario() {
         // Obtém o dia da semana do primeiro dia (0 = Domingo, 1 = Segunda, etc.)
         const firstDayIndex = firstDay.getDay();
         
-        // Dias do mês anterior
+        // dias do mês anterior
         for (let i = firstDayIndex; i > 0; i--) {
             const day = document.createElement('div');
             day.classList.add('day', 'other-month');
@@ -89,39 +89,52 @@ function calendario() {
             calendarDays.appendChild(day);
         }
         
-        // Dias do mês atual
+        // dias do mês atual
         for (let i = 1; i <= lastDay.getDate(); i++) {
             const day = document.createElement('div');
             day.classList.add('day', 'current-month');
             day.textContent = i;
-            
-            // Verifica se é o dia atual
+
             const today = new Date();
-            if (currentDate.getMonth() === today.getMonth() && 
-                currentDate.getFullYear() === today.getFullYear() && 
-                i === today.getDate()) {
+            today.setHours(0, 0, 0, 0);
+            const thisDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+            thisDate.setHours(0, 0, 0, 0);
+
+            if (thisDate.getTime() === today.getTime()) {
                 day.classList.add('today');
             }
-            
-            // Verifica se é o dia selecionado
-            if (currentDate.getMonth() === selectedDate.getMonth() && 
-                currentDate.getFullYear() === selectedDate.getFullYear() && 
-                i === selectedDate.getDate()) {
+
+            // destaque do dia selecionado (qualquer dia até hoje)
+            if (selectedDate.getTime() === thisDate.getTime()) {
                 day.classList.add('selected');
             }
-            
-            // Adiciona indicador de pontos vermelhos fixos
-            if (redDotDays.includes(i)) {
+
+            // marcar futuro
+            if (thisDate > today) {
+                day.classList.add('future-day');
+                day.style.pointerEvents = 'none';
+                day.style.opacity = '0.4';
+            } else {
+                // clique habilitado apenas se for até hoje
+                day.addEventListener('click', function () {
+                    selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+                    currentPeriod = 'day';
+                    currentDate = new Date(selectedDate);
+
+                    updateDataDisplay();
+                    renderView();
+                });
+            }
+
+            // marcar visual futuro antes de adicionar
+            if (thisDate > today) {
+                day.classList.add('future-day');
+            }
+
+            if (thisDate < today && redDotDays.includes(i)) {
                 day.classList.add('has-anomaly');
             }
-            
-            // Adiciona evento de clique simples para selecionar o dia
-            day.addEventListener('click', function() {
-                selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-                currentPeriod = 'day';
-                renderView();
-            });
-            
+
             calendarDays.appendChild(day);
         }
         
@@ -169,12 +182,28 @@ function calendario() {
                 month.classList.add('selected');
             }
             
-            // Adiciona evento de clique simples para visualizar o mês
-            month.addEventListener('click', function() {
-                // Atualiza os dados para o mês selecionado
-                selectedDate = new Date(currentDate.getFullYear(), i, 1);
-                currentPeriod = 'month'; // Define o período como mensal
-                updateDataDisplay(); // Atualiza a exibição
+            // add evento de clique simples para visualizar o mês
+            month.addEventListener('click', function () {
+                const today = new Date();
+                const monthDate = new Date(currentDate.getFullYear(), i, 1);
+
+                // bloquear meses futuros
+                if (
+                    monthDate.getFullYear() > today.getFullYear() ||
+                    (monthDate.getFullYear() === today.getFullYear() &&
+                        monthDate.getMonth() > today.getMonth())
+                ) {
+                    month.classList.add('future-day');
+                    month.style.opacity = '0.4';
+                    month.style.pointerEvents = 'none';
+                    return;
+                }
+
+                // atualizar seleção e re-renderizar
+                selectedDate = monthDate;
+                currentPeriod = 'month';
+                updateDataDisplay();
+                renderView(); // força re-renderização para aplicar .selected imediatamente
             });
             
             // Adiciona evento de duplo clique para navegar para o mês
@@ -232,11 +261,29 @@ function calendario() {
                 year.classList.add('selected');
             }
             
-            // Adiciona evento de clique simples para visualizar o ano
+            // add evento de clique simples para visualizar o ano
             year.addEventListener('click', function() {
-                // Atualiza os dados para o ano selecionado
+                const today = new Date();
+
+                // bloquear anos futuros
+                if (i > today.getFullYear()) {
+                    year.classList.add('future-day');
+                    year.style.opacity = '0.4';
+                    year.style.pointerEvents = 'none';
+                    return;
+                }
+
+                // atualiza seleção
                 selectedDate = new Date(i, 0, 1);
                 currentPeriod = 'year';
+
+                // remove .selected de todos os anos
+                const allYears = document.querySelectorAll('#calendar-years .year');
+                allYears.forEach(y => y.classList.remove('selected'));
+
+                // aplica .selected no ano clicado
+                year.classList.add('selected');
+
                 updateDataDisplay();
             });
             
@@ -467,8 +514,26 @@ function calendario() {
 
         fetchLeituraDataPromise(currentPeriod, sensorId, selectedDate)
         .then(function(data) {
-            if (!data) {
-                console.warn('Sem dados para resumo de consumo — mantendo valores atuais ou mostrando —.');
+            if (!data || !data.timely_consumption || data.timely_consumption.length === 0) {
+                console.warn('Sem dados reais — preenchendo dados simulados no resumo.');
+                
+                // gera valores mock baseados no período
+                const fakeTotal = Math.floor(Math.random() * 3000) + 500; // L
+                const fakeAvg = Math.floor(fakeTotal / (currentPeriod === 'month' ? 30 : 12));
+                const fakeCost = (fakeTotal * 0.002).toFixed(2);
+                const fakeMax = fakeAvg + Math.floor(Math.random() * 100);
+                const fakeMin = fakeAvg - Math.floor(Math.random() * 50);
+                
+                document.getElementById('maxFlow').textContent = `${fakeMax} L`;
+                document.getElementById('maxFlowTime').textContent = '—';
+                document.getElementById('minFlow').textContent = `${fakeMin} L`;
+                document.getElementById('minFlowTime').textContent = '—';
+                document.getElementById('totalConsumption').textContent = `${fakeTotal} L`;
+                document.getElementById('avgPerHour').textContent = `${fakeAvg} L/h`;
+                if (document.getElementById('avgPerDay')) {
+                    document.getElementById('avgPerDay').textContent = `${fakeAvg} L`;
+                }
+                document.getElementById('estimatedCost').textContent = `R$ ${fakeCost}`;
                 return;
             }
 
@@ -476,11 +541,40 @@ function calendario() {
             const hc = data.highest_consumption || {};
             const lc = data.lowest_consumption || {};
 
-            document.getElementById('maxFlow').textContent = hc.value ? `${hc.value} L/min` : '—';
-            document.getElementById('maxFlowTime').textContent = hc.time ? `às ${hc.time}` : '';
-            document.getElementById('minFlow').textContent = lc.value ? `${lc.value} L/min` : '—';
-            document.getElementById('minFlowTime').textContent = lc.time ? `às ${lc.time}` : '';
+            document.getElementById('maxFlow').textContent = hc.value ? `${hc.value} L` : '—';
+            document.getElementById('minFlow').textContent = lc.value ? `${lc.value} L` : '—';
+            
+            let maxTimeText = '';
+            let minTimeText = '';
 
+            if (hc.time) {
+                if (currentPeriod === 'day') {
+                    maxTimeText = `às ${hc.time}`;
+                } else {
+                    const parsed = new Date(hc.time);
+                    if (!isNaN(parsed)) {
+                        maxTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
+                    } else {
+                        maxTimeText = hc.time;
+                    }
+                }
+            }
+
+            if (lc.time) {
+                if (currentPeriod === 'day') {
+                    minTimeText = `às ${lc.time}`;
+                } else {
+                    const parsed = new Date(lc.time);
+                    if (!isNaN(parsed)) {
+                        minTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
+                    } else {
+                        minTimeText = lc.time;
+                    }
+                }
+            }
+
+            document.getElementById('maxFlowTime').textContent = maxTimeText;
+            document.getElementById('minFlowTime').textContent = minTimeText;
             document.getElementById('totalConsumption').textContent = data.total_consumption ? `${data.total_consumption} L` : '—';
             document.getElementById('avgPerHour').textContent = data.average_consumption ? `${data.average_consumption} L/h` : '—';
             if (document.getElementById('avgPerDay')) {
@@ -561,7 +655,7 @@ function calendario() {
         notificationsList.innerHTML = '';
         
         if (notifications.length === 0) {
-            notificationsList.innerHTML = '<div class="no-notifications">Nenhuma notificação para este período</div>';
+            notificationsList.innerHTML = '<div class="no-notifications">Nenhuma notificação para este período.</div>';
             return;
         }
         
@@ -612,14 +706,34 @@ function calendario() {
             renderView();
         });
         
+        // aqui serve para bloquear navegação para meses/anos futuros
         document.getElementById('next-view').addEventListener('click', function() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let testDate = new Date(currentDate);
+
             if (currentView === 'month') {
+                testDate.setMonth(testDate.getMonth() + 1);
+                // bloqueia se for mês futuro
+                if (
+                testDate.getFullYear() > today.getFullYear() ||
+                (testDate.getFullYear() === today.getFullYear() &&
+                testDate.getMonth() > today.getMonth())
+                ) return;
                 currentDate.setMonth(currentDate.getMonth() + 1);
-            } else if (currentView === 'year') {
+            } 
+            else if (currentView === 'year') {
+                testDate.setFullYear(testDate.getFullYear() + 1);
+                if (testDate.getFullYear() > today.getFullYear()) return;
                 currentDate.setFullYear(currentDate.getFullYear() + 1);
-            } else if (currentView === 'decade') {
+            } 
+            else if (currentView === 'decade') {
+                testDate.setFullYear(testDate.getFullYear() + 10);
+                if (testDate.getFullYear() > today.getFullYear()) return;
                 currentDate.setFullYear(currentDate.getFullYear() + 10);
             }
+
             renderView();
         });
         

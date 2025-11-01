@@ -26,13 +26,8 @@
                 $sensor->user_id = $_GET['user_id'];
                 if(isset($_GET['sensor_id'])){
                     $sensor->sensor_id = $_GET['sensor_id'];
-                    if(readOne()){
-                        $sensor_arr = array (
-                            "sensor_id"=>$sensor->sensor_id,
-                            "sensor_name"=>$sensor->sensor_name,
-                            "register_state"=>$sensor->register_state,
-                            "tariff_value"=>$sensor->tariff_value
-                        );
+                    if($sensor->readOne()){
+                        $sensor_arr = $sensor->report;
                         http_response_code(200);
                         echo json_encode($sensor_arr);
                     } else {
@@ -40,7 +35,7 @@
                         echo json_encode(array("message"=>"Não foi possível fazer a leitura dos dados."));       
                     }
                 } else {
-                    if(read()){
+                    if($sensor->read()){
                         $sensor_arr = $sensor->report;                  
                         http_response_code(200);
                         echo json_encode($sensor_arr);
@@ -77,16 +72,15 @@
         break;
 
         case 'PUT':
+            $data = json_decode(file_get_contents("php://input"));
             if (!$data) {
                 http_response_code(400);
                 echo json_encode(array("message" => "Erro: dados não recebidos."));
                 exit;
             }
-            $data = json_decode(file_get_contents("php://input"));
             $sensor->user_id = $data->user_id;
             $sensor->sensor_id = $data->sensor_id;
             $sensor->sensor_name = $data->sensor_name;
-            $sensor->register_state = $data->register_state;
             $sensor->tariff_value = $data->tariff_value;
             if($sensor->update()) {
                 http_response_code(200);
@@ -99,6 +93,7 @@
 
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
+            
             if (!$data || !isset($data->sensor_id)) {
                 http_response_code(400);
                 echo json_encode(array("message" => "Erro: ID do sensor não recebido."));

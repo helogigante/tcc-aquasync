@@ -533,7 +533,7 @@ function calendario() {
                 if (document.getElementById('avgPerDay')) {
                     document.getElementById('avgPerDay').textContent = `${fakeAvg} L/dia`;
                 }
-                document.getElementById('estimatedCost').textContent = `R$ ${fakeCost.replace('.', ',')}`;
+                document.getElementById('estimatedCost').textContent = `R$ ${fakeCost}`;
                 return;
             }
 
@@ -548,28 +548,24 @@ function calendario() {
             let minTimeText = '';
 
             if (hc.time) {
-                if (currentPeriod === 'day') {
-                    maxTimeText = `às ${hc.time}`;
+                maxTimeText = `às ${hc.time}`;
+            } else {
+                const parsed = new Date(hc.time);
+                if (!isNaN(parsed)) {
+                    maxTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
                 } else {
-                    const parsed = new Date(hc.time);
-                    if (!isNaN(parsed)) {
-                        maxTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
-                    } else {
-                        maxTimeText = hc.time;
-                    }
+                    maxTimeText = hc.time;
                 }
             }
 
             if (lc.time) {
-                if (currentPeriod === 'day') {
-                    minTimeText = `às ${lc.time}`;
+                minTimeText = `às ${lc.time}`;
+            } else {
+                const parsed = new Date(lc.time);
+                if (!isNaN(parsed)) {
+                    minTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
                 } else {
-                    const parsed = new Date(lc.time);
-                    if (!isNaN(parsed)) {
-                        minTimeText = `em ${parsed.toLocaleDateString('pt-BR')}`;
-                    } else {
-                        minTimeText = lc.time;
-                    }
+                    minTimeText = lc.time;
                 }
             }
 

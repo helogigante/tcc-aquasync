@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - AquaSync</title>
+  <title>Home</title>
   
   <link rel="stylesheet" href="style/home.css">
   <link rel="stylesheet" href="style/footer.css">
@@ -11,11 +11,9 @@
 </head>
 
 <body>
-
   <nav class="navbar-container">
     <span class="navbar-title">AquaSync</span>
     
-
     <div class="sensor-dropdown">
       <select id="sensorDropdown" onchange="loadSensorData(this.value)">
         <option value="1">Casa A</option>
@@ -24,57 +22,47 @@
     </div>
   </nav>
     
-  <!-- Container principal do conteúdo -->
   <div class="container">
-  
     <div class="monitoring-card">
       <div class="monitoring-card-body">
-
         <div class="chart-container">
           <div class="chart-title">Vazão de Hoje</div>
           <canvas id="flowChart"></canvas>
         </div>
         
-        <!-- Container de informações -->
         <div class="info-container">
           <div class="info-grid">
-
             <div class="info-item">
               <div class="info-label">Último Registro</div>
-              <div class="info-value" id="lastRecord">— L/min</div>
+              <div class="info-value" id="lastRecord">— L</div>
               <div class="info-time" id="lastRecordTime">—</div>
             </div>
             
-
             <div class="info-item">
-              <div class="info-label">Consumo Diário</div>
-              <div class="info-value" id="dailyConsumption">— L</div>
+              <div class="info-label">Consumo Total</div>
+              <div class="info-value" id="dailyConsumption">— L/min</div>
             </div>
             
-
             <div class="info-item">
               <div class="info-label">Média</div>
               <div class="info-value" id="averageValue">— L/min</div>
             </div>
             
-
             <div class="info-item">
               <div class="info-label">Maior Vazão</div>
-              <div class="info-value" id="maxFlow">— L/min</div>
+              <div class="info-value" id="maxFlow">— L</div>
               <div class="info-time" id="maxFlowTime">—</div>
             </div>
             
-
             <div class="info-item">
               <div class="info-label">Menor Vazão</div>
-              <div class="info-value" id="minFlow">— L/min</div>
+              <div class="info-value" id="minFlow">— L</div>
               <div class="info-time" id="minFlowTime">—</div>
             </div>
             
             <div class="registry-container">
               <div class="registry-control">
                 <span class="switch-label">Registro:</span>
-
                 <label class="switch">
                   <input type="checkbox" id="valveSwitch">
                   <span class="slider"></span>
@@ -83,7 +71,6 @@
               <span id="statusText" class="status-text status-open">ABERTO</span>
             </div>
             
-
             <div class="timestamp">
               Atualizado em: <span id="updateTime">—/—/— —:—</span>
             </div>
@@ -93,10 +80,8 @@
     </div>
   </div>
 
-
   <div class="bottom-nav">
     <div class="bottom-nav-container">
-
       <a href="home.html" class="bottom-nav-btn active">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
           <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 
@@ -107,7 +92,6 @@
         </svg>
         <span>Início</span>
       </a>
-
 
       <a href="reports.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -123,7 +107,6 @@
         <span>Relatórios</span>
       </a>
 
-
       <a href="alerts.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
           <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 
@@ -132,7 +115,6 @@
         </svg>
         <span>Alertas</span>
       </a>
-
 
       <a href="profile.html" class="bottom-nav-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

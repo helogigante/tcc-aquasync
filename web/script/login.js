@@ -6,12 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
   
-  // Função para mostrar popup de alerta estilizado
   function showAlert(message, type = 'error') {
     const alertPopup = document.createElement('div');
     alertPopup.className = `custom-alert ${type}`;
     
-    // Adicionando ícones específicos para cada tipo
     const icon = type === 'error' 
         ? '<i class="fas fa-exclamation-circle"></i>' 
         : '<i class="fas fa-check-circle"></i>';
@@ -26,16 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
     
-
-    // Adicionar ao body
     document.body.appendChild(alertPopup);
 
-    // Mostrar com animação
     setTimeout(() => {
         alertPopup.classList.add('show');
     }, 10);
 
-    // Configurar fechamento
     const closeBtn = alertPopup.querySelector('.alert-close');
     closeBtn.addEventListener('click', () => {
         alertPopup.classList.remove('show');
@@ -46,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     });
 
-    // Fechar automaticamente após 5 segundos
     setTimeout(() => {
         if (alertPopup.parentNode) {
             alertPopup.classList.remove('show');
@@ -78,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     input.parentNode.appendChild(errorElement);
   }
 
-  // Função para remover mensagem de erro
   function removeError(input) {
     const existingError = input.parentNode.querySelector('.error-message');
     if (existingError) {
@@ -87,13 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
     input.style.borderColor = '#DAE1F1';
   }
 
-  // Função para mostrar sucesso
   function showSuccess(input) {
     removeError(input);
     input.style.borderColor = '#2ecc71';
   }
 
-  // Validação do campo de usuário/e-mail
   function validateUsername() {
     const value = username.value.trim();
     
@@ -102,31 +92,26 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     
-    // Verifica se é um e-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(value)) {
-      // É um e-mail válido
       showSuccess(username);
       return true;
     } else {
-      // É um nome de usuário - verifica comprimento mínimo
       if (value.length < 3) {
         showError(username, 'Usuário deve ter pelo menos 3 caracteres');
         return false;
       }
       
-      // Verifica caracteres válidos para usuário
-if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
-    showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
-    return false;
-}
+      if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
+        showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
+        return false;
+      }
       
       showSuccess(username);
       return true;
     }
   }
 
-  // Validação do campo de senha
   function validatePassword() {
     const value = password.value;
     
@@ -144,7 +129,6 @@ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
     return true;
   }
 
-  // validação em tempo real
   username.addEventListener('blur', validateUsername);
   username.addEventListener('input', function() {
     if (this.value.trim() !== '') {
@@ -161,7 +145,6 @@ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
     }
   });
 
-  // Validação do formulário completo
   function validateForm() {
     const isUsernameValid = validateUsername();
     const isPasswordValid = validatePassword();
@@ -190,7 +173,6 @@ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
         if (status === 200 && result.user_id) {
           showAlert(result.message || "Login realizado com sucesso.", "success");
         
-          // salva o ID do usuário no localStorage
           localStorage.setItem("user_id", result.user_id);          
           setTimeout(() => {
             window.location.href = "Home.html";
@@ -205,7 +187,6 @@ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
     });
   });
 
-  // submit com Enter
   form.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -213,7 +194,6 @@ if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
     }
   });
 
-  // Limpa os erros ao focar nos campos
   username.addEventListener('focus', function() {
     removeError(this);
     this.style.borderColor = '#DAE1F1';

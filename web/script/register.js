@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
 
-  // Função para mostrar popup de alerta estilizado
   function showAlert(message, type = 'error') {
-    // Criar elemento do popup
     const alertPopup = document.createElement('div');
     alertPopup.className = `custom-alert ${type}`;
     alertPopup.innerHTML = `
@@ -24,15 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 `;
 
-    // Adicionar ao body
     document.body.appendChild(alertPopup);
 
-    // Mostrar com animação
     setTimeout(() => {
         alertPopup.classList.add('show');
     }, 10);
 
-    // Configurar fechamento
     const closeBtn = alertPopup.querySelector('.alert-close');
     closeBtn.addEventListener('click', () => {
         alertPopup.classList.remove('show');
@@ -43,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     });
 
-    // Fechar automaticamente após 5 segundos
     setTimeout(() => {
         if (alertPopup.parentNode) {
             alertPopup.classList.remove('show');
@@ -62,10 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
       existingError.remove();
     }
     
-    // Adiciona borda vermelha ao input
     input.style.borderColor = '#e74c3c';
     
-    // Cria e exibe a mensagem de erro
     const errorElement = document.createElement('div');
     errorElement.className = 'error-message';
     errorElement.style.color = '#e74c3c';
@@ -76,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
     input.parentNode.appendChild(errorElement);
   }
 
-  // Função para remover mensagem de erro
   function removeError(input) {
     const existingError = input.parentNode.querySelector('.error-message');
     if (existingError) {
@@ -85,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
     input.style.borderColor = '#DAE1F1';
   }
 
-  // Funções de validação individuais
   function validateUsername() {
     const value = username.value.trim();
     
@@ -99,11 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     
-    // aceita acentos e caracteres especiais 
- if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
-    showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
-    return false;
-}
+    if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\sçÇ]+$/.test(value)) {
+      showError(username, 'Usuário só pode conter letras, números, espaços e underscore');
+      return false;
+    }
     
     removeError(username);
     return true;
@@ -136,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     
-    // Remove caracteres não numéricos para validação
     const cleanPhone = value.replace(/\D/g, '');
     
     if (cleanPhone.length < 10 || cleanPhone.length > 11) {
@@ -208,14 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
     return true;
   }
 
-  // Event listeners para validação em tempo real
   username.addEventListener('blur', validateUsername);
   email.addEventListener('blur', validateEmail);
   phone.addEventListener('blur', validatePhone);
   password.addEventListener('blur', validatePassword);
   confirmPassword.addEventListener('blur', validateConfirmPassword);
 
-  // Validação do formulário completo
   function validateForm() {
     const isUsernameValid = validateUsername();
     const isEmailValid = validateEmail();
@@ -267,9 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Validação em tempo real para alguns campos
   phone.addEventListener('input', function(e) {
-    // Formatação automática do telefone
     let value = e.target.value.replace(/\D/g, '');
     
     if (value.length <= 11) {
@@ -282,7 +266,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Feedback visual para campos válidos
   function addValidStyle(input) {
     input.addEventListener('input', function() {
       if (this.value.trim() !== '') {
@@ -293,6 +276,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Aplicar feedback visual a todos os campos
   [username, email, phone, password, confirmPassword].forEach(addValidStyle);
 });

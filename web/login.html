@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - AquaSync</title>
+  <title>Login</title>
   
   <link rel="stylesheet" href="style/background_bubble.css">
   <link rel="stylesheet" href="style/login.css">
   <link rel="stylesheet" href="style/Intro.css">
-   <link rel="stylesheet" href="style/pop-up.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style/pop-up.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Container do oceano com bolhas animadas -->
   <div class="ocean">
     <div class="bubble bubble--1"></div>
     <div class="bubble bubble--2"></div>
@@ -26,35 +25,29 @@
     <div class="bubble bubble--10"></div>
   </div>
 
-  <!-- Tela de introdução com animação de carregamento -->
   <div id="intro">
     <div class="loader">
       <h1>AquaSync</h1>
     </div>
   </div>
 
-  <!-- Conteúdo principal do formulário de login -->
   <main>
     <div class="form-container">
       <p class="title">Bem-Vindo(a)!</p>
       <form class="form">
-        <!-- Campo de entrada para nome de usuário -->
         <div class="input-group">
           <label for="username">Usuário</label>
           <input type="text" name="username" id="username" placeholder="">
         </div>
         
-        <!-- Campo de entrada para senha -->
         <div class="input-group">
           <label for="password">Senha</label>
           <input type="password" name="password" id="password" placeholder="">
         </div>
         
-        <!-- Botão de submissão do formulário -->
         <button class="sign" type="button">Entrar</button>
       </form>
 
-      <!-- Link para página de registro -->
       <div class="account-prompt">
         Não possui uma conta? <a href="register.html" class="register-link">Cadastre-se</a>
       </div>
@@ -64,7 +57,6 @@
   <script src="script/login.js"></script>
 
   <script>
-    // Simula o carregamento e remove a tela de introdução após 2.5 segundos
     setTimeout(() => {
       document.getElementById('intro').style.opacity = '0';
       setTimeout(() => {

@@ -1,4 +1,4 @@
-/* ===== ESTILOS GERAIS ===== */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,7 +19,7 @@ body {
   padding: 20px;
 }
 
-/* ===== ESTILOS DO CONTAINER DO FORMULÁRIO ===== */
+/* formulario de login*/
 .form-container {
   width: 100%;
   max-width: 600px;
@@ -35,7 +35,7 @@ body {
   z-index: 2;
 }
 
-/* ===== ESTILOS DO TÍTULO ===== */
+
 .title {
   text-align: center;
   font-size: 2rem;
@@ -45,14 +45,13 @@ body {
   color: #212E4E;
 }
 
-/* ===== ESTILOS DO FORMULÁRIO ===== */
 .form {
   margin-top: 1.5rem;
 }
 
-/* ===== ESTILOS DOS GRUPOS DE ENTRADA ===== */
+
 .input-group {
-  margin-bottom: 1.8rem; 
+  margin-bottom: 1.8rem;
   display: block;
   position: relative;
 }
@@ -85,7 +84,7 @@ body {
   box-shadow: 0 0 0 4px rgba(150, 179, 223, 0.3);
 }
 
-/* ===== ESTILOS PARA MENSAGENS DE ERRO ===== */
+/*mensagem de erro*/
 .error-message {
   color: #e74c3c;
   font-size: 0.85rem;
@@ -98,7 +97,6 @@ body {
   word-wrap: break-word;
 }
 
-/* ===== ESTILOS DO BOTÃO ===== */
 .sign {
   display: block;
   width: 100%;
@@ -126,7 +124,6 @@ body {
   transform: none;
 }
 
-/* ===== ESTILOS DO PROMPT DE CONTA ===== */
 .account-prompt {
   text-align: center;
   margin-top: 2.5rem;
@@ -149,7 +146,7 @@ body {
   text-decoration: underline;
 }
 
-/* ===== ESTILOS DO FUNDO DO OCEANO ===== */
+
 .ocean {
   position: fixed;
   bottom: 0;
@@ -160,7 +157,7 @@ body {
   z-index: 1;
 }
 
-/* ===== ESTILOS DAS BOLHAS ===== */
+/*corzinha das bolhas e as animações tbm*/
 .bubble {
   position: absolute;
   bottom: -100px;
@@ -169,7 +166,6 @@ body {
   animation: float 15s infinite ease-in-out;
 }
 
-/* Tamanhos e posições individuais para cada bolha */
 .bubble--1 {
   width: 80px;
   height: 80px;
@@ -242,7 +238,7 @@ body {
   animation-delay: 1.2s;
 }
 
-/* ===== ANIMAÇÃO DAS BOLHAS ===== */
+/*animação das bolhas*/
 @keyframes float {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -258,12 +254,11 @@ body {
   }
 }
 
-/* ===== ESTILOS RESPONSIVOS ===== */
-/* Tablets e telas menores */
+/*responsividade*/
 @media (max-width: 768px) {
   .form-container {
     width: 95%;
-    padding: 30px 35px; 
+    padding: 30px 35px;
     max-width: 500px;
     min-width: auto;
   }
@@ -293,7 +288,6 @@ body {
   }
 }
 
-/* Dispositivos móveis médios */
 @media (max-width: 576px) {
   .form-container {
     width: 92%;
@@ -338,7 +332,6 @@ body {
   }
 }
 
-/* Dispositivos móveis pequenos */
 @media (max-width: 480px) {
   body {
     padding: 15px;
@@ -390,7 +383,6 @@ body {
   }
 }
 
-/* Dispositivos móveis muito pequenos */
 @media (max-width: 360px) {
   body {
     padding: 10px;
@@ -426,7 +418,6 @@ body {
   }
 }
 
-/* Ajustes para telas muito altas */
 @media (min-height: 800px) {
   .form-container {
     margin: 2rem auto;

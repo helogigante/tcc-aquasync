@@ -1,5 +1,3 @@
-/* ===== ESTILOS GERAIS ===== */
-/* Reset de estilos padrão do navegador */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,27 +5,26 @@
 }
 
 .back-arrow {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-    z-index: 10;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s;
 }
 
 .back-arrow:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Estilos base para o corpo da página */
 body {
   margin: 0;
   min-height: 100vh;
@@ -42,7 +39,6 @@ body {
   padding: 20px;
 }
 
-/* ===== ESTILOS DO CONTAINER DO FORMULÁRIO ===== */
 .form-container {
   width: 100%;
   max-width: 500px;
@@ -57,7 +53,6 @@ body {
   z-index: 2;
 }
 
-/* ===== ESTILOS DO TÍTULO ===== */
 .title {
   text-align: center;
   font-size: 2rem;
@@ -67,12 +62,10 @@ body {
   color: #212E4E;
 }
 
-/* ===== ESTILOS DO FORMULÁRIO ===== */
 .form {
   margin-top: 1.5rem;
 }
 
-/* ===== ESTILOS DOS GRUPOS DE ENTRADA ===== */
 .input-group {
   margin-bottom: 1.5rem;
   display: block;
@@ -106,7 +99,6 @@ body {
   box-shadow: 0 0 0 4px rgba(150, 179, 223, 0.3);
 }
 
-/* ===== ESTILOS DO BOTÃO ===== */
 .sign {
   display: block;
   width: 100%;
@@ -128,8 +120,6 @@ body {
   box-shadow: 0 10px 20px rgba(33, 46, 78, 0.25);
 }
 
-
-/* ===== ESTILOS DO FUNDO DO OCEANO ===== */
 .ocean {
   position: fixed;
   bottom: 0;
@@ -140,7 +130,6 @@ body {
   z-index: 1;
 }
 
-/* ===== ESTILOS DAS BOLHAS ===== */
 .bubble {
   position: absolute;
   bottom: -100px;
@@ -149,7 +138,6 @@ body {
   animation: float 15s infinite ease-in-out;
 }
 
-/* Tamanhos e posições individuais para cada bolha */
 .bubble--1 {
   width: 80px;
   height: 80px;
@@ -246,7 +234,6 @@ body {
   animation-delay: 1.7s;
 }
 
-/* ===== ANIMAÇÃO DAS BOLHAS ===== */
 @keyframes float {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -262,8 +249,6 @@ body {
   }
 }
 
-/* ===== ESTILOS RESPONSIVOS ===== */
-/* Tablets e telas menores */
 @media (max-width: 768px) {
   .form-container {
     width: 95%;
@@ -271,61 +256,45 @@ body {
     max-width: 500px;
   }
   .back-arrow {
-        top: 15px;
-        left: 15px;
-        font-size: 18px;
-        width: 35px;
-        height: 35px;
-    }
+    top: 15px;
+    left: 15px;
+    font-size: 18px;
+    width: 35px;
+    height: 35px;
+  }
   .title {
     font-size: 1.8rem;
   }
-  
   .input-group input {
     padding: 0.8rem 1rem;
   }
 }
 
-/* Dispositivos móveis */
 @media (max-width: 576px) {
   .form-container {
     width: 92%;
     padding: 20px;
   }
-  
   .title {
     font-size: 1.6rem;
   }
-  
   .input-group input {
     padding: 0.7rem 0.9rem;
     font-size: 0.95rem;
   }
-  
   .sign {
     padding: 0.9rem;
     font-size: 1rem;
   }
-  
   .input-group label {
     font-size: 0.95rem;
   }
-  
-  .signup {
-    font-size: 0.9rem;
-  }
-  
-  .signup a {
-    font-size: 0.9rem;
-  }
 }
 
-/* Dispositivos móveis muito pequenos */
 @media (max-width: 400px) {
   .title {
     font-size: 1.5rem;
   }
-  
   .form-container {
     padding: 15px;
   }

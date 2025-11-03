@@ -22,7 +22,7 @@
         function readActualDay(){
             $status = array(true);
 
-            //consumo total
+            // consumo total
             $query = "SELECT round(SUM(valor_leitura), 2) AS total_consumption 
                         FROM $this->table_name
                         WHERE id_sensor = :sensor AND DATE(dt_hr_leitura) = CURRENT_DATE;";
@@ -39,7 +39,34 @@
             } else {
                 $status[] = false;
             }
-            //custo total
+
+            // consumo total de cada hora
+            $query = "SELECT HOUR(dt_hr_leitura) AS 'time', SUM(valor_leitura) AS 'value'
+                        FROM $this->table_name
+                        WHERE id_sensor = :sensor AND DATE(dt_hr_leitura) = CURRENT_DATE
+                        GROUP BY HOUR(dt_hr_leitura);";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":sensor", $this->sensor);
+            $stmt->execute();
+
+            $this->report["timely_consumption"] = array();
+            $hourlyStatus = true;
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                if($row['time'] !== null) {
+                    $this->report["timely_consumption"][] = [
+                        "time" => $row['time'],
+                        "value" => number_format($row['value'], 2, ',', '.')
+                    ];
+                } else {
+                    $hourlyStatus = false;
+                    break;
+                }
+            }
+            $status[] = $hourlyStatus;
+
+            // custo total
             $query = "SELECT (SUM(l.valor_leitura) * s.valor_fatura) AS estimated_cost
                 FROM $this->table_name AS l
                 INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
@@ -58,7 +85,7 @@
                 $status[] = false;
             }
 
-            //média de consumo
+            // média de consumo
             $query = "SELECT AVG(avg_c) AS average_consumption 
                         FROM (
                             SELECT round(AVG(valor_leitura), 2) AS avg_c
@@ -80,7 +107,7 @@
                 $status[] = false;
             }
 
-            //vazão mais recente
+            // vazão mais recente
             $query = "SELECT time(dt_hr_leitura) AS 'time', valor_leitura AS 'value'
                         FROM $this->table_name 
                         WHERE id_sensor = :sensor and DATE(dt_hr_leitura) = CURRENT_DATE 
@@ -99,7 +126,7 @@
                 $status[] = false;
             }
 
-            //maior vazão
+            // maior vazão
             $query = "SELECT time(dt_hr_leitura) AS 'time', valor_leitura AS 'value'
                         FROM $this->table_name 
                         WHERE id_sensor = :sensor and DATE(dt_hr_leitura) = CURRENT_DATE 
@@ -119,7 +146,7 @@
                 $status[] = false;
             }
 
-            //menor vazão
+            // menor vazão
             $query = "SELECT time(dt_hr_leitura) AS 'time', valor_leitura AS 'value'
                         FROM $this->table_name 
                         WHERE id_sensor = :sensor AND DATE(dt_hr_leitura) = CURRENT_DATE 
@@ -300,8 +327,10 @@
 
             $allSuccess = true;
             foreach ($status as $response) {
-                if(!$response) $allSuccess = false;
-                break;
+                if (!$response) {
+                    $allSuccess = false;
+                    break;
+                }
             }
             return $allSuccess;
         }
@@ -354,10 +383,10 @@
                 $status[] = false;
             }
             //custo total estimado
-            $query = "SELECT (sum(valor_leitura) * valor_fatura) AS estimated_cost 
-                        FROM $this->table_name 
-                        INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
-                        WHERE $this->table_name.id_sensor = :sensor AND MONTH(dt_hr_leitura) = :l_month AND YEAR(dt_hr_leitura) = :l_year;";
+            $query = "SELECT (SUM(l.valor_leitura) * s.valor_fatura) AS estimated_cost 
+                FROM $this->table_name AS l
+                INNER JOIN sensor AS s ON l.id_sensor = s.id_sensor
+                WHERE l.id_sensor = :sensor AND MONTH(l.dt_hr_leitura) = :l_month AND YEAR(l.dt_hr_leitura) = :l_year;";
             
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor",$this->sensor);

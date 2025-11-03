@@ -51,10 +51,10 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if($row && $row['estado_registro'] !== null) {
-                $this->report["sensor_id"] = $row['id_sensor'];
-                $this->report["sensor_name"] = $row['nome_sensor'];
-                $this->report["register_state"] = $row['estado_registro'];
-                $this->report["tariff_value"] = number_format($row['valor_fatura'], 2, ',', '.');
+                $this->sensor_id = $row['id_sensor'];
+                $this->sensor_name = $row['nome_sensor'];
+                $this->register_state = $row['estado_registro'];
+                $this->tariff_value = number_format($row['valor_fatura'], 2, ',', '.');
                 $status[] = true;
             } else {
                 $status[] = false;

@@ -463,8 +463,8 @@ function calendario() {
 
                 flowChartInstance = new Chart(ctx, {
                     type: currentPeriod === 'day' ? 'line' : 'bar',
-                    data: { labels: labels, datasets: [{ label: 'Vazão (L/min)', data: flowData, borderColor: '#253140', backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140', fill: currentPeriod === 'day', tension: 0.4, pointBackgroundColor: '#253140', pointRadius: 3, pointHoverRadius: 5 }]},
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Vazão (L/min)' } }, x: { title: { display: true, text: 'Tempo' } } } }
+                    data: { labels: labels, datasets: [{ label: 'Vazão (L)', data: flowData, borderColor: '#253140', backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140', fill: currentPeriod === 'day', tension: 0.4, pointBackgroundColor: '#253140', pointRadius: 3, pointHoverRadius: 5 }]},
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Vazão (L)' } }, x: { title: { display: true, text: 'Tempo' } } } }
                 });
 
                 return;
@@ -485,7 +485,7 @@ function calendario() {
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Vazão (L/min)',
+                        label: 'Vazão (L)',
                         data: flowData,
                         borderColor: '#253140',
                         backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140',
@@ -500,7 +500,7 @@ function calendario() {
                     responsive: true,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Vazão (L/min)' } },
+                        y: { beginAtZero: true, title: { display: true, text: 'Vazão (L)' } },
                         x: { title: { display: true, text: currentPeriod === 'day' ? 'Hora do dia' : currentPeriod === 'month' ? 'Dia do mês' : currentPeriod === 'year' ? 'Mês' : 'Ano' } }
                     }
                 }
@@ -531,9 +531,9 @@ function calendario() {
                 document.getElementById('totalConsumption').textContent = `${fakeTotal} L`;
                 document.getElementById('avgPerHour').textContent = `${fakeAvg} L/h`;
                 if (document.getElementById('avgPerDay')) {
-                    document.getElementById('avgPerDay').textContent = `${fakeAvg} L`;
+                    document.getElementById('avgPerDay').textContent = `${fakeAvg} L/dia`;
                 }
-                document.getElementById('estimatedCost').textContent = `R$ ${fakeCost}`;
+                document.getElementById('estimatedCost').textContent = `R$ ${fakeCost.replace('.', ',')}`;
                 return;
             }
 

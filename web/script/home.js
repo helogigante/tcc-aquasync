@@ -47,7 +47,7 @@ function updateFlowChart(sensorId, timelyData) {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Vazão (L/min)',
+        label: 'Vazão (L)',
         data: values,
         borderColor: '#2c74b8',
         backgroundColor: 'rgba(44, 116, 184, 0.1)',
@@ -122,7 +122,7 @@ function initHomePage() {
   setupValveSwitch();
   
   updateTime();
-  setInterval(updateTime, 60000);
+  setInterval(updateTime, 1000);
   
   setupDropdownAnimations();
   
@@ -131,6 +131,7 @@ function initHomePage() {
     if (dropdown) dropdown.value = '1';
     console.log("Carregando dados iniciais da Casa A...");
     loadSensorData('1');
+    setInterval(loadSensorData, 1000, '1');
   });
 }
 

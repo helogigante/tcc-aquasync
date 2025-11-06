@@ -1,7 +1,7 @@
 <?php
-    header("Access-Control-Allow-Origin: *");//aceita chamadas de todos outros domínios
-    header("Content-Type: application/json");//tipo de dados da resposta
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Methods: GET, POST");
     header("Access-Control-Max-Age: 3600"); 
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, XRequested-Width;");
 
@@ -10,4 +10,16 @@
 
     $database = new Database();
     $db = $database->getConnection();
+    $alerta = new Alerta($db);
+
+    $method = $_SERVER['REQUEST_METHOD'];//supervariável global "$_XXX"
+
+    switch($method) {
+        case 'GET':
+           
+        break;
+        case 'PUT':
+            
+        break;
+    }
 ?>

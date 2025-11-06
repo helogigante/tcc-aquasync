@@ -424,6 +424,7 @@ function calendario() {
 
     // desenhar o gráfico de vazão (estilo do relatorio.html)
     function drawVazaoChart() {
+        let caption;
         resizeCanvas();
 
         if (flowChartInstance) {
@@ -445,26 +446,30 @@ function calendario() {
                 if (currentPeriod === 'day') {
                     labels = Array.from({length: 24}, (_, i) => `${i}:00`);
                     flowData = Array.from({length: 24}, () => Math.floor(Math.random() * 25) + 5);
+                    caption = 'Horário';
                 // mês
                 } else if (currentPeriod === 'month') {
                     const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
                     labels = Array.from({length: daysInMonth}, (_, i) => `${i + 1}`);
                     flowData = Array.from({length: daysInMonth}, () => Math.floor(Math.random() * 20) + 10);
+                    caption = 'Dia';
                 // ano
                 } else if (currentPeriod === 'year') {
                     labels = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
                     flowData = Array.from({length: 12}, () => Math.floor(Math.random() * 30) + 15);
+                    caption = 'Mês';
                 // década
                 } else {
                     const startYear = Math.floor(selectedDate.getFullYear() / 10) * 10;
                     labels = Array.from({length: 10}, (_, i) => `${startYear + i}`);
                     flowData = Array.from({length: 10}, () => Math.floor(Math.random() * 40) + 20);
+                    caption = 'ano';
                 }
 
                 flowChartInstance = new Chart(ctx, {
                     type: currentPeriod === 'day' ? 'line' : 'bar',
                     data: { labels: labels, datasets: [{ label: 'Vazão', data: flowData, borderColor: '#253140', backgroundColor: currentPeriod === 'day' ? 'rgba(37, 49, 64, 0.1)' : '#253140', fill: currentPeriod === 'day', tension: 0.4, pointBackgroundColor: '#253140', pointRadius: 3, pointHoverRadius: 5 }]},
-                    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Vazão (L)' } }, x: { title: { display: true, text: 'Horário' } } } }
+                    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Vazão (L)' } }, x: { title: { display: true, text: caption } } } }
                 });
 
                 return;

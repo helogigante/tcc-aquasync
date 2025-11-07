@@ -104,7 +104,8 @@
         }
 
         function update(){
-            $query ="UPDATE $this->table_name SET nome_sensor = ':sensor_name', estado_registro = :register_state, valor_fatura = :tariff_value WHERE id_sensor = :sensor_id";
+            $this->tariff_value = str_replace(',', '.', $this->tariff_value);
+            $query ="UPDATE $this->table_name SET nome_sensor = :sensor_name, estado_registro = :register_state, valor_fatura = :tariff_value WHERE id_sensor = :sensor_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor_id", $this->sensor_id);
             $stmt->bindParam(":sensor_name", $this->sensor_name);

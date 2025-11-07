@@ -60,25 +60,56 @@ function updateFlowChart(sensorId, timelyData) {
   });
 }
 
+// função que configura estado_registro
 function setupValveSwitch() {
   const valveSwitch = document.getElementById('valveSwitch');
   const statusText = document.getElementById('statusText');
-  
-  if (valveSwitch && statusText) {
-    valveSwitch.checked = true;
-    statusText.textContent = "ABERTO";
-    statusText.className = "status-text status-open";
-    
-    valveSwitch.addEventListener('change', function() {
-      if (this.checked) {
-        statusText.textContent = "ABERTO";
-        statusText.className = "status-text status-open";
-      } else {
-        statusText.textContent = "FECHADO";
-        statusText.className = "status-text status-closed";
-      }
-    });
-  }
+  const sensorId = 1;
+  let sensorInfo = {}; // armazena nome e valor atuais do sensor
+
+  if (!valveSwitch || !statusText) return;
+
+  // busca o estado atual do registro e salva dados
+  fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=1&sensor_id=${sensorId}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Estado recebido do banco:", data);
+
+      sensorInfo = {
+        name: data.sensor_name,
+        tariff: data.tariff_value
+      };
+
+      const estado = parseInt(data.register_state);
+      valveSwitch.checked = estado === 1;
+
+      statusText.textContent = valveSwitch.checked ? "ABERTO" : "FECHADO";
+      statusText.className = valveSwitch.checked ? "status-text status-open" : "status-text status-closed";
+    })
+    .catch(error => console.error("Erro ao buscar estado do registro:", error));
+
+  // quando o switch é alterado
+  valveSwitch.addEventListener('change', function () {
+    const newState = this.checked ? 1 : 0;
+
+    statusText.textContent = this.checked ? "ABERTO" : "FECHADO";
+    statusText.className = this.checked ? "status-text status-open" : "status-text status-closed";
+
+    // atualiza o estado no banco
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sensor_id: sensorId,
+        sensor_name: sensorInfo.name,
+        tariff_value: sensorInfo.tariff,
+        register_state: newState
+      })
+    })
+      .then(response => response.json())
+      .then(data => console.log("Estado do registro atualizado:", data))
+      .catch(error => console.error("Erro ao atualizar estado:", error));
+  });
 }
 
 function updateTime() {
@@ -119,19 +150,16 @@ function setupDropdownAnimations() {
 }
 
 function initHomePage() {
-  setupValveSwitch();
-  
   updateTime();
   setInterval(updateTime, 1000);
   
   setupDropdownAnimations();
-  
+
   window.addEventListener('load', () => {
-    const dropdown = document.getElementById('sensorDropdown');
-    if (dropdown) dropdown.value = '1';
-    console.log("Carregando dados iniciais da Casa A...");
+    console.log("Carregando dados iniciais...");
     loadSensorData('1');
-    setInterval(loadSensorData, 1000, '1');
+    setupValveSwitch();
+    setInterval(() => loadSensorData('1'), 1000);
   });
 }
 

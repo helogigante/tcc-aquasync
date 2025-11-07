@@ -539,6 +539,376 @@ function setupDisconnectModal() {
     }
 }
 
+// Função para configurar a exclusão de sensor
+function setupSensorDeletion() {
+    const deleteSensorBtn = document.getElementById('deleteSensorBtn');
+    
+    if (deleteSensorBtn) {
+        deleteSensorBtn.addEventListener('click', () => {
+            const selectedSensor = document.getElementById('sensorSelect').value;
+            
+            if (!selectedSensor) {
+                showAlert('Por favor, selecione um sensor para excluir.', 'error');
+                return;
+            }
+            
+            const sensorName = document.getElementById('sensorSelect').options[document.getElementById('sensorSelect').selectedIndex].text;
+            
+            // Mostrar popup de confirmação personalizado
+            showConfirm(
+                `Tem certeza que deseja excluir o sensor "${sensorName}"? Esta ação é irreversível e todos os dados deste sensor serão perdidos.`,
+                () => {
+                    // Callback para confirmar a exclusão
+                    handleSensorDeletion(selectedSensor, sensorName);
+                },
+                () => {
+                    // Callback para cancelar - não faz nada
+                    console.log('Exclusão de sensor cancelada pelo usuário');
+                }
+            );
+        });
+    }
+}
+
+// Função para lidar com a exclusão do sensor
+function handleSensorDeletion(sensorId, sensorName) {
+    // Fazer requisição para a API para excluir o sensor
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sensor_id: sensorId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert(`Sensor "${sensorName}" excluído com sucesso!`, 'success');
+            
+            // Remover o sensor do dropdown
+            const sensorSelect = document.getElementById('sensorSelect');
+            const optionToRemove = sensorSelect.querySelector(`option[value="${sensorId}"]`);
+            if (optionToRemove) {
+                optionToRemove.remove();
+            }
+            
+            // Resetar o formulário
+            sensorSelect.value = '';
+            document.getElementById('editSensorName').value = '';
+            document.getElementById('editBillValue').value = '';
+            
+            // Esconder os campos
+            const sensorFields = document.querySelectorAll('.sensor-fields');
+            sensorFields.forEach(field => {
+                field.classList.remove('show');
+                setTimeout(() => {
+                    field.style.display = 'none';
+                }, 300);
+            });
+            
+            // Atualizar o estado do botão de excluir
+            updateDeleteButtonState();
+            
+            // Atualizar o localStorage para sincronizar com a home
+            removeSensorFromStorage(sensorId);
+            
+        } else {
+            showAlert('Erro ao excluir sensor: ' + (data.message || 'Erro desconhecido'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao excluir sensor:', error);
+        showAlert('Erro de comunicação com o servidor.', 'error');
+    });
+}
+
+// Função para remover sensor do localStorage
+function removeSensorFromStorage(sensorId) {
+    const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
+    delete sensorUpdates[sensorId];
+    localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
+    
+    // Disparar um evento customizado para notificar outras páginas
+    window.dispatchEvent(new CustomEvent('sensorDeleted', {
+        detail: { sensorId }
+    }));
+}
+
+// Função para atualizar o estado do botão de excluir
+function updateDeleteButtonState() {
+    const deleteSensorBtn = document.getElementById('deleteSensorBtn');
+    const selectedSensor = document.getElementById('sensorSelect').value;
+    
+    if (deleteSensorBtn) {
+        if (selectedSensor) {
+            deleteSensorBtn.disabled = false;
+        } else {
+            deleteSensorBtn.disabled = true;
+        }
+    }
+}
+
+// Função para configurar o modal de edição de sensor
+function setupEditSensorModal() {
+    const editSensorBtn = document.getElementById('editSensorBtn');
+    const editSensorModal = document.getElementById('editSensorModal');
+    const closeEditSensorModal = document.getElementById('closeEditSensorModal');
+    const cancelEditSensor = document.getElementById('cancelEditSensor');
+    const saveEditSensor = document.getElementById('saveEditSensor');
+    const sensorSelect = document.getElementById('sensorSelect');
+    const sensorFields = document.querySelectorAll('.sensor-fields');
+
+    // Configurar abertura do modal de edição de sensor
+    if (editSensorBtn) {
+        editSensorBtn.addEventListener('click', () => {
+            editSensorModal.classList.add('active');
+            
+            // Carregar sensores do usuário
+            loadUserSensors();
+            
+            // Resetar o formulário quando abrir o modal
+            sensorSelect.value = '';
+            sensorFields.forEach(field => {
+                field.style.display = 'none';
+                field.classList.remove('show');
+            });
+            document.getElementById('editSensorName').value = '';
+            document.getElementById('editBillValue').value = '';
+            
+            // Atualizar estado do botão de excluir
+            updateDeleteButtonState();
+        });
+    }
+
+    // Configurar mudança no dropdown de sensores
+    if (sensorSelect) {
+        sensorSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            
+            if (selectedValue) {
+                // Mostrar campos quando um sensor é selecionado
+                sensorFields.forEach(field => {
+                    field.style.display = 'block';
+                    setTimeout(() => {
+                        field.classList.add('show');
+                    }, 10);
+                });
+
+                // Carregar dados do sensor selecionado
+                loadSensorData(selectedValue);
+            } else {
+                // Esconder campos quando nenhum sensor é selecionado
+                sensorFields.forEach(field => {
+                    field.classList.remove('show');
+                    setTimeout(() => {
+                        field.style.display = 'none';
+                    }, 300);
+                });
+            }
+            
+            // Atualizar estado do botão de excluir
+            updateDeleteButtonState();
+        });
+    }
+
+    // Função para carregar dados do sensor
+    function loadSensorData(sensorId) {
+        // Buscar dados reais do sensor da API
+        fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}&sensor_id=${sensorId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.sensor_name) {
+                    document.getElementById('editSensorName').value = data.sensor_name;
+                    document.getElementById('editBillValue').value = data.tariff_value || '';
+                } else {
+                    // Fallback para dados de exemplo se a API não retornar
+                    const sensorData = {
+                        '1': { sensor_name: 'Casa A', tariff_value: '5.50' },
+                        '2': { sensor_name: 'Casa B', tariff_value: '6.20' }
+                    };
+                    const fallbackData = sensorData[sensorId];
+                    if (fallbackData) {
+                        document.getElementById('editSensorName').value = fallbackData.sensor_name;
+                        document.getElementById('editBillValue').value = fallbackData.tariff_value;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar dados do sensor:', error);
+                // Fallback para dados de exemplo em caso de erro
+                const sensorData = {
+                    '1': { sensor_name: 'Casa A', tariff_value: '5.50' },
+                    '2': { sensor_name: 'Casa B', tariff_value: '6.20' }
+                };
+                const fallbackData = sensorData[sensorId];
+                if (fallbackData) {
+                    document.getElementById('editSensorName').value = fallbackData.sensor_name;
+                    document.getElementById('editBillValue').value = fallbackData.tariff_value;
+                }
+            });
+    }
+
+    // Função para fechar modal de edição de sensor
+    const closeEditSensorModalFunc = () => {
+        editSensorModal.classList.remove('active');
+    };
+
+    if (closeEditSensorModal) {
+        closeEditSensorModal.addEventListener('click', closeEditSensorModalFunc);
+    }
+
+    if (cancelEditSensor) {
+        cancelEditSensor.addEventListener('click', closeEditSensorModalFunc);
+    }
+
+    // Configurar salvamento das edições do sensor
+    if (saveEditSensor) {
+        saveEditSensor.addEventListener('click', () => {
+            const selectedSensor = sensorSelect.value;
+            const sensorName = document.getElementById('editSensorName').value.trim();
+            const billValue = document.getElementById('editBillValue').value.trim();
+
+            if (!selectedSensor) {
+                showAlert('Por favor, selecione um sensor.', 'error');
+                return;
+            }
+
+            if (!sensorName || !billValue) {
+                showAlert('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+
+            // Atualizar sensor via API
+            fetch(`http://localhost/aquasync/api/control/c_sensor.php`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sensor_id: selectedSensor,
+                    sensor_name: sensorName,
+                    tariff_value: parseFloat(billValue),
+                    register_state: 1 // Mantém o estado atual do registro
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Atualizar o dropdown no modal atual
+                    updateSensorDropdown(selectedSensor, sensorName);
+                    
+                    // Atualizar no localStorage para sincronizar com a home
+                    updateSensorInStorage(selectedSensor, sensorName);
+                    
+                    showAlert('Sensor atualizado com sucesso!', 'success');
+                    
+                    // Fechar o modal após salvar
+                    setTimeout(() => {
+                        closeEditSensorModalFunc();
+                    }, 1500);
+                } else {
+                    showAlert('Erro ao atualizar sensor: ' + (data.message || 'Erro desconhecido'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar sensor:', error);
+                showAlert('Erro de comunicação com o servidor.', 'error');
+            });
+        });
+    }
+
+    // Configurar fechamento do modal ao clicar fora dele
+    if (editSensorModal) {
+        editSensorModal.addEventListener('click', (e) => {
+            if (e.target === editSensorModal) {
+                closeEditSensorModalFunc();
+            }
+        });
+    }
+
+    // Configurar botão de excluir sensor
+    setupSensorDeletion();
+
+    // Atualizar estado inicial do botão de excluir
+    updateDeleteButtonState();
+}
+
+// Função para atualizar o dropdown no modal
+function updateSensorDropdown(sensorId, newName) {
+    const sensorSelect = document.getElementById('sensorSelect');
+    const option = sensorSelect.querySelector(`option[value="${sensorId}"]`);
+    if (option) {
+        option.textContent = newName;
+    }
+}
+
+// Função para atualizar no localStorage (para sincronizar com a home)
+function updateSensorInStorage(sensorId, newName) {
+    // Salvar no localStorage para a home page acessar
+    const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
+    sensorUpdates[sensorId] = {
+        name: newName,
+        updatedAt: new Date().toISOString()
+    };
+    localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
+    
+    // Disparar um evento customizado para notificar outras páginas
+    window.dispatchEvent(new CustomEvent('sensorUpdated', {
+        detail: { sensorId, newName }
+    }));
+}
+
+// Função para carregar sensores do usuário (substitui os dados estáticos)
+function loadUserSensors() {
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(sensors => {
+            const sensorSelect = document.getElementById('sensorSelect');
+            
+            // Limpar options existentes (exceto a primeira)
+            while (sensorSelect.options.length > 1) {
+                sensorSelect.remove(1);
+            }
+            
+            // Adicionar sensores do usuário
+            if (sensors && sensors.length > 0) {
+                sensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    sensorSelect.appendChild(option);
+                });
+            } else {
+                // Fallback para sensores de exemplo
+                const defaultSensors = [
+                    { sensor_id: '1', sensor_name: 'Casa A' },
+                    { sensor_id: '2', sensor_name: 'Casa B' }
+                ];
+                
+                defaultSensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    sensorSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar sensores:', error);
+            // Usar sensores padrão em caso de erro
+            const sensorSelect = document.getElementById('sensorSelect');
+            const defaultSensors = [
+                { sensor_id: '1', sensor_name: 'Casa A' },
+                { sensor_id: '2', sensor_name: 'Casa B' }
+            ];
+            
+            defaultSensors.forEach(sensor => {
+                const option = document.createElement('option');
+                option.value = sensor.sensor_id;
+                option.textContent = sensor.sensor_name;
+                sensorSelect.appendChild(option);
+            });
+        });
+}
+
 const API_URL = "http://localhost/aquasync/api/control/c_usuario.php";
 const userId = localStorage.getItem("user_id");
 
@@ -577,4 +947,6 @@ document.addEventListener('DOMContentLoaded', function () {
     enhanceValidationUI();
     setupDisconnectModal();
     setupDeleteAccount();
+    setupEditSensorModal();
+    setupSensorDeletion();
 });

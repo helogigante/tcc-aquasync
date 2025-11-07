@@ -149,18 +149,126 @@ function setupDropdownAnimations() {
   }
 }
 
-function initHomePage() {
-  updateTime();
-  setInterval(updateTime, 1000);
-  
-  setupDropdownAnimations();
+// Função para sincronizar o dropdown da home com atualizações do perfil
+function syncSensorDropdown() {
+    const dropdown = document.getElementById('sensorDropdown');
+    
+    // Verificar se há atualizações no localStorage
+    const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
+    
+    Object.keys(sensorUpdates).forEach(sensorId => {
+        const update = sensorUpdates[sensorId];
+        const option = dropdown.querySelector(`option[value="${sensorId}"]`);
+        
+        if (option && option.textContent !== update.name) {
+            option.textContent = update.name;
+            console.log(`Sensor ${sensorId} atualizado para: ${update.name}`);
+        }
+    });
+    
+    // Limpar atualizações antigas (mais de 1 hora)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    Object.keys(sensorUpdates).forEach(sensorId => {
+        if (sensorUpdates[sensorId].updatedAt < oneHourAgo) {
+            delete sensorUpdates[sensorId];
+        }
+    });
+    localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
+}
 
-  window.addEventListener('load', () => {
-    console.log("Carregando dados iniciais...");
-    loadSensorData('1');
-    setupValveSwitch();
-    setInterval(() => loadSensorData('1'), 1000);
-  });
+// Função para carregar sensores do usuário na home
+function loadUserSensorsInHome() {
+    const userId = localStorage.getItem('user_id');
+    if (!userId) return;
+
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(sensors => {
+            const dropdown = document.getElementById('sensorDropdown');
+            
+            // Limpar options existentes
+            dropdown.innerHTML = '';
+            
+            // Adicionar sensores do usuário
+            if (sensors && sensors.length > 0) {
+                sensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    dropdown.appendChild(option);
+                });
+                
+                // Carregar dados do primeiro sensor
+                if (sensors.length > 0) {
+                    loadSensorData(sensors[0].sensor_id);
+                }
+            } else {
+                // Fallback para sensores padrão
+                const defaultSensors = [
+                    { sensor_id: '1', sensor_name: 'Casa A' },
+                    { sensor_id: '2', sensor_name: 'Casa B' }
+                ];
+                
+                defaultSensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    dropdown.appendChild(option);
+                });
+                
+                loadSensorData('1');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar sensores:', error);
+            // Fallback para sensores padrão em caso de erro
+            const dropdown = document.getElementById('sensorDropdown');
+            const defaultSensors = [
+                { sensor_id: '1', sensor_name: 'Casa A' },
+                { sensor_id: '2', sensor_name: 'Casa B' }
+            ];
+            
+            defaultSensors.forEach(sensor => {
+                const option = document.createElement('option');
+                option.value = sensor.sensor_id;
+                option.textContent = sensor.sensor_name;
+                dropdown.appendChild(option);
+            });
+            
+            loadSensorData('1');
+        });
+}
+
+// Atualize a função initHomePage para incluir as novas funções:
+function initHomePage() {
+    updateTime();
+    setInterval(updateTime, 1000);
+    
+    setupDropdownAnimations();
+    syncSensorDropdown();
+    loadUserSensorsInHome(); // ← Esta linha substitui os dados estáticos
+
+    window.addEventListener('load', () => {
+        console.log("Carregando dados iniciais...");
+        setupValveSwitch();
+        setInterval(() => {
+            const dropdown = document.getElementById('sensorDropdown');
+            if (dropdown && dropdown.value) {
+                loadSensorData(dropdown.value);
+            }
+        }, 1000);
+    });
+    
+    // Ouvir eventos de atualização em tempo real
+    window.addEventListener('storage', syncSensorDropdown);
+    window.addEventListener('sensorUpdated', (event) => {
+        // Atualizar imediatamente se o evento for disparado
+        const dropdown = document.getElementById('sensorDropdown');
+        const option = dropdown.querySelector(`option[value="${event.detail.sensorId}"]`);
+        if (option) {
+            option.textContent = event.detail.newName;
+        }
+    });
 }
 
 if (document.readyState === 'loading') {
@@ -168,3 +276,4 @@ if (document.readyState === 'loading') {
 } else {
   initHomePage();
 }
+

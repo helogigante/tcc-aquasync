@@ -304,9 +304,6 @@ body {
 }
 
 
-.bottom-nav-btn.active svg {
-  transform: scale(1.15);  
-}
 
 .bottom-nav {
   padding-bottom: 10px;     

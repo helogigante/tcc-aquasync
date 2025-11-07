@@ -1156,3 +1156,192 @@ body {
     }
 }
 
+
+.sensor-dropdown-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #D9E1F1;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+    transition: all 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2331487A'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.sensor-dropdown-select:focus {
+    outline: none;
+    border-color: #8FB3E2;
+    box-shadow: 0 0 0 3px rgba(143, 179, 226, 0.2);
+}
+
+.sensor-fields {
+    transition: all 0.3s ease;
+}
+
+/* Animação para mostrar os campos */
+.sensor-fields.show {
+    display: block !important;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo para o botão de excluir sensor */
+#editSensorModal .btn-delete {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    color: white !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: all 0.3s !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: auto !important;
+}
+
+#editSensorModal .btn-delete:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3) !important;
+}
+#editSensorModal .btn-delete:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#editSensorModal .btn-delete:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Ajustes no footer do modal de editar sensor */
+#editSensorModal .modal-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 20px !important;
+    border-top: 1px solid #e9ecef !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+#editSensorModal .edit-modal-footer {
+    display: flex !important;
+    gap: 12px !important;
+    margin-left: auto !important;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    #editSensorModal .modal-footer {
+        flex-direction: row !important;
+        gap: 8px !important;
+        padding: 16px !important;
+    }
+    
+    #editSensorModal .btn-delete,
+    #editSensorModal .btn-cancel,
+    #editSensorModal .btn-save {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        min-height: 36px !important;
+        white-space: nowrap !important;
+    }
+    
+    #editSensorModal .edit-modal-footer {
+        gap: 8px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    #editSensorModal .modal-footer {
+        gap: 6px !important;
+        padding: 14px !important;
+    }
+    
+    #editSensorModal .btn-delete,
+    #editSensorModal .btn-cancel,
+    #editSensorModal .btn-save {
+        padding: 6px 8px !important;
+        font-size: 11px !important;
+        min-height: 34px !important;
+    }
+    
+    #editSensorModal .edit-modal-footer {
+        gap: 6px !important;
+    }
+}
+
+#editSensorModal .btn-cancel {
+    background-color: transparent !important;
+    color: #6c757d !important;
+    border: 1px solid #D9E1F1 !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#editSensorModal .btn-cancel:hover {
+    background-color: #f8f9fa !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.15) !important;
+}
+
+/* Botão salvar do modal de editar sensor - mesma cor do modal de editar informações */
+#editSensorModal .btn-save {
+    background: linear-gradient(135deg, #31487A 0%, #1E2E4F 100%) !important;
+    color: white !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: all 0.3s !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#editSensorModal .btn-save:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(49, 72, 122, 0.3) !important;
+}
+
+
+.btn-option#editSensorBtn {
+    background: linear-gradient(135deg, #31487A 0%, #1E2E4F 100%) !important;
+    color: white !important;
+    justify-content: center !important; 
+    border: none !important;
+}
+
+.btn-option#editSensorBtn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 15px rgba(49, 72, 122, 0.3) !important;
+}
+
+.btn-option#editSensorBtn .btn-icon {
+    margin-right: 12px !important;
+}

@@ -176,7 +176,7 @@ function syncSensorDropdown() {
     localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
 }
 
-// Função para carregar sensores do usuário na home
+// função para carregar sensores do usuário na home
 function loadUserSensorsInHome() {
     const userId = localStorage.getItem('user_id');
     if (!userId) return;
@@ -185,11 +185,10 @@ function loadUserSensorsInHome() {
         .then(response => response.json())
         .then(sensors => {
             const dropdown = document.getElementById('sensorDropdown');
-            
-            // Limpar options existentes
+            const sensorHeader = document.getElementById('selectedSensorName');
+
             dropdown.innerHTML = '';
-            
-            // Adicionar sensores do usuário
+
             if (sensors && sensors.length > 0) {
                 sensors.forEach(sensor => {
                     const option = document.createElement('option');
@@ -197,56 +196,72 @@ function loadUserSensorsInHome() {
                     option.textContent = sensor.sensor_name;
                     dropdown.appendChild(option);
                 });
-                
-                // Carregar dados do primeiro sensor
-                if (sensors.length > 0) {
-                    loadSensorData(sensors[0].sensor_id);
-                }
+
+                // seleciona o primeiro sensor por padrão
+                const firstSensor = sensors[0];
+                dropdown.value = firstSensor.sensor_id;
+
+                // atualiza o nome no dropdown
+                if (sensorHeader) sensorHeader.textContent = firstSensor.sensor_name;
+
+                // salva no localStorage qual sensor está selecionado
+                localStorage.setItem('lastSelectedSensor', firstSensor.sensor_id);
+
+                // carrega dados do primeiro sensor
+                loadSensorData(firstSensor.sensor_id);
             } else {
-                // Fallback para sensores padrão
+                // sensores padrão
                 const defaultSensors = [
                     { sensor_id: '1', sensor_name: 'Casa A' },
                     { sensor_id: '2', sensor_name: 'Casa B' }
                 ];
-                
+
                 defaultSensors.forEach(sensor => {
                     const option = document.createElement('option');
                     option.value = sensor.sensor_id;
                     option.textContent = sensor.sensor_name;
                     dropdown.appendChild(option);
                 });
-                
+
+                dropdown.value = '1';
+                if (sensorHeader) sensorHeader.textContent = '';
+                localStorage.setItem('lastSelectedSensor', '1');
                 loadSensorData('1');
             }
         })
         .catch(error => {
             console.error('Erro ao carregar sensores:', error);
-            // Fallback para sensores padrão em caso de erro
+
             const dropdown = document.getElementById('sensorDropdown');
+            const sensorHeader = document.getElementById('selectedSensorName');
             const defaultSensors = [
                 { sensor_id: '1', sensor_name: 'Casa A' },
                 { sensor_id: '2', sensor_name: 'Casa B' }
             ];
-            
+
             defaultSensors.forEach(sensor => {
                 const option = document.createElement('option');
                 option.value = sensor.sensor_id;
                 option.textContent = sensor.sensor_name;
                 dropdown.appendChild(option);
             });
-            
+
+            dropdown.value = '1';
+            if (sensorHeader) sensorHeader.textContent = '';
+            localStorage.setItem('lastSelectedSensor', '1');
             loadSensorData('1');
         });
 }
 
-// Atualize a função initHomePage para incluir as novas funções:
+// essa função inicializa a página home
 function initHomePage() {
     updateTime();
     setInterval(updateTime, 1000);
     
     setupDropdownAnimations();
-    syncSensorDropdown();
-    loadUserSensorsInHome(); // ← Esta linha substitui os dados estáticos
+    loadUserSensorsInHome();
+
+    setTimeout(syncSensorDropdown, 500);
 
     window.addEventListener('load', () => {
         console.log("Carregando dados iniciais...");
@@ -259,14 +274,19 @@ function initHomePage() {
         }, 1000);
     });
     
-    // Ouvir eventos de atualização em tempo real
+    // sincronizar com updates
     window.addEventListener('storage', syncSensorDropdown);
     window.addEventListener('sensorUpdated', (event) => {
-        // Atualizar imediatamente se o evento for disparado
         const dropdown = document.getElementById('sensorDropdown');
         const option = dropdown.querySelector(`option[value="${event.detail.sensorId}"]`);
         if (option) {
             option.textContent = event.detail.newName;
+
+            // atualiza o texto acima do dropdown se for o mesmo sensor
+            const sensorHeader = document.getElementById('selectedSensorName');
+            if (sensorHeader && dropdown.value === String(event.detail.sensorId)) {
+                sensorHeader.textContent = event.detail.newName;
+            }
         }
     });
 }
@@ -276,4 +296,3 @@ if (document.readyState === 'loading') {
 } else {
   initHomePage();
 }
-

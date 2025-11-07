@@ -3,7 +3,6 @@ let wifiNetworkInput, wifiPasswordInput, billValueInput, sensorNameInput, saveSe
 
 // Função para mostrar popup de alerta estilizado
 function showAlert(message, type = 'error') {
-    // Criar elemento do popup
     const alertPopup = document.createElement('div');
     alertPopup.className = `custom-alert ${type}`;
     alertPopup.innerHTML = `
@@ -12,42 +11,22 @@ function showAlert(message, type = 'error') {
                 <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
             </div>
             <div class="alert-message">${message}</div>
-            <button class="alert-close">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="alert-close"><i class="fas fa-times"></i></button>
         </div>
     `;
-
-    // Adicionar ao body
     document.body.appendChild(alertPopup);
 
-    // Mostrar com animação
-    setTimeout(() => {
-        alertPopup.classList.add('show');
-    }, 10);
+    alertPopup.style.backgroundColor = type === 'error' ? '#f8d7da' : '#d1e7dd';
+    alertPopup.style.borderLeft = type === 'error' ? '6px solid #dc3545' : '6px solid #198754';
+    alertPopup.querySelector('.alert-message').style.color = type === 'error' ? '#721c24' : '#0f5132';
 
-    // Configurar fechamento
-    const closeBtn = alertPopup.querySelector('.alert-close');
-    closeBtn.addEventListener('click', () => {
+    setTimeout(() => alertPopup.classList.add('show'), 10);
+    const close = () => {
         alertPopup.classList.remove('show');
-        setTimeout(() => {
-            if (alertPopup.parentNode) {
-                alertPopup.parentNode.removeChild(alertPopup);
-            }
-        }, 300);
-    });
-
-    // Fechar automaticamente após 5 segundos
-    setTimeout(() => {
-        if (alertPopup.parentNode) {
-            alertPopup.classList.remove('show');
-            setTimeout(() => {
-                if (alertPopup.parentNode) {
-                    alertPopup.parentNode.removeChild(alertPopup);
-                }
-            }, 300);
-        }
-    }, 5000);
+        setTimeout(() => alertPopup.remove(), 300);
+    };
+    alertPopup.querySelector('.alert-close').onclick = close;
+    setTimeout(close, 5000);
 }
 
 // Função para mostrar popup de confirmação personalizado
@@ -711,15 +690,14 @@ function setupEditSensorModal() {
         });
     }
 
-    // Função para carregar dados do sensor
+    // função para carregar dados do sensor
     function loadSensorData(sensorId) {
-        // Buscar dados reais do sensor da API
         fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}&sensor_id=${sensorId}`)
             .then(response => response.json())
             .then(data => {
                 if (data && data.sensor_name) {
                     document.getElementById('editSensorName').value = data.sensor_name;
-                    document.getElementById('editBillValue').value = data.tariff_value || '';
+                    document.getElementById('editBillValue').value = data.tariff_value ? parseFloat(data.tariff_value).toFixed(2) : '';
                 } else {
                     // Fallback para dados de exemplo se a API não retornar
                     const sensorData = {
@@ -778,38 +756,38 @@ function setupEditSensorModal() {
                 return;
             }
 
-            // Atualizar sensor via API
             fetch(`http://localhost/aquasync/api/control/c_sensor.php`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     sensor_id: selectedSensor,
                     sensor_name: sensorName,
-                    tariff_value: parseFloat(billValue),
-                    register_state: 1 // Mantém o estado atual do registro
+                    tariff_value: billValue.replace(',', '.'),
+                    register_state: 1
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Atualizar o dropdown no modal atual
+            .then(res => res.json().then(result => ({ result, status: res.status })))
+            .then(({ result, status }) => {
+                if (status === 200 || (result && result.success)) {
+                    // atualiza o dropdown no modal atual
                     updateSensorDropdown(selectedSensor, sensorName);
-                    
-                    // Atualizar no localStorage para sincronizar com a home
+
+                    // atualiza o localStorage para sincronizar com a home
                     updateSensorInStorage(selectedSensor, sensorName);
-                    
+
+                    document.querySelectorAll('.custom-alert.sucess').forEach(a => a.remove());
+
                     showAlert('Sensor atualizado com sucesso!', 'success');
-                    
-                    // Fechar o modal após salvar
-                    setTimeout(() => {
-                        closeEditSensorModalFunc();
-                    }, 1500);
+
+                    closeEditSensorModalFunc();
                 } else {
-                    showAlert('Erro ao atualizar sensor: ' + (data.message || 'Erro desconhecido'), 'error');
+                    document.querySelectorAll('.custom-alert.error').forEach(a => a.remove());
+                    showAlert(result.message || 'Erro ao atualizar sensor.', 'error');
                 }
             })
             .catch(error => {
                 console.error('Erro ao atualizar sensor:', error);
+                document.querySelectorAll('.custom-alert.error').forEach(a => a.remove());
                 showAlert('Erro de comunicação com o servidor.', 'error');
             });
         });
@@ -840,49 +818,91 @@ function updateSensorDropdown(sensorId, newName) {
     }
 }
 
-// Função para atualizar no localStorage (para sincronizar com a home)
+// atualiza o localStorage pra sincronizar com a home
 function updateSensorInStorage(sensorId, newName) {
-    // Salvar no localStorage para a home page acessar
     const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
-    sensorUpdates[sensorId] = {
-        name: newName,
-        updatedAt: new Date().toISOString()
-    };
+    sensorUpdates[sensorId] = { name: newName, updatedAt: new Date().toISOString() };
     localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
-    
-    // Disparar um evento customizado para notificar outras páginas
-    window.dispatchEvent(new CustomEvent('sensorUpdated', {
-        detail: { sensorId, newName }
-    }));
+
+    const editDropdown = document.getElementById('sensorSelect');
+    if (editDropdown) {
+        const option = editDropdown.querySelector(`option[value="${sensorId}"]`);
+        if (option) option.textContent = newName;
+    }
+
+    const homeDropdown = document.getElementById('sensorDropdown');
+    if (homeDropdown) {
+        const optionHome = homeDropdown.querySelector(`option[value="${sensorId}"]`);
+        if (optionHome) {
+            optionHome.textContent = newName;
+            if (homeDropdown.value === String(sensorId) || homeDropdown.value === sensorId) {
+                // força o texto visível a atualizar (alguns browsers precisam)
+                homeDropdown.value = String(sensorId);
+                const sensorHeader = document.getElementById('selectedSensorName');
+                if (sensorHeader) sensorHeader.textContent = newName;
+            }
+        }
+    }
+
+    const sensorHeader = document.getElementById('selectedSensorName');
+    if (sensorHeader) {
+        const homeDropdownNow = document.getElementById('sensorDropdown');
+        if (!homeDropdownNow || homeDropdownNow.value === String(sensorId) || homeDropdownNow.value === sensorId) {
+            sensorHeader.textContent = newName;
+        }
+    }
+
+    window.dispatchEvent(new CustomEvent('sensorUpdated', { detail: { sensorId, newName } }));
 }
 
-// Função para carregar sensores do usuário (substitui os dados estáticos)
+function handleSensorChange(sensorId) {
+    const sensorDropdown = document.getElementById('sensorDropdown');
+    const selectedOption = sensorDropdown.options[sensorDropdown.selectedIndex];
+    const sensorName = selectedOption.textContent;
+
+    const sensorHeader = document.getElementById('selectedSensorName');
+    if (sensorHeader) {
+        sensorHeader.textContent = sensorName;
+    }
+
+    loadSensorData(sensorId);
+}
+
+
+// função para carregar sensores do usuário (substitui os dados estáticos)
 function loadUserSensors() {
     fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}`)
         .then(response => response.json())
         .then(sensors => {
             const sensorSelect = document.getElementById('sensorSelect');
-            
-            // Limpar options existentes (exceto a primeira)
+
+            // limpar options existentes (exceto a primeira)
             while (sensorSelect.options.length > 1) {
                 sensorSelect.remove(1);
             }
-            
-            // Adicionar sensores do usuário
+
+            // recupera atualizações do localStorage
+            const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
+
+            // adiciona sensores do usuário
             if (sensors && sensors.length > 0) {
                 sensors.forEach(sensor => {
                     const option = document.createElement('option');
                     option.value = sensor.sensor_id;
-                    option.textContent = sensor.sensor_name;
+
+                    // se houver nome atualizado salvo, usa ele
+                    const updated = sensorUpdates[sensor.sensor_id];
+                    option.textContent = updated ? updated.name : sensor.sensor_name;
+
                     sensorSelect.appendChild(option);
                 });
             } else {
-                // Fallback para sensores de exemplo
+                // fallback para sensores de exemplo
                 const defaultSensors = [
                     { sensor_id: '1', sensor_name: 'Casa A' },
                     { sensor_id: '2', sensor_name: 'Casa B' }
                 ];
-                
+
                 defaultSensors.forEach(sensor => {
                     const option = document.createElement('option');
                     option.value = sensor.sensor_id;
@@ -890,16 +910,24 @@ function loadUserSensors() {
                     sensorSelect.appendChild(option);
                 });
             }
+
+            // aqui aplica eventuais atualizações pendentes do localStorage
+            Object.keys(sensorUpdates).forEach(sensorId => {
+                const opt = sensorSelect.querySelector(`option[value="${sensorId}"]`);
+                if (opt && sensorUpdates[sensorId].name) {
+                    opt.textContent = sensorUpdates[sensorId].name;
+                }
+            });
         })
         .catch(error => {
             console.error('Erro ao carregar sensores:', error);
-            // Usar sensores padrão em caso de erro
+
             const sensorSelect = document.getElementById('sensorSelect');
             const defaultSensors = [
                 { sensor_id: '1', sensor_name: 'Casa A' },
                 { sensor_id: '2', sensor_name: 'Casa B' }
             ];
-            
+
             defaultSensors.forEach(sensor => {
                 const option = document.createElement('option');
                 option.value = sensor.sensor_id;
@@ -949,4 +977,31 @@ document.addEventListener('DOMContentLoaded', function () {
     setupDeleteAccount();
     setupEditSensorModal();
     setupSensorDeletion();
+
+    // atualizar dropdowns quando um sensor for atualizado
+    window.addEventListener('sensorUpdated', (e) => {
+        const { sensorId, newName } = e.detail;
+
+        // atualiza o dropdown da home
+        const homeDropdown = document.getElementById('sensorDropdown');
+        if (homeDropdown) {
+            const optionHome = homeDropdown.querySelector(`option[value="${sensorId}"]`);
+            if (optionHome) {
+                optionHome.textContent = newName;
+            }
+
+            // se o sensor alterado for o que está sendo usado, atualiza o texto visível
+            if (homeDropdown.value === String(sensorId) || homeDropdown.value === sensorId) {
+                const sensorHeader = document.getElementById('selectedSensorName');
+                if (sensorHeader) sensorHeader.textContent = newName;
+            }
+        }
+
+        // atualiza também o dropdown do modal de edição
+        const editDropdown = document.getElementById('sensorSelect');
+        if (editDropdown) {
+            const optionEdit = editDropdown.querySelector(`option[value="${sensorId}"]`);
+            if (optionEdit) optionEdit.textContent = newName;
+        }
+    });
 });

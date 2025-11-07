@@ -13,12 +13,10 @@
 <body>
   <nav class="navbar-container">
     <span class="navbar-title">AquaSync</span>
-    
+
+    <span id="selectedSensorName"></span>
     <div class="sensor-dropdown">
-      <select id="sensorDropdown" onchange="loadSensorData(this.value)">
-        <option value="1">Casa A</option>
-        <option value="2">Casa B</option>
-      </select>
+      <select id="sensorDropdown" onchange="handleSensorChange(this.value)"></select>
     </div>
   </nav>
     

@@ -1,23 +1,23 @@
-
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 50;
   width: 100%;
   background-color: #192338;
-  border-top: 1px solid #374151;
-  height: 90px;
-  box-sizing: border-box;
-  padding: 1.2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 50;
 }
 
 .bottom-nav-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 28rem;
-  margin: 0 auto;
-  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 6px 0;
 }
 
 .bottom-nav-btn {
@@ -48,9 +48,12 @@
 }
 
 .bottom-nav-btn svg {
-  width: 26px;
-  height: 26px;
-  margin-bottom: 0.4rem;
+  display: block;
+  margin: 0 auto 4px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  fill: currentColor;
 }
 
 .bottom-nav-btn span {

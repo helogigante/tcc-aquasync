@@ -60,25 +60,56 @@ function updateFlowChart(sensorId, timelyData) {
   });
 }
 
+// função que configura estado_registro
 function setupValveSwitch() {
   const valveSwitch = document.getElementById('valveSwitch');
   const statusText = document.getElementById('statusText');
-  
-  if (valveSwitch && statusText) {
-    valveSwitch.checked = true;
-    statusText.textContent = "ABERTO";
-    statusText.className = "status-text status-open";
-    
-    valveSwitch.addEventListener('change', function() {
-      if (this.checked) {
-        statusText.textContent = "ABERTO";
-        statusText.className = "status-text status-open";
-      } else {
-        statusText.textContent = "FECHADO";
-        statusText.className = "status-text status-closed";
-      }
-    });
-  }
+  const sensorId = 1;
+  let sensorInfo = {}; // armazena nome e valor atuais do sensor
+
+  if (!valveSwitch || !statusText) return;
+
+  // busca o estado atual do registro e salva dados
+  fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=1&sensor_id=${sensorId}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Estado recebido do banco:", data);
+
+      sensorInfo = {
+        name: data.sensor_name,
+        tariff: data.tariff_value
+      };
+
+      const estado = parseInt(data.register_state);
+      valveSwitch.checked = estado === 1;
+
+      statusText.textContent = valveSwitch.checked ? "ABERTO" : "FECHADO";
+      statusText.className = valveSwitch.checked ? "status-text status-open" : "status-text status-closed";
+    })
+    .catch(error => console.error("Erro ao buscar estado do registro:", error));
+
+  // quando o switch é alterado
+  valveSwitch.addEventListener('change', function () {
+    const newState = this.checked ? 1 : 0;
+
+    statusText.textContent = this.checked ? "ABERTO" : "FECHADO";
+    statusText.className = this.checked ? "status-text status-open" : "status-text status-closed";
+
+    // atualiza o estado no banco
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sensor_id: sensorId,
+        sensor_name: sensorInfo.name,
+        tariff_value: sensorInfo.tariff,
+        register_state: newState
+      })
+    })
+      .then(response => response.json())
+      .then(data => console.log("Estado do registro atualizado:", data))
+      .catch(error => console.error("Erro ao atualizar estado:", error));
+  });
 }
 
 function updateTime() {
@@ -118,21 +149,146 @@ function setupDropdownAnimations() {
   }
 }
 
-function initHomePage() {
-  setupValveSwitch();
-  
-  updateTime();
-  setInterval(updateTime, 1000);
-  
-  setupDropdownAnimations();
-  
-  window.addEventListener('load', () => {
+// Função para sincronizar o dropdown da home com atualizações do perfil
+function syncSensorDropdown() {
     const dropdown = document.getElementById('sensorDropdown');
-    if (dropdown) dropdown.value = '1';
-    console.log("Carregando dados iniciais da Casa A...");
-    loadSensorData('1');
-    setInterval(loadSensorData, 1000, '1');
-  });
+    
+    // Verificar se há atualizações no localStorage
+    const sensorUpdates = JSON.parse(localStorage.getItem('sensorUpdates') || '{}');
+    
+    Object.keys(sensorUpdates).forEach(sensorId => {
+        const update = sensorUpdates[sensorId];
+        const option = dropdown.querySelector(`option[value="${sensorId}"]`);
+        
+        if (option && option.textContent !== update.name) {
+            option.textContent = update.name;
+            console.log(`Sensor ${sensorId} atualizado para: ${update.name}`);
+        }
+    });
+    
+    // Limpar atualizações antigas (mais de 1 hora)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    Object.keys(sensorUpdates).forEach(sensorId => {
+        if (sensorUpdates[sensorId].updatedAt < oneHourAgo) {
+            delete sensorUpdates[sensorId];
+        }
+    });
+    localStorage.setItem('sensorUpdates', JSON.stringify(sensorUpdates));
+}
+
+// função para carregar sensores do usuário na home
+function loadUserSensorsInHome() {
+    const userId = localStorage.getItem('user_id');
+    if (!userId) return;
+
+    fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(sensors => {
+            const dropdown = document.getElementById('sensorDropdown');
+            const sensorHeader = document.getElementById('selectedSensorName');
+
+            dropdown.innerHTML = '';
+
+            if (sensors && sensors.length > 0) {
+                sensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    dropdown.appendChild(option);
+                });
+
+                // seleciona o primeiro sensor por padrão
+                const firstSensor = sensors[0];
+                dropdown.value = firstSensor.sensor_id;
+
+                // atualiza o nome no dropdown
+                if (sensorHeader) sensorHeader.textContent = firstSensor.sensor_name;
+
+                // salva no localStorage qual sensor está selecionado
+                localStorage.setItem('lastSelectedSensor', firstSensor.sensor_id);
+
+                // carrega dados do primeiro sensor
+                loadSensorData(firstSensor.sensor_id);
+            } else {
+                // sensores padrão
+                const defaultSensors = [
+                    { sensor_id: '1', sensor_name: 'Casa A' },
+                    { sensor_id: '2', sensor_name: 'Casa B' }
+                ];
+
+                defaultSensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor.sensor_id;
+                    option.textContent = sensor.sensor_name;
+                    dropdown.appendChild(option);
+                });
+
+                dropdown.value = '1';
+                if (sensorHeader) sensorHeader.textContent = '';
+                localStorage.setItem('lastSelectedSensor', '1');
+                loadSensorData('1');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar sensores:', error);
+
+            const dropdown = document.getElementById('sensorDropdown');
+            const sensorHeader = document.getElementById('selectedSensorName');
+            const defaultSensors = [
+                { sensor_id: '1', sensor_name: 'Casa A' },
+                { sensor_id: '2', sensor_name: 'Casa B' }
+            ];
+
+            defaultSensors.forEach(sensor => {
+                const option = document.createElement('option');
+                option.value = sensor.sensor_id;
+                option.textContent = sensor.sensor_name;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.value = '1';
+            if (sensorHeader) sensorHeader.textContent = '';
+            localStorage.setItem('lastSelectedSensor', '1');
+            loadSensorData('1');
+        });
+}
+
+// essa função inicializa a página home
+function initHomePage() {
+    updateTime();
+    setInterval(updateTime, 1000);
+    
+    setupDropdownAnimations();
+    loadUserSensorsInHome();
+
+    setTimeout(syncSensorDropdown, 500);
+
+    window.addEventListener('load', () => {
+        console.log("Carregando dados iniciais...");
+        setupValveSwitch();
+        setInterval(() => {
+            const dropdown = document.getElementById('sensorDropdown');
+            if (dropdown && dropdown.value) {
+                loadSensorData(dropdown.value);
+            }
+        }, 1000);
+    });
+    
+    // sincronizar com updates
+    window.addEventListener('storage', syncSensorDropdown);
+    window.addEventListener('sensorUpdated', (event) => {
+        const dropdown = document.getElementById('sensorDropdown');
+        const option = dropdown.querySelector(`option[value="${event.detail.sensorId}"]`);
+        if (option) {
+            option.textContent = event.detail.newName;
+
+            // atualiza o texto acima do dropdown se for o mesmo sensor
+            const sensorHeader = document.getElementById('selectedSensorName');
+            if (sensorHeader && dropdown.value === String(event.detail.sensorId)) {
+                sensorHeader.textContent = event.detail.newName;
+            }
+        }
+    });
 }
 
 if (document.readyState === 'loading') {

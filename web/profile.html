@@ -53,16 +53,15 @@
                         <i class="fas fa-envelope"></i>
                         <span class="detail-text" id="userEmail">aquasync-tcc@hotmail.com</span>
                     </div>
-                    <div class="detail-item">
-                        <i class="fas fa-id-card"></i>
-                        <span class="detail-text">ID: #3C:61:05</span>
-                    </div>
                 </div>
             </div>
 
             <div class="action-buttons">
                 <button class="btn btn-primary" id="addSensorBtn">
                     <i class="fas fa-plus btn-icon"></i> Adicionar Sensor
+                </button>
+                <button class="btn btn-option" id="editSensorBtn">
+                    <i class="fas fa-edit btn-icon"></i> Editar Sensor
                 </button>
                 <button class="btn btn-option" id="disconnectBtn">
                     <i class="fas fa-sign-out-alt btn-icon"></i> Desconectar Conta
@@ -95,11 +94,47 @@
             </div>
         </div>
         <div class="modal-footer">
-
             <button class="btn btn-delete" id="confirmDelete">Deletar</button>
             <div class="edit-modal-footer">
                 <button class="btn btn-cancel" id="cancelEdit">Cancelar</button>
                 <button class="btn btn-save" id="saveEdit">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar sensor -->
+<div class="modal-overlay" id="editSensorModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Editar Sensor</h3>
+            <button class="close-btn" id="closeEditSensorModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="input-group">
+                <label for="sensorSelect">Escolha um sensor</label>
+                <select id="sensorSelect" class="sensor-dropdown-select">
+                    <option value="">Selecionar</option>
+                    <option value="1">Casa A</option>
+                    <option value="2">Casa B</option>
+                </select>
+            </div>
+            <div class="input-group sensor-fields" style="display: none;">
+                <label for="editSensorName">Nome</label>
+                <input type="text" id="editSensorName" placeholder="Ex: Minha Casa, Chácara, Cozinha, etc.">
+            </div>
+            <div class="input-group sensor-fields" style="display: none;">
+                <label for="editBillValue">Tarifa da residência (R$/m³)</label>
+                <input type="number" id="editBillValue" placeholder="R$0,00" step="0.01" min="0">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-delete" id="deleteSensorBtn" disabled>Excluir</button>
+            <div class="edit-modal-footer">
+                <button class="btn btn-cancel" id="cancelEditSensor">Cancelar</button>
+                <button class="btn btn-save" id="saveEditSensor">Salvar</button>
             </div>
         </div>
     </div>
@@ -138,11 +173,10 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-cancel" id="cancelAddSensor">Cancelar</button>
-            <button class="btn btn-save" id="saveSensor">Conectar Sensor</button>
+            <button class="btn btn-save" id="saveSensor">Adicionar</button>
         </div>
     </div>
 </div>
-
 
     <div class="modal-overlay" id="disconnectModal">
         <div class="modal">

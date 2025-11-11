@@ -2,21 +2,21 @@
     class Verifica {
         private $conn;
         private $table_name = "leituras";
+        private $zero = 0;
     
         public $sensor, $report, $ex_daily, $ex_monthly, $sus_24h, $sus_closed;
 
         public function __construct($db) {
             $this->conn = $db;
-        }
-
-        function verificar(){
-            $number_zero = 0;
-            $status = array();
-
             $this->ex_daily = false;
             $this->ex_monthly = false;
             $this->sus_closed = false;
             $this->sus_24h = false;
+        }
+
+        function verificar(){
+            $status = array();
+
             //ultrapassar a média de consumo diário dos últimos 10 dias a partir de 10%
             $query = "SELECT 
                         (SELECT AVG(m) AS average_consumption
@@ -48,7 +48,7 @@
                 }
             }
             //ultrapassar o consumo total do mês anterior em 18 dias ou menos
-            if(number_format(date("d")) > 18){
+            if(number_format(date("d")) < 18){
                 $query = "SELECT 
                             (SELECT SUM(valor_leitura) 
                             FROM $this->table_name 
@@ -78,37 +78,35 @@
                         FROM $this->table_name AS l
                         JOIN sensor as s ON s.id_sensor = l.id_sensor
                         WHERE l.id_sensor = :sensor 
-                        AND estado_registro = :r_state
-                        AND valor_leitura <> :r_value
+                        AND estado_registro = $this->zero
+                        AND valor_leitura <> $this->zero
                         AND dt_hr_leitura - second(dt_hr_leitura) = NOW() - second(NOW());";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor", $this->sensor);
-            $stmt->bindParam(":r_state", $this->number_zero);
-            $stmt->bindParam(":r_value", $this->number_zero);
 
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->sus_closed = ($row !== null);
+            $this->sus_closed = ($row !== false);
             
             //Houver vazão ininterrupta por mais de 24 horas 
-            $query = "SELECT valor_leitura
+            $query = "SELECT 
+                        CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END as sus_24h
                         FROM $this->table_name
                         WHERE id_sensor = :sensor 
                             AND dt_hr_leitura >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
-                            AND valor_leitura > :r_value;";
+                            AND valor_leitura = $this->zero;";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":sensor", $this->sensor);
-            $stmt->bindParam(":r_value", $this->number_zero);
 
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            $this->sus_24h = ($row !== null && $row['total'] > 0);
+            $v = $row['sus_24h'];
+            $this->sus_24h = ($v == 0);
 
             return !in_array(false, $status);     
         }

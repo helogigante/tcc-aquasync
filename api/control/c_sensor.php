@@ -1,10 +1,15 @@
 <?php
+    ob_start();
+    error_reporting(0);
+    header_remove();
 
     header("Access-Control-Allow-Origin: *");//aceita chamadas de todos outros domínios
     header("Content-Type: application/json");//tipo de dados da resposta
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     header("Access-Control-Max-Age: 3600"); 
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+    ob_clean();
 
     require_once '../config/database.php';
     require_once '../models/sensores.php';

@@ -759,7 +759,7 @@ function calendario() {
         const month = dateObj.getMonth() + 1;
         const day = dateObj.getDate();
 
-        let url = `http://127.0.0.1/tcc-aquasync/api/control/c_alerta.php?case=1&sensor=${sensorId}&user_id=${userId}$period=${period}`;
+        let url = `http://localhost/aquasync/api/control/c_alerta.php?case=1&sensor=${sensorId}&user_id=${userId}$period=${period}`;
         if (period === 'day') url += `&time=${day}`;
         else if (period === 'month') url += `&time=${year}-${month}-01`;
         else if (period === 'year') url += `&time=${year}`;

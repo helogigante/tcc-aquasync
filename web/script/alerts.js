@@ -55,7 +55,7 @@ function loadSimulatedNotifications() {
 // Função para carregar os alertas do banco
 function loadNotifications() {
   const userId = localStorage.getItem("user_id");
-  fetch(`http://127.0.0.1/tcc-aquasync/api/control/c_alerta.php?case=2&user_id=${userId}`)
+  fetch(`http://127.0.0.1/aquasync/api/control/c_alerta.php?case=2&user_id=${userId}`)
   .then(response => response.json())
   .then(data => {
     const container = document.querySelector('.notificacoes-container');
@@ -122,7 +122,7 @@ function addAlert(type, userId, sensorId){
     alert_type: type
   };
 
-  fetch(`http://127.0.0.1/tcc-aquasync/api/control/c_alerta.php`, {
+  fetch(`http://localhost/aquasync/api/control/c_alerta.php`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
@@ -148,7 +148,7 @@ function checkAlerts(){
   const COOLDOWN = 300000;
   const now = Date.now();
   
-  fetch(`http://127.0.0.1/tcc-aquasync/api/control/c_verifica.php?sensor=${sensorId}`)
+  fetch(`http://localhost/aquasync/api/control/c_verifica.php?sensor=${sensorId}`)
   .then(response => response.json())
   .then(data => {
       if(data.ex_daily === true && canSendAlert(1, now, COOLDOWN)) {

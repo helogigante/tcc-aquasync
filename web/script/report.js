@@ -393,7 +393,7 @@ function calendario() {
         selectedPeriodElement.textContent = subtitle;
     }
     
-    function fetchLeituraDataPromise(period, dateObj, sensorId) {
+    function fetchLeituraDataPromise(period, sensorId, dateObj) {
         const year = dateObj.getFullYear();
         const month = dateObj.getMonth() + 1;
         const day = dateObj.getDate();
@@ -434,7 +434,7 @@ function calendario() {
         // sensor dependendo da casa
         const sensorId = houseSensorMap[currentHouse] || 1;
 
-        fetchLeituraDataPromise(selectedDate, currentPeriod, sensorId)
+        fetchLeituraDataPromise(currentPeriod, sensorId, selectedDate)
         .then(function(data) {
             // se não tiver dados, usa dados pré-definidos
             if (!data || !data.timely_consumption || data.timely_consumption.length === 0) {
@@ -754,74 +754,7 @@ function calendario() {
             renderView();
         });
     }
-    /*function fetchAlertsDataPromise(dateObj, period, sensorId, userId){
-        const year = dateObj.getFullYear();
-        const month = dateObj.getMonth() + 1;
-        const day = dateObj.getDate();
-
-        let url = `http://localhost/aquasync/api/control/c_alerta.php?case=1&sensor=${sensorId}&user_id=${userId}$period=${period}`;
-        if (period === 'day') url += `&time=${day}`;
-        else if (period === 'month') url += `&time=${year}-${month}-01`;
-        else if (period === 'year') url += `&time=${year}`;
-
-        // faz o fetch e sempre retorna uma promise que resolve com objeto (ou null em erro)
-        // promise são usadas para facilitar uso assíncrono
-        return fetch(url, { method: 'GET' })
-            .then(function(response) {
-                if (!response.ok) {
-                    console.warn('Resposta do servidor não OK:', response.status);
-                    return null;
-                }
-                return response.json().catch(function(err) {
-                    console.error('Erro ao parsear JSON:', err);
-                    return null;
-                });
-            })
-            .catch(function(err) {
-                console.error('Erro no fetch:', err);
-                return null;
-            });
-    }
-
-    function checkAlerts(){
-        const userId = localStorage.getItem("user_id");
-        const sensorId = houseSensorMap[currentHouse] || 1;
-
-        fetchAlertsDataPromise(selectedDate, currentPeriod, sensorId, userId)
-        .then(function(data) {
-            if (!data || !data.descricao_tipo || data.descricao_tipo.length === 0) {
-                console.warn('Sem dados reais — preenchendo dados simulados nas notificações.');
-                
-                // gera valores mock baseados no período
-                updateNotifications();
-                return;
-            }
-
-            //pega dados reais
-            data.forEach(item => {
-                const notificationElement = document.createElement('div');
-                notificationElement.className = 'notification-item';
-                                   
-                notificationElement.innerHTML = `
-                    <div class="notification-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                    </div>
-                    <div class="notification-content">
-                        <div>${item.title}</div>
-                        <div class="notification-time">${item.dt_time}</div>
-                    </div>
-                `;
-                
-                notificationsList.appendChild(notificationElement);
-            });
-        });
-    }*/
     
-
     // Inicializar o calendário
     function init() {
         initNavigation();

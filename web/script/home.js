@@ -65,12 +65,13 @@ function setupValveSwitch() {
   const valveSwitch = document.getElementById('valveSwitch');
   const statusText = document.getElementById('statusText');
   const sensorId = 1;
+  const userId = localStorage.getItem('user_id');
   let sensorInfo = {}; // armazena nome e valor atuais do sensor
 
   if (!valveSwitch || !statusText) return;
 
   // busca o estado atual do registro e salva dados
-  fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=1&sensor_id=${sensorId}`)
+  fetch(`http://localhost/aquasync/api/control/c_sensor.php?user_id=${userId}&sensor_id=${sensorId}`)
     .then(response => response.json())
     .then(data => {
       console.log("Estado recebido do banco:", data);

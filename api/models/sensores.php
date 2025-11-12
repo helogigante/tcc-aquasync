@@ -4,7 +4,12 @@
         private $table_name = "sensor", $view_table = "v_usuario_sensor";
         
         public $user_id, $sensor_id, $sensor_name, $register_state, $tariff_value,
-            $report = array();
+            $report = array(
+                "sensor_id" => "",
+                "sensor_name" => "",
+                "register_state" => "",
+                "tariff_value" => ""
+            );
     
         public function __construct($db) {
             $this->conn = $db;

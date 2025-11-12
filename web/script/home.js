@@ -56,7 +56,29 @@ function updateFlowChart(sensorId, timelyData) {
         fill: true
       }]
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: { 
+      responsive: true, 
+      maintainAspectRatio: false, 
+        plugins: {
+          legend: { 
+            display: true 
+          } 
+        }, 
+        scales: {
+          y: { 
+            beginAtZero: true,
+            title: {
+              display: true, text: 'Vazão (L)' 
+            }
+          }, 
+          x: {
+            title:{
+              display: true,
+              text:  'Horário'
+            } 
+          } 
+        }
+      }
   });
 }
 

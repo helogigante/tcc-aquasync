@@ -53,6 +53,7 @@ function calendario() {
         
         // Atualizar gráficos e dados
         updateDataDisplay();
+        checkAlerts();
     }
     
     // Renderizar a visualização de mês
@@ -422,21 +423,36 @@ function calendario() {
             });
     }
 
+    let currentChartRequest = null; // nova variável para rastrear a última chamada
+    
     // desenhar o gráfico de vazão (estilo do relatorio.html)
     function drawVazaoChart() {
-        let caption;
         resizeCanvas();
 
-        if (flowChartInstance) {
-            try { flowChartInstance.destroy(); } catch(e){ /* ignore */ }
-        }
+        // cancela a requisição anterior (marca como absoleta)
+        const thisRequest = {};
+        currentChartRequest = thisRequest;
 
         // sensor dependendo da casa
         const sensorId = houseSensorMap[currentHouse] || 1;
 
         fetchLeituraDataPromise(currentPeriod, selectedDate, sensorId)
         .then(function(data) {
-            // se não tiver dados, usa dados pré-definidos
+            // Só continua se esta for a requisição mais recente
+            if (currentChartRequest !== thisRequest) {
+                return; // ignora respostas antigas
+            }
+
+            // Destroi o gráfico antigo (se ainda existir no canvas)
+            if (flowChartInstance) {
+                try {
+                    flowChartInstance.destroy();
+                } catch (e) {
+                    console.warn('Erro ao destruir gráfico antigo:', e);
+                }
+                flowChartInstance = null;
+            }
+
             if (!data || !data.timely_consumption || data.timely_consumption.length === 0) {
                 console.warn('Dados não encontrados — usando mock para gráfico.');
                 // montar dados pré-definidos
@@ -510,6 +526,12 @@ function calendario() {
                     }
                 }
             });
+        })
+        .catch(function(err) {
+            if (currentChartRequest === thisRequest) {
+                console.error('Erro ao carregar dados do gráfico:', err);
+                // Opcional: mostrar mensagem de erro no gráfico
+            }
         });
     }
     
@@ -758,11 +780,12 @@ function calendario() {
         const year = dateObj.getFullYear();
         const month = dateObj.getMonth() + 1;
         const day = dateObj.getDate();
+        var timee = "";
 
-        let url = `http://localhost/aquasync/api/control/c_alerta.php?case=1&sensor=${sensorId}&user_id=${userId}&period=${period}`;
-        if (period === 'day') url += `&time=${day}`;
-        else if (period === 'month') url += `&time=${year}-${month}-01`;
-        else if (period === 'year') url += `&time=${year}`;
+        let url = `http://localhost/aquasync/api/control/c_alerta.php?case=1&user_id=${userId}&period=${period}&sensor_id=${sensorId}&time=`;
+        if (period === 'day') url+= `${year}-${month}-${day}`;
+        else if (period === 'month') url+=`${year}-${month}-10`;
+        else if (period === 'year') url+=`${year}-10-10`;
 
         // faz o fetch e sempre retorna uma promise que resolve com objeto (ou null em erro)
         // promise são usadas para facilitar uso assíncrono
@@ -789,7 +812,7 @@ function calendario() {
 
         fetchAlertsDataPromise(selectedDate, currentPeriod, sensorId, userId)
         .then(function(data) {
-            if (!data || !data.descricao_tipo || data.descricao_tipo.length === 0) {
+            if (!data) {
                 console.warn('Sem dados reais — preenchendo dados simulados nas notificações.');
                 
                 // gera valores mock baseados no período
@@ -797,6 +820,8 @@ function calendario() {
                 return;
             }
 
+            notificationsList.innerHTML = '';
+            
             //pega dados reais
             data.forEach(item => {
                 const notificationElement = document.createElement('div');

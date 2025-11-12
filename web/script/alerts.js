@@ -56,36 +56,51 @@ function loadSimulatedNotifications() {
 // Função para carregar os alertas do banco
 function loadNotifications() {
   const userId = localStorage.getItem("user_id");
-  fetch(`http://127.0.0.1/aquasync/api/control/c_alerta.php?case=2&user_id=${userId}`)
-  .then(response => response.json())
-  .then(data => {
+  fetch(`http://127.0.0.1/aquasync/api/control/c_alerta.php?case=2&user_id=1`)
+  .then(response => response.json()
+  .then(data => ({ data, status: response.status })))
+  .then(({data, status}) => {
+
     const container = document.querySelector('.notificacoes-container');
     container.innerHTML = '';
 
-    data.forEach(item => {
-
-      const notificationId = `alert_${item.alert_id}`;
-      const isRead = localStorage.getItem(notificationId) === 'read';
-      
-      const notification = document.createElement('div');
-      notification.className = `notificacao-card ${isRead ? '' : 'unread'}`;
-      notification.dataset.notificationId = notificationId;
-      
-      notification.innerHTML = `
+    if (status == 404) {
+        const notification = document.createElement('div');
+        notification.className = `notificacao-card`;
+        notification.innerHTML = `
         <div class="notificacao-content">
-          <h3>${item.title}</h3>
-          <p>${item.sensor_name}: ${item.description}</p>
-          <span class="notificacao-time">${item.dt_time}</span>
+          <h3>Sem alertas</h3>
+          <p>Você não possuí alertas.</p>
         </div>
       `;
-      
-      notification.addEventListener('click', function() {
-        this.classList.remove('unread');
-        localStorage.setItem(notificationId, 'read');
-      });
-
       container.insertBefore(notification, container.firstChild);
-    });
+
+    }else if (status == 200) {
+      data.forEach(item => {
+
+        const notificationId = `alert_${item.alert_id}`;
+        const isRead = localStorage.getItem(notificationId) === 'read';
+        
+        const notification = document.createElement('div');
+        notification.className = `notificacao-card ${isRead ? '' : 'unread'}`;
+        notification.dataset.notificationId = notificationId;
+        
+        notification.innerHTML = `
+          <div class="notificacao-content">
+            <h3>${item.title}</h3>
+            <p>${item.sensor_name}: ${item.description}</p>
+            <span class="notificacao-time">${item.dt_time}</span>
+          </div>
+        `;
+        
+        notification.addEventListener('click', function() {
+          this.classList.remove('unread');
+          localStorage.setItem(notificationId, 'read');
+        });
+  
+        container.insertBefore(notification, container.firstChild);
+      });
+    }
   })
   .catch(error => console.error('Erro ao buscar notificações:', error));
 }
@@ -183,5 +198,6 @@ function canSendAlert(alertType, currentTime, cooldownTime) {
   return canSend;
 }
 
+checkAlerts();
 // Conferir anomalias a cada segundo
 setInterval(checkAlerts(), 1000);

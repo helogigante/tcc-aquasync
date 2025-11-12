@@ -23,6 +23,8 @@
             $stmt->bindParam(":user_id", $this->user_id);
             $stmt->execute();
 
+            $this->report = array();
+
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 if($row['nome_sensor'] !== null) {
                     $this->report[] = [

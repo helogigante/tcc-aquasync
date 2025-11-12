@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     card.addEventListener('click', function() {
       // Remove a classe 'unread' ao clicar (marca como lida visualmente)
       this.classList.remove('unread');
+      localStorage.setItem(notificationId, 'read');
       
       // Ponto para adicionar lógica de backend para marcar como lida
       console.log('Notificação marcada como lida');
@@ -80,6 +81,7 @@ function loadNotifications() {
       
       notification.addEventListener('click', function() {
         this.classList.remove('unread');
+        localStorage.setItem(notificationId, 'read');
       });
 
       container.insertBefore(notification, container.firstChild);

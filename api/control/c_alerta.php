@@ -73,7 +73,7 @@
             } else {
                 $alerta->user_id = $data->user_id ?? null;
                 $alerta->sensor_id = $data->sensor_id ?? null;
-                $alerta->alert_type = $data->alert_type ?? null;
+                $alerta->id_alert_type = $data->id_alert_type ?? null;
 
                 if($alerta->create()) {
                     http_response_code(200);

@@ -349,7 +349,7 @@ function calendario() {
         updateConsumoData();
         
         // Atualiza as notificações
-        checkAlerts();
+        updateNotifications();
     }
     
     // Nova função para atualizar o título do gráfico baseado no período
@@ -754,7 +754,7 @@ function calendario() {
             renderView();
         });
     }
-    function fetchAlertsDataPromise(dateObj, period, sensorId, userId){
+    /*function fetchAlertsDataPromise(dateObj, period, sensorId, userId){
         const year = dateObj.getFullYear();
         const month = dateObj.getMonth() + 1;
         const day = dateObj.getDate();
@@ -819,7 +819,7 @@ function calendario() {
                 notificationsList.appendChild(notificationElement);
             });
         });
-    }
+    }*/
     
 
     // Inicializar o calendário

@@ -697,7 +697,7 @@ function setupEditSensorModal() {
             .then(data => {
                 if (data && data.sensor_name) {
                     document.getElementById('editSensorName').value = data.sensor_name;
-                    document.getElementById('editBillValue').value = data.tariff_value;
+                    document.getElementById('editBillValue').value = data.tariff_value ? parseFloat(data.tariff_value).toFixed(2) : '';
                 } else {
                     // Fallback para dados de exemplo se a API não retornar
                     const sensorData = {

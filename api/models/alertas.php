@@ -11,12 +11,12 @@
         }
         function create(){
             $query = "INSERT INTO alertas (dt_hr_alerta, id_tipo_alerta, id_sensor, id_usuario) 
-                        VALUES (NOW(), :alert_type, :sensor_id, :user_id);";
+                        VALUES (NOW(), :id_alert_type, :sensor_id, :user_id);";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":user_id", $this->user_id);
             $stmt->bindParam(":sensor_id", $this->sensor_id);
-            $stmt->bindParam(":alert_type", $this->alert_type);
+            $stmt->bindParam(":id_alert_type", $this->id_alert_type);
             return $stmt->execute();
         }
         
@@ -63,7 +63,7 @@
                     $condition = "AND MONTH(dt_hr_alerta) = MONTH(:time) AND YEAR(dt_hr_alerta) = YEAR(:time)";
                     $params[':time'] = $this->time;
                     break;
-                case '': // ano
+                case 'year': // ano
                     $condition = "AND YEAR(dt_hr_alerta) = :time";
                     $params[':time'] = $this->time;
                     break;
@@ -89,6 +89,7 @@
             $stmt->execute();
 
             $c = false;
+
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 if($row && $row['nome_tipo'] !== null) {
                     $this->report[] = [
@@ -103,6 +104,7 @@
                     break;
                 }
             }
+
             $status[] = $c;
             return !in_array(false, $status);   
         }

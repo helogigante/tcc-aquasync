@@ -56,7 +56,7 @@ function loadSimulatedNotifications() {
 // Função para carregar os alertas do banco
 function loadNotifications() {
   const userId = localStorage.getItem("user_id");
-  fetch(`http://127.0.0.1/aquasync/api/control/c_alerta.php?case=2&user_id=1`)
+  fetch(`http://localhost/aquasync/api/control/c_alerta.php?case=2&user_id=${userId}`)
   .then(response => response.json()
   .then(data => ({ data, status: response.status })))
   .then(({data, status}) => {

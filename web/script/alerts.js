@@ -119,7 +119,7 @@ function addAlert(type, userId, sensorId){
   const data = {
     user_id: userId,
     sensor_id: sensorId,
-    alert_type: type
+    id_alert_type: type
   };
 
   fetch(`http://localhost/aquasync/api/control/c_alerta.php`, {

@@ -70,7 +70,7 @@ function loadNotifications() {
         notification.innerHTML = `
         <div class="notificacao-content">
           <h3>Sem alertas</h3>
-          <p>Você não possuí alertas.</p>
+          <p>Você não possui alertas.</p>
         </div>
       `;
       container.insertBefore(notification, container.firstChild);

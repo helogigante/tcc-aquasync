@@ -11,8 +11,8 @@ O projeto tem como objetivo identificar vazamentos de água em residências de f
 ## Solução
 Diante da dificuldade de identificar vazamentos de água em residências e dos prejuízos causados, o sistema propõe:
 
-- Monitoramento em tempo real do consumo de água  
-- Identificação de anomalias no uso  
+- Monitoramento em tempo real do consumo de água
+- Identificação de anomalias no uso
 - Emissão de alertas para possíveis vazamentos
 
 ---
@@ -22,4 +22,25 @@ O sistema é composto por:
 
 - ESP32 → mede a vazão da água
 - Envio de dados em tempo real
-- Aplicativo móvel → exibe consumo e alertas
+- Painel web responsivo → exibe consumo e alertas (interface adaptada para visualização em dispositivos móveis)
+
+---
+
+## Tecnologias utilizadas
+- ESP32 (C++) — protótipo/sensor de vazão
+- PHP — back-end e API REST
+- MariaDB/SQL — banco de dados
+- HTML, CSS, JavaScript — front-end
+
+---
+
+## Artigo científico
+📄 O artigo científico completo do projeto está disponível na [seção de releases](https://github.com/helogigante/tcc-aquasync/releases/tag/v1.0.0).
+
+---
+
+## Equipe
+- Emilly Cunha de Almeida — Front-end
+- Heloisa Victória Gigante da Silva — Back-end e protótipo
+- Larissa Tertulina de Souza — Documentação
+- Letícia Prioste Moro — Back-end e documentação
